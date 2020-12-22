@@ -1,0 +1,34 @@
+.login-form {
+    margin: 8% auto;
+    /*width: 100%;*/
+    max-width: 20%;
+}
+
+.login-note {
+    font-size: 10px;
+}
+
+.forgot-password {
+    padding-top: 3px;
+    font-size: 10px;
+}
+
+.btn-language {
+    margin: 1rem auto;
+    width: 100%;
+}
+
+.docs {
+    max-width: 80%;
+    margin: 0 10%;
+}
+
+.missing-header {
+    font-weight: bold;
+    font-size: 10rem;
+}
+
+.sign-note {
+    float: left;
+    position: relative;
+}
