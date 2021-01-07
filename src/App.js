@@ -3,13 +3,13 @@ import { BrowserRouter as Router, Switch, Route, withRouter } from "react-router
 import './App.css';
 
 import Login from "./components/Forms/Login.jsx";
-import Navigation from "./components/Navigation.jsx";
-import MissingDocs from "./components/Lists/MissingDocs.jsx";
-import SignedRecords from "./components/Lists/SignedRecords.jsx";
-import SkillMatrix from "./components/SkillMatrix.jsx";
-import NewRecord from "./components/NewRecord.jsx";
-import Finder from "./components/Finder.jsx";
-import Settings from "./components/Settings.jsx";
+import Navigation from "./components/Others/Navigation.jsx";
+import Missing from "./components/Tables/Missing.jsx";
+import Signed from "./components/Tables/Signed.jsx";
+import SkillMatrixPage from "./components/Pages/SkillMatrixPage.jsx";
+import NewRecordPage from "./components/Pages/NewRecordPage.jsx";
+import FinderPage from "./components/Pages/FinderPage.jsx";
+import SettingsPage from "./components/Pages/SettingsPage.jsx";
 
 function App() {
 
@@ -21,12 +21,12 @@ function App() {
         <NavWithRouter/>
         <Switch>
           <Route path='/' exact component={Login} />
-          <Route path="/missed-docs" component={MissingDocs} />
-          <Route path="/signed-docs" component={SignedRecords} />
-          <Route path="/skill-matrix" component={SkillMatrix} />
-          <Route path="/add-record" component={NewRecord} />
-          <Route path="/finder" component={Finder} />
-          <Route path="/settings" component={Settings} />
+          <Route path="/missed-docs" component={Missing} />
+          <Route path="/signed-docs" component={Signed} />
+          <Route path="/skill-matrix" component={SkillMatrixPage} />
+          <Route path="/add-record" component={NewRecordPage} />
+          <Route path="/finder" component={FinderPage} />
+          <Route path="/settings" component={SettingsPage} />
         </Switch>
       </>
     </Router>

@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {useForm} from "react-hook-form";
-import HookFormGroup from "./HookFormGroup";
+import MyHookForm from "./MyHookForm";
 
 import {Button, Row, Col, Form} from "react-bootstrap";
 import {ButtonGroup} from "react-bootstrap";
@@ -11,7 +11,6 @@ import {employees} from "../../data";
 const NewTraining = ({data}) => {
 
   const {register, handleSubmit} = useForm();
-
   const [attendees, setAttendees] = useState([])
 
   const onSubmit = (data) => {
@@ -23,7 +22,7 @@ const NewTraining = ({data}) => {
     <Form onSubmit={handleSubmit(onSubmit)}>
 
       {/* NAME */}
-      <HookFormGroup
+      <MyHookForm
         label="Training name"
         name="name"
         placeholder="Enter document name"
@@ -32,7 +31,7 @@ const NewTraining = ({data}) => {
       />
 
       {/* TRAINEE */}
-      <HookFormGroup
+      <MyHookForm
         label="Name of trainee"
         name="trainee"
         placeholder="Enter document link to sharepoint"
@@ -41,7 +40,7 @@ const NewTraining = ({data}) => {
       />
 
       {/* AGENCY */}
-      <HookFormGroup
+      <MyHookForm
         label="Name of agency"
         name="agency"
         placeholder="Enter agency"
@@ -50,7 +49,7 @@ const NewTraining = ({data}) => {
       />
 
       {/* PLACE */}
-      <HookFormGroup
+      <MyHookForm
         label="Place"
         name="place"
         placeholder="Enter place"
@@ -59,7 +58,7 @@ const NewTraining = ({data}) => {
       />
 
       {/* DATE */}
-      <HookFormGroup
+      <MyHookForm
         label="Date"
         name="date"
         type="date"
@@ -69,7 +68,7 @@ const NewTraining = ({data}) => {
       />
 
       {/* DURATION */}
-      <HookFormGroup
+      <MyHookForm
         label="Duration"
         name="duration"
         type="number"
@@ -79,7 +78,7 @@ const NewTraining = ({data}) => {
       />
 
       {/* AGENDA */}
-      <HookFormGroup
+      <MyHookForm
         label="Agenda"
         name="agenda"
         type="textarea" // todo as?
@@ -88,7 +87,7 @@ const NewTraining = ({data}) => {
         register={register}
       />
 
-      {/* LIST OF EMPLOYEES*/}
+      {/* LIST OF EMPLOYEES */}
       <Form.Group as={Row}>
         <Form.Label column sm="2">Add employees</Form.Label>
         <Col>

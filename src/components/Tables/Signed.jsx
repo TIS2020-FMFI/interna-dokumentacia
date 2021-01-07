@@ -1,23 +1,10 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
-import CaptionElement from "../Secondary/CaptionElement";
-import {Button} from "react-bootstrap";
+import CaptionElement from "../Others/CaptionElement";
+import {SignedBtn, hasSubs} from "../Buttons/TableBtns";
 import {documents} from "../../data";
 
-
-const SignedRecords = () => {
-
-  // Return true, if it's training document
-  const hasSubs = (row) => { return Object.keys(row).includes('sub') }
-
-  const MyButton = (cell, row) => {
-    const handleClick = () => {
-      console.log('Expand')
-    }
-    return !hasSubs(row) ? row.sign : (
-      <Button onClick={handleClick}>Details </Button>
-    );
-  };
+const Signed = () => {
 
   const columns = [
     {
@@ -29,7 +16,7 @@ const SignedRecords = () => {
     }, {
       dataField: 'sign',
       text: 'Sign Day',
-      formatter: MyButton,
+      formatter: SignedBtn,
     }
   ];
 
@@ -61,7 +48,6 @@ const SignedRecords = () => {
     <>
       <CaptionElement title="Signed Documents"/>
       <BootstrapTable
-        classes="docs" // custom class
         keyField="id"
         hover
         data={documents}
@@ -72,4 +58,4 @@ const SignedRecords = () => {
   );
 }
 
-export default SignedRecords;
+export default Signed;

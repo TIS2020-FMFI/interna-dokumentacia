@@ -1,30 +1,24 @@
 import React, {useState} from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 // import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
-import CaptionElement from "../Secondary/CaptionElement";
+import CaptionElement from "../Others/CaptionElement";
 import ConfirmModal from "../Modals/ConfirmModal";
+import {MissingBtn} from "../Buttons/TableBtns";
+import Empty from "./Empty";
 import {documents} from "../../data"
-import {Button} from "react-bootstrap";
 
-const MissingDocs = () => {
+const Missing = () => {
 
-  // Return true, if it's training document
-  const hasSubs = (row) => { return Object.keys(row).includes('sub') }
+  // State management
+  const [data, setData] = useState(documents)
+  const [modalInfo, setModalInfo] = useState([])
+  const [showModal, setShowModal] = useState(false)
 
-  const SMButton = (cell, row) => {
-    const handleClick = (row) => {
-      // if it's 'sing' btn => open Model
-      if (!hasSubs(row)) {
-        setModalInfo(row);
-        setShowModal(true);
-      }
-    }
-    return (
-      <Button onClick={() => handleClick(row)}>
-        {hasSubs(row) ? 'Details' : 'Sign'}
-      </Button>
-    );
-  };
+  const handleAccept = () => {
+    console.log(`Accepted by ${modalInfo}`);
+    setData(data.filter(p => p.id !== modalInfo.id)); // delete the document
+    setShowModal(false);
+  }
 
   const columns = [
     {
@@ -39,10 +33,13 @@ const MissingDocs = () => {
     }, {
       dataField: 'signBtn',
       text: 'Sign',
-      formatter: SMButton,
+      formatter: MissingBtn,
+      formatExtraData: {
+        setFormType: setModalInfo,
+        setFormData: setShowModal
+      }
     }
   ];
-
   const expandColumns = [
     {
       dataField: 'anet_id',
@@ -53,23 +50,15 @@ const MissingDocs = () => {
     }, {
       dataField: 'signBtn',
       text: 'Sign',
-      formatter: SMButton,
+      formatter: MissingBtn,
+      formatExtraData: {
+        setFormType: setModalInfo,
+        setFormData: setShowModal
+      }
     }
   ];
-
-  // State management
-  const [data, setData] = useState(documents)
-  const [modalInfo, setModalInfo] = useState([])
-  const [showModal, setShowModal] = useState(false)
-
-  const handleAccept = () => {
-    console.log(`Accepted by ${modalInfo}`);
-    setData(data.filter(p => p.id !== modalInfo.id)); // delete the document
-    setShowModal(false)
-  }
-
   const expandRow = {
-    nonExpandable: documents.map(doc => !hasSubs(doc) ? doc.id : null),  // docs that should not expand
+    nonExpandable: documents.map(doc => Object.keys(doc).includes('sub') ? null : doc.id),  // docs that should not expand
     renderer: (cell, row) => (
       <BootstrapTable
         keyField="id"
@@ -79,23 +68,18 @@ const MissingDocs = () => {
     )
   };
 
-  const EmptyTable = () => {
-    return (<p>Table is empty</p>)
-  }
-
   return (
     <>
       <CaptionElement title="Documents to sign"/>
       <BootstrapTable
-        classes="docs"  // my css class
         keyField="id"
         hover
         data={data}
         columns={columns}
         expandRow={expandRow}
-        noDataIndication={ EmptyTable }
+        noDataIndication={ Empty }
       />
-      { ! showModal ? null :
+      { showModal &&
         <ConfirmModal
           showModal={showModal}
           setShowModal={setShowModal}
@@ -107,5 +91,5 @@ const MissingDocs = () => {
   )
 }
 
-export default MissingDocs;
+export default Missing;
 

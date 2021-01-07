@@ -1,69 +1,19 @@
 import React, {useState} from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
-import CaptionElement from "./Secondary/CaptionElement";
+import CaptionElement from "../Others/CaptionElement";
 import {Button, Row, Col} from "react-bootstrap";
 import {ButtonGroup} from "reactstrap";
-import {employees} from "../data";
-
-// todo doc with employees or employee with docs?
-const documents = [
-  {
-    id: 1,
-    name: 'Document1',
-    employees: [
-      {
-        anet_id: '1',
-        state: 'A'
-      }, {
-        anet_id: '2',
-        state: 'B'
-      }, {
-        anet_id: '3',
-        state: 'A'
-      }
-    ]
-  }, {
-    id: 2,
-    name: 'Document2',
-    employees: [
-      {
-        anet_id: '1',
-        state: 'B'
-      }, {
-        anet_id: '2',
-        state: 'A'
-      }, {
-        anet_id: '3',
-        state: 'A'
-      }
-    ]
-  }, {
-    id: 3,
-    name: 'Document3',
-    employees: [
-      {
-        anet_id: '1',
-        state: 'A'
-      }, {
-        anet_id: '2',
-        state: 'B'
-      }, {
-        anet_id: '3',
-        state: 'B'
-      }
-    ]
-  }
-];
+import {sm_data, employees} from "../../data";
 
 let counter = 0;
 
-const SkillMatrix = () => {
+const SkillMatrixPage = () => {
 
-  const [data, setData] = useState(documents);
+  const [data, setData] = useState(sm_data);
 
-  const ToggleBtn = (_, row, rowIndex) => {
+  const ToggleBtn = (c, row, rowIndex) => {
+    // TODO
     // console.log(counter)
-
     const document = data[rowIndex]
     const employee = document.employees[counter++ % 3];
     const mark = employee.state.substring(1, 2) === 'X';
@@ -107,7 +57,7 @@ const SkillMatrix = () => {
     text: ''
   }];
 
-  // todo loadFromDB
+  // TODO loadFromDB
   if (columns.length === 1) {
     employees.forEach(e => {
       columns.push({
@@ -124,26 +74,25 @@ const SkillMatrix = () => {
   };
 
   const handleExport = () => {
-    // todo export to CSV?
+    // TODO export?
     console.log('export is not implemented')
   };
 
   return (
     <>
-      <CaptionElement title="Skill-matrix"/>
+      <CaptionElement title="Strečno"/>
       <BootstrapTable
-        classes="docs" // custom class
         keyField="id"
         data={data}
         columns={columns}
       />
 
-      <Row style={{marginLeft: '10%'}}>
+      <Row>
         {/* EXPORT */}
         <Col xs="6">
           <Button id="export" variant="secondary" onClick={handleExport}> Export </Button>
         </Col>
-        {/* SAVE | CANCEL */}
+        {/* "submit" BUTTONS */}
         <Col xs="3">
           <ButtonGroup onClick={handleClick}>
             <Button id="sign"> Sign </Button>
@@ -157,4 +106,4 @@ const SkillMatrix = () => {
   );
 }
 
-export default SkillMatrix;
+export default SkillMatrixPage;

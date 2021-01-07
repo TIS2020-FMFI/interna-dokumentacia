@@ -6,10 +6,9 @@ const CaptionElement = ({title}) => {
       borderRadius: '0.25em',
       textAlign: 'center',
       border: '2px solid gray',
-      maxWidth: "80%",
-      margin: "0 10% 2%",
+      margin: "2% 0",
       padding: '0.5em',
-      marginTop: '3%'
+      marginTop: '1.5%'
     }}>{title}</h3>
   )
 }

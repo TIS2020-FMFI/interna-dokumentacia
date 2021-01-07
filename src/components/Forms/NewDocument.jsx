@@ -2,8 +2,8 @@ import {Button, Form, Row, Col} from "react-bootstrap";
 import React, {useState} from "react";
 import {useForm} from "react-hook-form";
 import {ButtonGroup} from "reactstrap";
-import HookFormGroup from "./HookFormGroup";
-import Combinations from "../Secondary/Combinations";
+import MyHookForm from "./MyHookForm";
+import Combinations from "../Others/Combinations";
 
 const NewDocument = ({data}) => {
   const {register, handleSubmit} = useForm();
@@ -15,13 +15,15 @@ const NewDocument = ({data}) => {
     city: "Bratislava",
   }])
 
-  const onSubmit = (data) => {
-    // todo saveIntoDB
-    console.log(data)
+  const onSubmit = (data, event) => {
+    // TODO saveIntoDB
+    event.target.id === "save"
+      ? console.log("save", data)
+      : console.log("save & send", data)
   }
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form>
 
       {/* TYPE OF DOCUMENT */}
       <Form.Group as={Row}>
@@ -35,7 +37,7 @@ const NewDocument = ({data}) => {
       </Form.Group>
 
       {/* NAME */}
-      <HookFormGroup
+      <MyHookForm
         label="Document name"
         name="name"
         placeholder="Enter document name"
@@ -44,7 +46,7 @@ const NewDocument = ({data}) => {
       />
 
       {/* LINK */}
-      <HookFormGroup
+      <MyHookForm
         label="Link to sharepoint"
         name="link"
         placeholder="Enter document link to sharepoint"
@@ -53,7 +55,7 @@ const NewDocument = ({data}) => {
       />
 
       {/* RELEASE */}
-      <HookFormGroup
+      <MyHookForm
         label="Release date"
         name="release"
         type="date"
@@ -62,7 +64,7 @@ const NewDocument = ({data}) => {
       />
 
       {/* DEADLINE */}
-      <HookFormGroup
+      <MyHookForm
         label="Deadline date"
         name="deadline"
         type="date"
@@ -71,7 +73,7 @@ const NewDocument = ({data}) => {
       />
 
       {/* VERSION */}
-      <HookFormGroup
+      <MyHookForm
         label="Version"
         name="version"
         placeholder="Enter version"
@@ -80,7 +82,7 @@ const NewDocument = ({data}) => {
       />
 
       {/* ORDER NUMBER */}
-      <HookFormGroup
+      <MyHookForm
         label="Order number"
         name="number"
         type="number"
@@ -90,7 +92,7 @@ const NewDocument = ({data}) => {
       />
 
       {/* NOTE */}
-      <HookFormGroup
+      <MyHookForm
         label="Note"
         name="note"
         type="textarea" // todo as?
@@ -103,8 +105,8 @@ const NewDocument = ({data}) => {
       <Combinations combinations={combinations} setCombinations={setCombinations}/>
 
       {/* BUTTONS */}
-      <ButtonGroup className="btn-language btn-group">
-        <Button id="save">
+      <ButtonGroup className="btn-language btn-group" onClick={handleSubmit(onSubmit)}>
+        <Button id="save" type="submit">
           Save
         </Button>
         <Button id="send" type="submit" variant="danger">

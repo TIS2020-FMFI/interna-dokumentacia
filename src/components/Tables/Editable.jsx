@@ -1,23 +1,10 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
-import {Button} from "react-bootstrap";
+import EditBtn from "../Buttons/EditBtn";
+import Empty from "./Empty";
 import {documents} from "../../data";
 
-const EditableDocs = ({setFormType, setFormData}) => {
-
-  const EditBtn = (cell, row) => {
-    const handleClick = () => {
-      // console.log(row);
-      // todo infinite loop error
-      setFormData(row);
-      setFormType("new_doc");
-    }
-    return (
-      <Button onClick={handleClick}>
-        Edit
-      </Button>
-    );
-  };
+const Editable = ({setFormType, setFormData}) => {
 
   const columns = [
     {
@@ -33,6 +20,10 @@ const EditableDocs = ({setFormType, setFormData}) => {
       dataField: 'editBtn',
       text: 'Edit',
       formatter: EditBtn,
+      formatExtraData: {
+        setFormType: setFormType,
+        setFormData: setFormData
+      }
     }
   ];
 
@@ -43,10 +34,11 @@ const EditableDocs = ({setFormType, setFormData}) => {
         hover
         data={documents}
         columns={columns}
+        noDataIndication={ Empty }
       />
     </>
   )
 }
 
-export default EditableDocs;
+export default Editable;
 
