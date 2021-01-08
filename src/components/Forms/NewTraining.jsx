@@ -1,9 +1,8 @@
 import React, {useState} from "react";
 import {useForm} from "react-hook-form";
 import MyHookForm from "./MyHookForm";
-
-import {Button, Row, Col, Form} from "react-bootstrap";
-import {ButtonGroup} from "react-bootstrap";
+import SubmitBtns from "../Buttons/SubmitBtns";
+import {Row, Col, Form} from "react-bootstrap";
 import {Typeahead} from 'react-bootstrap-typeahead'
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import {employees} from "../../data";
@@ -13,13 +12,8 @@ const NewTraining = ({data}) => {
   const {register, handleSubmit} = useForm();
   const [attendees, setAttendees] = useState([])
 
-  const onSubmit = (data) => {
-    console.log(data)
-    console.log(attendees)
-  }
-
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form>
 
       {/* NAME */}
       <MyHookForm
@@ -35,7 +29,7 @@ const NewTraining = ({data}) => {
         label="Name of trainee"
         name="trainee"
         placeholder="Enter document link to sharepoint"
-        // defaultValue={data.trainee}
+        defaultValue={data.trainee}
         register={register}
       />
 
@@ -44,7 +38,7 @@ const NewTraining = ({data}) => {
         label="Name of agency"
         name="agency"
         placeholder="Enter agency"
-        // defaultValue={data.agency}
+        defaultValue={data.agency}
         register={register}
       />
 
@@ -53,7 +47,7 @@ const NewTraining = ({data}) => {
         label="Place"
         name="place"
         placeholder="Enter place"
-        // defaultValue={data.place}
+        defaultValue={data.place}
         register={register}
       />
 
@@ -81,9 +75,9 @@ const NewTraining = ({data}) => {
       <MyHookForm
         label="Agenda"
         name="agenda"
-        type="textarea" // todo as?
+        as="textarea"
         placeholder="Enter agenda"
-        // defaultValue={data.agenda}
+        defaultValue={data.agenda}
         register={register}
       />
 
@@ -104,11 +98,8 @@ const NewTraining = ({data}) => {
         </Col>
       </Form.Group>
 
-      <ButtonGroup className="btn-language btn-group">
-        <Button id="save"> Save </Button>
-        <Button id="send" type="submit" variant="danger"> Send </Button>
-      </ButtonGroup>
-
+      {/* SAVE | SEND BUTTONS */}
+      <SubmitBtns handleSubmit={(onSubmit) => handleSubmit(onSubmit)}/>
     </Form>
   )
 }

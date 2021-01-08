@@ -59,7 +59,6 @@ export const documents = [
   }
 ];
 
-// TODO doc with employees or employee with docs?
 export const sm_data = [
   {
     id: 1,
@@ -116,8 +115,6 @@ export const branches = ["B1", "B2", "B3"];
 export const divisions = ["D1", "D2", "D3"];
 export const departments = ["Dep1", "Dep2", "Dep3"];
 export const cities = ["C1", "C2", "C3"];
-
-export const combinations = [] // TODO
 
 // export const combinations = [{
 //   types: []

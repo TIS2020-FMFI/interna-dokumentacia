@@ -1,8 +1,7 @@
 import {Col, Form, Row} from "react-bootstrap";
 import React from "react";
 
-const MyHookForm = (props) => {
-  const {label, name, placeholder, type, register, as, defaultValue} = props
+const MyHookForm = ({label, name, placeholder, type, register, as, defaultValue}) => {
   return (
       <Form.Group as={Row}>
         <Form.Label column sm="2">{label}</Form.Label>
@@ -12,8 +11,8 @@ const MyHookForm = (props) => {
             placeholder={placeholder}
             ref={register}
             defaultValue={defaultValue}
-            type={type !== undefined ? type : ""} // todo ?: &&
-            // as={as !== undefined ? as : ""}
+            type={type}
+            as={as}
           />
         </Col>
       </Form.Group>

@@ -6,6 +6,9 @@ import {documents} from "../../data";
 
 const Editable = ({setFormType, setFormData}) => {
 
+  // TODO MATO get editable documents from DB
+  const editable_docs = documents;
+
   const columns = [
     {
       dataField: 'name',
@@ -23,6 +26,9 @@ const Editable = ({setFormType, setFormData}) => {
       formatExtraData: {
         setFormType: setFormType,
         setFormData: setFormData
+      },
+      headerStyle: () => {
+        return { width: '41.47px' };
       }
     }
   ];
@@ -32,7 +38,7 @@ const Editable = ({setFormType, setFormData}) => {
       <BootstrapTable
         keyField="id"
         hover
-        data={documents}
+        data={editable_docs}
         columns={columns}
         noDataIndication={ Empty }
       />

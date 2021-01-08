@@ -1,69 +1,33 @@
 import React, {useState} from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import CaptionElement from "../Others/CaptionElement";
-import {Button, Row, Col} from "react-bootstrap";
-import {ButtonGroup} from "reactstrap";
+import {Button, Row, Col, ButtonGroup} from "react-bootstrap";
 import {sm_data, employees} from "../../data";
-
-let counter = 0;
+import ToggleBtn from "../Buttons/ToggleBtn";
 
 const SkillMatrixPage = () => {
 
   const [data, setData] = useState(sm_data);
-
-  const ToggleBtn = (c, row, rowIndex) => {
-    // TODO
-    // console.log(counter)
-    const document = data[rowIndex]
-    const employee = document.employees[counter++ % 3];
-    const mark = employee.state.substring(1, 2) === 'X';
-    const state = mark ? employee.state.substring(0,1) : employee.state;
-
-    console.log(document);
-
-    const handleClick = () => {
-      let new_data = [...data];
-      let new_employees = [...document.employees];
-
-      new_employees[counter % 3] = {
-        employee,
-        state: mark ? employee.state.substring(0,1) : employee.state + 'X'
-      };
-
-      new_data[rowIndex] = {...document, employees: new_employees};
-
-      setData(new_data);
-    }
-
-    const styledBtn = {
-      backgroundColor: state === 'A'
-        ? 'orange'
-        : state === 'B'
-          ? 'red'
-          : 'blue',
-      borderColor: mark ? "black" : "white",
-      borderWidth: "3px"
-    }
-
-    return (
-      <Button style={styledBtn} onClick={handleClick}>
-        {state}
-      </Button>
-    )
-  }
 
   const columns = [{
     dataField: 'name',
     text: ''
   }];
 
-  // TODO loadFromDB
+  // TODO MATO loadFromDB
   if (columns.length === 1) {
     employees.forEach(e => {
       columns.push({
         dataField: e.anet_id,
         text: e.name,
-        formatter: ToggleBtn
+        formatter: ToggleBtn,
+        formatExtraData: {
+          data: data,
+          setData: setData
+        },
+        headerStyle: () => {
+          return { width: '39.17px' };
+        }
       })
     })
   }
@@ -74,9 +38,10 @@ const SkillMatrixPage = () => {
   };
 
   const handleExport = () => {
-    // TODO export?
     console.log('export is not implemented')
   };
+
+  // TODO JANO implement me
 
   return (
     <>

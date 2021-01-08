@@ -6,6 +6,8 @@ import {documents} from "../../data";
 
 const Signed = () => {
 
+  // TODO JOZO refactor Signed.jsx as MissRecordsPage.jsx
+
   const columns = [
     {
       dataField: 'name',
@@ -16,7 +18,7 @@ const Signed = () => {
     }, {
       dataField: 'sign',
       text: 'Sign Day',
-      formatter: SignedBtn,
+      formatter: SignedBtn
     }
   ];
 

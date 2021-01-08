@@ -3,11 +3,12 @@ import {Button, Modal} from "react-bootstrap";
 
 const ConfirmModal = ({showModal, setShowModal, modalInfo, handleAccept}) => {
 
+  const closeModal = () => setShowModal(false);
+
   const onAccept = () => {
     handleAccept();
     closeModal();
   };
-  const closeModal = () => setShowModal(false);
 
   return (
     <Modal show={showModal} onHide={closeModal} centered>

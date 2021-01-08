@@ -6,10 +6,9 @@ import Found from "../Tables/Found";
 const FinderPage = () => {
   return (
     <div style={{marginTop: '1%'}}>
-      {/* TODO merge Filter with Found via Storybook */}
       <Filter/>
       <Found/>
-      {/* TODO missing functionality */}
+      {/* TODO JANO missing functionality */}
       <Form.Group>
         <Button>Export</Button>
         <Button>Reset Filter</Button>

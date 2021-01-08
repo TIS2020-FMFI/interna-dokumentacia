@@ -2,7 +2,9 @@ import React from "react";
 import {Form} from "react-bootstrap";
 
 const SettingsPage = () => {
-  // TODO implement page
+
+  // TODO JOZO implement the page
+
   return (
     <Form>
       <Form.Group>

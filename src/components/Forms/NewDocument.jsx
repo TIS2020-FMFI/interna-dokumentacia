@@ -1,44 +1,42 @@
-import {Button, Form, Row, Col} from "react-bootstrap";
+import {Form, Row, Col} from "react-bootstrap";
 import React, {useState} from "react";
 import {useForm} from "react-hook-form";
-import {ButtonGroup} from "reactstrap";
 import MyHookForm from "./MyHookForm";
 import Combinations from "../Others/Combinations";
+import SubmitBtns from "../Buttons/SubmitBtns";
+import {types} from "../../data";
 
 const NewDocument = ({data}) => {
-  const {register, handleSubmit} = useForm();
+  const {register, handleSubmit, errors} = useForm();
+
   const [combinations, setCombinations] = useState([{
     id: 1,
     branch: "OVL",
     division: "IT",
     department: "TESTER",
     city: "Bratislava",
-  }])
-
-  const onSubmit = (data, event) => {
-    // TODO saveIntoDB
-    event.target.id === "save"
-      ? console.log("save", data)
-      : console.log("save & send", data)
-  }
+  }]) // test combination
 
   return (
     <Form>
 
       {/* TYPE OF DOCUMENT */}
+      {/* TODO JANO validate name="doc_type" */}
       <Form.Group as={Row}>
         <Form.Label column sm="2">Type</Form.Label>
         <Col>
-          <Form.Control as="select" defaultValue="Choose..." name="doc_type" ref={register}>
-            <option>Choose...</option>
-            <option>...</option>
+          <Form.Control as="select" defaultValue={-1} name="doc_type" ref={register} required>
+            <option hidden disabled value={-1}>Bibi</option>
+            { types.map(t => <option>{t}</option> )}
           </Form.Control>
+          {errors.doc_type === "-1" && <p>Error</p>}
         </Col>
       </Form.Group>
 
       {/* NAME */}
       <MyHookForm
-        label="Document name"
+        label="Document name *" // TODO JOZO mark other required field with *
+        required                // note define them as required like this example
         name="name"
         placeholder="Enter document name"
         defaultValue={data.name}
@@ -46,6 +44,8 @@ const NewDocument = ({data}) => {
       />
 
       {/* LINK */}
+      { /* TODO JOZO valid the sharepoint link */ }
+      { /* TODO hint https://youtu.be/-mFXqOaqgZk?t=289 */ }
       <MyHookForm
         label="Link to sharepoint"
         name="link"
@@ -59,16 +59,16 @@ const NewDocument = ({data}) => {
         label="Release date"
         name="release"
         type="date"
-        defaultValue={data.release} // todo not working
+        defaultValue={data.release}
         register={register}
       />
 
       {/* DEADLINE */}
       <MyHookForm
-        label="Deadline date"
+        label="Days to deadline"
         name="deadline"
-        type="date"
-        defaultValue="" // todo Date.now() + 14days
+        type="number"
+        defaultValue="14"
         register={register}
       />
 
@@ -95,25 +95,17 @@ const NewDocument = ({data}) => {
       <MyHookForm
         label="Note"
         name="note"
-        type="textarea" // todo as?
+        as="textarea"
         placeholder="Enter note"
-        // defaultValue={data.note}
+        defaultValue={data.note}
         register={register}
       />
 
       {/* COMBINATIONS */}
       <Combinations combinations={combinations} setCombinations={setCombinations}/>
 
-      {/* BUTTONS */}
-      <ButtonGroup className="btn-language btn-group" onClick={handleSubmit(onSubmit)}>
-        <Button id="save" type="submit">
-          Save
-        </Button>
-        <Button id="send" type="submit" variant="danger">
-          Send
-        </Button>
-      </ButtonGroup>
-
+      {/* SAVE | SEND BUTTONS */}
+      <SubmitBtns handleSubmit={(onSubmit) => handleSubmit(onSubmit)} combinations={combinations}/>
     </Form>
   )
 }
