@@ -4,11 +4,6 @@ import {Button} from "react-bootstrap";
 const SubmitBtns = ({handleSubmit, combinations}) => {
 
   const onSubmit = (data, event) => {
-    console.log(combinations);
-
-    // TODO MATO save form data into DB (and SEND)
-    // TODO you need to distinguish if its document or training data according to the field e.g. document has data.note and training has data.agenda
-
     event.target.id === "save"
       ? console.log("save", data)
       : console.log("save & send", data)

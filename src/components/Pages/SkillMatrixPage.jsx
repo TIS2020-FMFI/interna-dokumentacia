@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import CaptionElement from "../Others/CaptionElement";
-import {Button, Row, Col, ButtonGroup} from "react-bootstrap";
+import {Button, Row, Col, Container, ButtonGroup} from "react-bootstrap";
 import {sm_data, employees} from "../../data";
 import ToggleBtn from "../Buttons/ToggleBtn";
 
@@ -11,10 +11,12 @@ const SkillMatrixPage = () => {
 
   const columns = [{
     dataField: 'name',
-    text: ''
+    text: 'Document Name'
   }];
 
-  // TODO MATO loadFromDB
+  let counter = 0;
+
+  // TODO MATO load skill matrix data from DB
   if (columns.length === 1) {
     employees.forEach(e => {
       columns.push({
@@ -23,11 +25,10 @@ const SkillMatrixPage = () => {
         formatter: ToggleBtn,
         formatExtraData: {
           data: data,
-          setData: setData
+          setData: setData,
+          id: (counter++ % employees.length)
         },
-        headerStyle: () => {
-          return { width: '39.17px' };
-        }
+        headerStyle: () => { return {width: '1%'} }
       })
     })
   }
@@ -35,6 +36,7 @@ const SkillMatrixPage = () => {
   const handleClick = (e) => {
     console.log('Handle btn click');
     console.log(e.target.id);
+    console.log(data);
   };
 
   const handleExport = () => {
@@ -52,20 +54,19 @@ const SkillMatrixPage = () => {
         columns={columns}
       />
 
+      {/* TODO JOZO prettify */}
       <Row>
-        {/* EXPORT */}
-        <Col xs="6">
+        {/* EXPORT TODO PATO */}
+        <Col xs="7">
           <Button id="export" variant="secondary" onClick={handleExport}> Export </Button>
         </Col>
-        {/* "submit" BUTTONS */}
-        <Col xs="3">
-          <ButtonGroup onClick={handleClick}>
-            <Button id="sign"> Sign </Button>
-            <Button id="cancelDuty"> Cancel duty </Button>
-            <Button id="trainAgain"> Train again </Button>
+        {/* ACTION BUTTONS */}
+          <ButtonGroup onClick={handleClick} className="ml-5">
+            <Button id="sign" className="mr-1"> Sign </Button>
+            <Button id="cancelDuty" className="mr-1"> Cancel duty </Button>
+            <Button id="trainAgain" className="mr-1"> Train again </Button>
             <Button id="cancel"> Cancel </Button>
           </ButtonGroup>
-        </Col>
       </Row>
     </>
   );

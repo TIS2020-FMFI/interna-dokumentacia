@@ -1,16 +1,16 @@
-import React, {useState} from "react";
-import {Button, Col, Form, Row} from "react-bootstrap";
+import React from "react";
+import {Button, Form} from "react-bootstrap";
 import Filter from "../Others/Filter";
-import Found from "../Tables/Found";
+import FoundRecords from "../Tables/FoundRecords";
 
 const FinderPage = () => {
   return (
     <div style={{marginTop: '1%'}}>
       <Filter/>
-      <Found/>
-      {/* TODO JANO missing functionality */}
+      <FoundRecords/>
       <Form.Group>
-        <Button>Export</Button>
+        {/* TODO PATO export */}
+        <Button className="mr-1">Export</Button>
         <Button>Reset Filter</Button>
       </Form.Group>
     </div>

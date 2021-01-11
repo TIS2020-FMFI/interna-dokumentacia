@@ -1,9 +1,9 @@
 import React from "react";
 
-const Empty = () => {
+const EmptyTable = () => {
   return (
     <p>Table is empty</p>
   )
 }
 
-export default Empty;
+export default EmptyTable;

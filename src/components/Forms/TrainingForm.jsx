@@ -1,27 +1,33 @@
 import React, {useState} from "react";
 import {useForm} from "react-hook-form";
 import MyHookForm from "./MyHookForm";
-import SubmitBtns from "../Buttons/SubmitBtns";
-import {Row, Col, Form} from "react-bootstrap";
+import {Row, Col, Form, Button, ButtonGroup} from "react-bootstrap";
 import {Typeahead} from 'react-bootstrap-typeahead'
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import {employees} from "../../data";
 
-const NewTraining = ({data}) => {
+const TrainingForm = ({data}) => {
 
-  const {register, handleSubmit} = useForm();
+  const {register, handleSubmit} = useForm({
+    defaultValues: data
+  });
   const [attendees, setAttendees] = useState([])
+
+  const onSubmit = (data, event) => {
+    event.target.id === "save"
+      ? console.log("save", data)
+      : console.log("save & send", data)
+  }
 
   return (
     <Form>
 
       {/* NAME */}
       <MyHookForm
-        label="Training name"
+        label="Training name *"
         name="name"
         placeholder="Enter document name"
-        defaultValue={data.name}
-        register={register}
+        register={register({required:true})}
       />
 
       {/* TRAINEE */}
@@ -29,7 +35,6 @@ const NewTraining = ({data}) => {
         label="Name of trainee"
         name="trainee"
         placeholder="Enter document link to sharepoint"
-        defaultValue={data.trainee}
         register={register}
       />
 
@@ -38,7 +43,6 @@ const NewTraining = ({data}) => {
         label="Name of agency"
         name="agency"
         placeholder="Enter agency"
-        defaultValue={data.agency}
         register={register}
       />
 
@@ -47,18 +51,16 @@ const NewTraining = ({data}) => {
         label="Place"
         name="place"
         placeholder="Enter place"
-        defaultValue={data.place}
         register={register}
       />
 
       {/* DATE */}
       <MyHookForm
-        label="Date"
+        label="Date *"
         name="date"
         type="date"
         placeholder="Enter date"
-        defaultValue={data.date}
-        register={register}
+        register={register({required:true})}
       />
 
       {/* DURATION */}
@@ -67,18 +69,16 @@ const NewTraining = ({data}) => {
         name="duration"
         type="number"
         placeholder="Enter duration"
-        defaultValue={data.duration}
         register={register}
       />
 
       {/* AGENDA */}
       <MyHookForm
-        label="Agenda"
+        label="Agenda *"
         name="agenda"
         as="textarea"
         placeholder="Enter agenda"
-        defaultValue={data.agenda}
-        register={register}
+        register={register({required:true})}
       />
 
       {/* LIST OF EMPLOYEES */}
@@ -99,9 +99,12 @@ const NewTraining = ({data}) => {
       </Form.Group>
 
       {/* SAVE | SEND BUTTONS */}
-      <SubmitBtns handleSubmit={(onSubmit) => handleSubmit(onSubmit)}/>
+      <ButtonGroup onClick={handleSubmit(onSubmit)}>
+        <Button id="save" type="submit" className="mr-1">Save</Button>
+        <Button id="send" type="submit" variant="danger">Send</Button>
+      </ButtonGroup>
     </Form>
   )
 }
 
-export default NewTraining;
+export default TrainingForm;

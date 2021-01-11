@@ -1,8 +1,9 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import EditBtn from "../Buttons/EditBtn";
-import Empty from "./Empty";
+import EmptyTable from "./EmptyTable";
 import {documents} from "../../data";
+import SendBtn from "../Buttons/SendBtn";
 
 const Editable = ({setFormType, setFormData}) => {
 
@@ -27,9 +28,15 @@ const Editable = ({setFormType, setFormData}) => {
         setFormType: setFormType,
         setFormData: setFormData
       },
-      headerStyle: () => {
-        return { width: '41.47px' };
-      }
+      headerStyle: () => { return {width: '1%'}; }
+    }, {
+      dataField: 'sendBtn',
+      text: 'Send',
+      formatter: SendBtn,
+      formatExtraData: {
+        data: editable_docs
+      },
+      headerStyle: () => { return {width: '1%'}; }
     }
   ];
 
@@ -40,7 +47,7 @@ const Editable = ({setFormType, setFormData}) => {
         hover
         data={editable_docs}
         columns={columns}
-        noDataIndication={ Empty }
+        noDataIndication={ EmptyTable }
       />
     </>
   )

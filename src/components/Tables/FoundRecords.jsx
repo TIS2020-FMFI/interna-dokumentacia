@@ -4,7 +4,7 @@ import EditBtn from "../Buttons/EditBtn";
 import SMBtn from "../Buttons/SMBtn";
 import {documents} from "../../data";
 
-const Found = () => {
+const FoundRecords = () => {
 
   const columns = [
     {
@@ -39,16 +39,12 @@ const Found = () => {
         setFormType: undefined,
         setFormData: undefined
       },
-      headerStyle: () => {
-        return { width: '41.47px' };
-      }
+      headerStyle: () => {return {width: '1%'}}
     }, {
       dataField: 'skillMatrix',
       text: 'SkillMatrix',
       formatter: SMBtn,
-      headerStyle: () => {
-        return { width: '75.53px' }; // FIXME JANO set in %
-      }
+      headerStyle: () => { return {width: '1%'} }
     }
   ];
 
@@ -64,5 +60,5 @@ const Found = () => {
   );
 }
 
-export default Found;
+export default FoundRecords;
 

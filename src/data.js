@@ -110,16 +110,43 @@ export const sm_data = [
   }
 ];
 
-export const types = ["A", "B", "C"];
+export const allInOne = {
+  types: ["A", "B", "C"],
+  branches: ["B1", "B2", "B3"],
+  divisions: ["D1", "D2", "D3"],
+  departments: ["Dep1", "Dep2", "Dep3"],
+  cities: ["C1", "C2", "C3"]
+};
+
+export const combinations = [
+  {
+    type: "A",
+    branch: "A1",
+    city: "C1"
+  },{
+    type: "A",
+    branch: "A2",
+    city: "C1"
+  },{
+    type: "B",
+    branch: "B2",
+    city: "C2"
+  },{
+    type: "B",
+    branch: "B2",
+    city: "C1"
+  }];
+
+export const types = [...new Set(combinations.map(c => c.type))];
 export const branches = ["B1", "B2", "B3"];
 export const divisions = ["D1", "D2", "D3"];
 export const departments = ["Dep1", "Dep2", "Dep3"];
 export const cities = ["C1", "C2", "C3"];
 
 // export const combinations = [{
-//   types: []
-//   branches:
-// divisions:
-//     departments:
-//         cities:
+//   types: [],
+//   branches: [],
+//   divisions: [],
+//   departments: [],
+//   cities: []
 // }];

@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {X, PlusSquare, DashSquare, XSquare} from 'react-bootstrap-icons';
+import {PlusSquare, DashSquare} from 'react-bootstrap-icons';
 import CombinationModal from "../Modals/CombinationModal";
 
 const Combinations = ({combinations, setCombinations}) => {

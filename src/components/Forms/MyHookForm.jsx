@@ -1,7 +1,7 @@
 import {Col, Form, Row} from "react-bootstrap";
 import React from "react";
 
-const MyHookForm = ({label, name, placeholder, type, register, as, defaultValue}) => {
+const MyHookForm = ({label, name, placeholder, type, register, as, defaultValue, required}) => {
   return (
       <Form.Group as={Row}>
         <Form.Label column sm="2">{label}</Form.Label>

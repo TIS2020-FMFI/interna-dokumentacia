@@ -3,7 +3,7 @@ import BootstrapTable from "react-bootstrap-table-next";
 import {MissingBtn} from "../Buttons/TableBtns";
 import CaptionElement from "../Others/CaptionElement";
 import ConfirmModal from "../Modals/ConfirmModal";
-import Empty from "./Empty";
+import EmptyTable from "./EmptyTable";
 
 const MissDocuments = ({documents}) => {
 
@@ -34,7 +34,7 @@ const MissDocuments = ({documents}) => {
         setModalInfo: setModalInfo,
         setShowModal: setShowModal
       },
-      headerStyle: () => { return {width: '10%'}; }
+      headerStyle: () => { return {width: '1%'}; }
     }
   ];
 
@@ -53,7 +53,7 @@ const MissDocuments = ({documents}) => {
         setModalInfo: setModalInfo,
         setShowModal: setShowModal
       },
-      headerStyle: () => { return { width: '39.17px' }; }
+      headerStyle: () => { return {width: '1%'}; }
     }
   ];
 
@@ -77,7 +77,7 @@ const MissDocuments = ({documents}) => {
         data={docs}
         columns={docs_columns}
         expandRow={expandRow}
-        noDataIndication={ Empty }
+        noDataIndication={ EmptyTable }
       />
       { showModal &&
       <ConfirmModal

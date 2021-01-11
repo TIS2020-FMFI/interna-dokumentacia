@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Button, ButtonGroup} from 'react-bootstrap';
-import NewDocument from "../Forms/NewDocument";
-import NewTraining from "../Forms/NewTraining";
+import DocumentForm from "../Forms/DocumentForm";
+import TrainingForm from "../Forms/TrainingForm";
 import Editable from "../Tables/Editable";
 
 const AddRecordPage = () => {
@@ -26,9 +26,9 @@ const AddRecordPage = () => {
       </ButtonGroup>
 
       {formType === 'new_doc'
-        ? <NewDocument data={formData}/>
+        ? <DocumentForm data={formData}/>
         : formType === 'new_training'
-          ? <NewTraining data={formData}/>
+          ? <TrainingForm data={formData}/>
           : <Editable
               setFormType={setFormType}
               setFormData={setFormData}

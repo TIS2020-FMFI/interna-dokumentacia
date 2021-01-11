@@ -1,27 +1,23 @@
-import {Button} from "react-bootstrap";
 import React from "react";
+import {Button} from "react-bootstrap";
 
-let counter = 0;
+// FIXME JANO
+const ToggleBtn = (c, row, rowIndex, {data, setData, id}) => {
 
-const ToggleBtn = (c, row, rowIndex, {data, setData}) => {
-  // FIXME JANO
-  // console.log(counter)
   const document = data[rowIndex]
-  const employee = document.employees[counter++ % 3];
-  const mark = employee.state.substring(1, 2) === 'X';
-  const state = mark ? employee.state.substring(0,1) : employee.state;
-
-  console.log(document);
+  const anet_id = document.employees[id].anet_id;
+  let state = document.employees[id].state;
+  const mark = state.includes('X');
+  if (mark) state = state.substring(0, 1);
 
   const handleClick = () => {
-    let new_data = [...data];
-    let new_employees = [...document.employees];
-
-    new_employees[counter % 3] = {
-      employee,
-      state: mark ? employee.state.substring(0,1) : employee.state + 'X'
+    const new_employees = [...document.employees];
+    new_employees[id] = {
+      anet_id: anet_id,
+      state: mark ? state.substring(0,1) : state + 'X'
     };
 
+    const new_data = [...data];
     new_data[rowIndex] = {...document, employees: new_employees};
 
     setData(new_data);
@@ -34,7 +30,7 @@ const ToggleBtn = (c, row, rowIndex, {data, setData}) => {
         ? 'red'
         : 'blue',
     borderColor: mark ? "black" : "white",
-    borderWidth: "3px"
+    borderWidth: "5px",
   }
 
   return (

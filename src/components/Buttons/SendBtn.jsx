@@ -1,15 +1,17 @@
 import {Button} from "react-bootstrap";
 import React from "react";
 
-const SendBtn = ({handleSubmit}) => {
+const SendBtn = (cell, row, index, {data}) => {
 
-  const onSubmit = (data) => {
-    // TODO JANO use it in Editable.jsx as a column
-    console.log("save", data);
+  const handleClick = () => {
+    // TODO MATO send the record
+    console.log("send", data[index]);
   }
 
   return(
-    <Button id="save" type="submit" className="mr-1" onClick={handleSubmit(onSubmit)}>Save</Button>
+    <Button
+      id="save" variant="danger" size="sm"
+      onClick={handleClick}>Send</Button>
   );
 };
 
