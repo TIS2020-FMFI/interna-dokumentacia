@@ -3,7 +3,9 @@ package main
 import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"io/ioutil"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -12,7 +14,7 @@ var (
 )
 
 func init() {
-	dsn := "host=localhost user=postgres password=root dbname=gorm port=5432 sslmode=disable"
+	dsn := loadFromConfig()
 	db, _ = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if db==nil{
 		panic("nepripojene")
@@ -25,6 +27,16 @@ func init() {
 	// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
 	sqlDB.SetConnMaxLifetime(time.Hour)
 
+}
+func check(e error) {
+	if e != nil {
+		panic(e)
+	}
+}
+func loadFromConfig() string {
+	dat, err := ioutil.ReadFile("./config/postgres_config.txt")
+	check(err)
+	return strings.TrimSpace(string(dat))
 }
 
 func main() {
