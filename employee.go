@@ -5,7 +5,7 @@ type Employee struct {
 	FirstName string `gorm:"column:first_name" json:"first_name"`
 	LastName string `gorm:"column:last_name" json:"last_name"`
 	Login string `gorm:"column:login" json:"login"`
-	Password string `gorm:"column:passwd" json:"passwd"`
+	Password string `gorm:"column:passwd" json:"-"`
 	Role string `gorm:"column:role" json:"role"`
 	Email string `gorm:"column:email" json:"email"`
 	JobTitle string `gorm:"column:job_title" json:"job_title"`

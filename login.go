@@ -14,6 +14,7 @@ var (
 func login(writer http.ResponseWriter, request *http.Request) {
 	name := request.FormValue(name_column)
 	passwd := request.FormValue(password_column)
+	fmt.Println(name, passwd)
 	if len(name)==0 || len(passwd)==0 {
 		http.Error(writer, fmt.Sprint(name_column, " or ", password_column," is empty"), http.StatusInternalServerError)
 		return

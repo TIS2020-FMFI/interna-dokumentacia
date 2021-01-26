@@ -14,7 +14,7 @@ var (
 )
 
 func init() {
-	dsn := loadFromConfig()
+	dsn := returnTrimFile("./config/postgres_config.txt")
 	db, _ = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if db==nil{
 		panic("nepripojene")
@@ -28,19 +28,19 @@ func init() {
 	sqlDB.SetConnMaxLifetime(time.Hour)
 
 }
+func main() {
+	http.HandleFunc("/login", login)
+	_ = http.ListenAndServe(returnTrimFile("./config/port.txt"), nil)
+}
+
 func check(e error) {
 	if e != nil {
 		panic(e)
 	}
 }
-func loadFromConfig() string {
-	dat, err := ioutil.ReadFile("./config/postgres_config.txt")
+
+func returnTrimFile(nameFile string) string {
+	dat, err := ioutil.ReadFile(nameFile)
 	check(err)
 	return strings.TrimSpace(string(dat))
 }
-
-func main() {
-	http.HandleFunc("/login", login)
-	_ = http.ListenAndServe(":3000", nil)
-}
-
