@@ -4,7 +4,8 @@ import {Form, Button, ButtonGroup} from "react-bootstrap";
 import {employees} from "../../data"
 
 const LoginPage = () => {
-
+  const name_e = "first_name"
+  const  password ="passwd"
   const {register, handleSubmit} = useForm();
   const [language, setLanguage] = useState("sk");
   const [loginError, setLoginError] = useState("");
@@ -26,13 +27,30 @@ const LoginPage = () => {
     }
   }
 
-  const findMatch = (data) => {
-    // TODO MATO find employee with name and pass in db
-    // TODO send feedback what is wrong: login or pass
-    return employees.find((e) =>
-      e.name === data.name && e.pass === data.password
-    );
-  }
+  const findMatch = (data) =>{
+    var employee ={
+      anet_id:  "",
+      name: "",
+      pass:  "",
+      job:  "",
+      complete: '10%'
+    };
+    return fetch('http://localhost:7777/login', {
+        method:"POST"
+        , body:new URLSearchParams(name_e+"="+data.name+"&"+password+"="+data.password )
+    })
+        .then(response => response.json())
+        .then(respon => {
+        employee.name=respon.first_name+" "+respon.last_name
+        employee.job=respon.job_title;
+          employee.anet_id=""+respon.Id;
+          employee.pass=data.password
+        console.log(data);
+            console.log(respon);
+          console.log(employee);
+        return employee;
+        }).catch(e =>console.log(e));
+    }
 
   const active = (id) => {
     return language === id && 'active';
