@@ -2,7 +2,7 @@ import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import EditBtn from "../Buttons/EditBtn";
 import SMBtn from "../Buttons/SMBtn";
-import {documents} from "../../data";
+import {docs} from "../../data";
 
 const FoundRecords = () => {
 
@@ -53,7 +53,7 @@ const FoundRecords = () => {
       <BootstrapTable
         keyField="id"
         hover
-        data={documents}
+        data={docs}
         columns={columns}
       />
     </>

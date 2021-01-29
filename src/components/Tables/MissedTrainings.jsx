@@ -1,22 +1,23 @@
 import React, {useState} from "react";
 import BootstrapTable from "react-bootstrap-table-next";
-import {MissingBtn} from "../Buttons/TableBtns";
+import {MissedBtn} from "../Buttons/TableBtns";
 import CaptionElement from "../Others/CaptionElement";
 import ConfirmModal from "../Modals/ConfirmModal";
 import EmptyTable from "./EmptyTable";
 
-const MissTrainings = ({trainings}) => {
+const MissedTrainings = ({trainings}) => {
 
   const [trns, setTrns] = useState(trainings)
   const [modalInfo, setModalInfo] = useState([])
   const [showModal, setShowModal] = useState(false)
 
   const handleAccept = () => {
+    // TODO MATO uloz trening ako podpisany
     setTrns(trns.filter(t => t.id !== modalInfo.id)); // delete the document
     setShowModal(false);
   }
 
-  const trns_columns = [
+  const columns = [
     {
       dataField: 'name',
       text: 'Name'
@@ -29,7 +30,7 @@ const MissTrainings = ({trainings}) => {
     }, {
       dataField: 'signBtn',
       text: 'Sign',
-      formatter: MissingBtn,
+      formatter: MissedBtn,
       formatExtraData: {
         setModalInfo: setModalInfo,
         setShowModal: setShowModal
@@ -52,8 +53,8 @@ const MissTrainings = ({trainings}) => {
         keyField="id"
         hover
         data={trns}
-        columns={trns_columns}
-        noDataIndication={ EmptyTable }
+        columns={columns}
+        noDataIndication={EmptyTable}
       />
       { showModal &&
       <ConfirmModal
@@ -67,4 +68,4 @@ const MissTrainings = ({trainings}) => {
   )
 }
 
-export default MissTrainings;
+export default MissedTrainings;

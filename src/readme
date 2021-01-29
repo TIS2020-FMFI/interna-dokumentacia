@@ -1,0 +1,18 @@
+// TODO JOZO
+- login cez sušienky a čítačku
+- upravit nejake vizuálne detaily
+- nakodit stránku setting
+- spravit dynamický selector
+
+// TODO PATO
+- spustiť web na serveri
+- spravit triedny diagram
+- spraviť import a export
+- spraviť report pre záznam
+- dopisat a aplikovat testovacie scenáre
+
+// TODO MATO
+- CRUD
+- preloziť web
+- zamysliet sa nad bezpecnostou
+- tiež otestovať web cez scenáre

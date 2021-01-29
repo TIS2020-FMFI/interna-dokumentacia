@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import CaptionElement from "../Others/CaptionElement";
-import {Button, Row, Col, Container, ButtonGroup} from "react-bootstrap";
+import {Button, Row, Col, ButtonGroup} from "react-bootstrap";
 import {sm_data, employees} from "../../data";
 import ToggleBtn from "../Buttons/ToggleBtn";
 
@@ -30,7 +30,7 @@ const SkillMatrixPage = () => {
         },
         headerStyle: () => { return {width: '1%'} }
       })
-    })
+    });
   }
 
   const handleClick = (e) => {
@@ -43,8 +43,6 @@ const SkillMatrixPage = () => {
     console.log('export is not implemented')
   };
 
-  // TODO JANO implement me
-
   return (
     <>
       <CaptionElement title="Strečno"/>
@@ -56,15 +54,15 @@ const SkillMatrixPage = () => {
 
       {/* TODO JOZO prettify */}
       <Row>
-        {/* EXPORT TODO PATO */}
+        {/* EXPORT TODO PATO https://react-bootstrap-table.github.io/react-bootstrap-table2/storybook/index.html?selectedKind=Export%20CSV&selectedStory=Export%20Custom%20Data&full=0&addons=1&stories=1&panelRight=0&addonPanel=storybook%2Factions%2Factions-panel*/}
         <Col xs="7">
-          <Button id="export" variant="secondary" onClick={handleExport}> Export </Button>
+          <Button id="export" variant="secondary" onClick={handleExport}>Export</Button>
         </Col>
         {/* ACTION BUTTONS */}
           <ButtonGroup onClick={handleClick} className="ml-5">
-            <Button id="sign" className="mr-1"> Sign </Button>
-            <Button id="cancelDuty" className="mr-1"> Cancel duty </Button>
-            <Button id="trainAgain" className="mr-1"> Train again </Button>
+            <Button id="sign" className="mr-1">Sign</Button>
+            <Button id="cancelDuty" className="mr-1">Cancel duty</Button>
+            <Button id="trainAgain" className="mr-1">Train again</Button>
             <Button id="cancel"> Cancel </Button>
           </ButtonGroup>
       </Row>

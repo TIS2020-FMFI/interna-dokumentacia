@@ -1,15 +1,13 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import CaptionElement from "../Others/CaptionElement";
-import {SignedBtn, hasSubs} from "../Buttons/TableBtns";
-import {documents} from "../../data";
+import {SignedBtn} from "../Buttons/TableBtns";
+import {nonExpandableDocs} from "../../functions";
+import EmptyTable from "./EmptyTable";
 
-const Signed = () => {
+const SignedDocuments = ({documents}) => {
 
-  // TODO JOZO refactor Signed.jsx as MissRecordsPage.jsx
-
-  const columns = [
-    {
+  const columns = [{
       dataField: 'name',
       text: 'Name'
     }, {
@@ -22,8 +20,7 @@ const Signed = () => {
     }
   ];
 
-  const expandColumns = [
-    {
+  const expandColumns = [{
       dataField: 'anet_id',
       text: 'AnetID'
     }, {
@@ -31,12 +28,12 @@ const Signed = () => {
       text: 'Name'
     }, {
       dataField: 'sign',
-      text: 'Sign Day',
+      text: 'Sign Day'
     }
   ];
 
   const expandRow = {
-    nonExpandable: documents.map(doc => !hasSubs(doc) ? doc.id : null),  // docs that should not expand
+    nonExpandable: nonExpandableDocs(documents),
     renderer: (cell, row) => (
       <BootstrapTable
         keyField="id"
@@ -55,9 +52,10 @@ const Signed = () => {
         data={documents}
         columns={columns}
         expandRow={expandRow}
+        noDataIndication={EmptyTable}
       />
     </>
   );
 }
 
-export default Signed;
+export default SignedDocuments;

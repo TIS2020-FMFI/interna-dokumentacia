@@ -4,14 +4,14 @@ import React from "react";
 const SendBtn = (cell, row, index, {data}) => {
 
   const handleClick = () => {
-    // TODO MATO send the record
+    // TODO MATO send the record to employees
     console.log("send", data[index]);
   }
 
   return(
-    <Button
-      id="save" variant="danger" size="sm"
-      onClick={handleClick}>Send</Button>
+    <Button id="save" variant="danger" size="sm" onClick={handleClick}>
+      Send
+    </Button>
   );
 };
 

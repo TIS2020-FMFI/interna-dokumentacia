@@ -1,7 +1,12 @@
 import React from "react";
+import {Redirect} from "react-router";
 
 const LogoutPage = () => {
-  // TODO JOZO implement logout page => clean cookies and test redirect
-}
+  sessionStorage.removeItem('user');
+
+  return (
+    <Redirect to="/"/>
+    )
+};
 
 export default LogoutPage;

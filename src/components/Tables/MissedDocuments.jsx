@@ -1,23 +1,24 @@
 import React, {useState} from "react";
 import BootstrapTable from "react-bootstrap-table-next";
-import {MissingBtn} from "../Buttons/TableBtns";
+import {MissedBtn} from "../Buttons/TableBtns";
 import CaptionElement from "../Others/CaptionElement";
 import ConfirmModal from "../Modals/ConfirmModal";
 import EmptyTable from "./EmptyTable";
+import {nonExpandableDocs} from "../../functions";
 
-const MissDocuments = ({documents}) => {
+const MissedDocuments = ({documents}) => {
 
   const [docs, setDocs] = useState(documents)
   const [modalInfo, setModalInfo] = useState([])
   const [showModal, setShowModal] = useState(false)
 
   const handleAccept = () => {
-    setDocs(docs.filter(d => d.id !== modalInfo.id)); // delete the document
-    setShowModal(false);
+    // TODO MATO uloz dokument ako podpisany
+    setDocs(docs.filter(d => d.id !== modalInfo.id)); // delete the document from the hook
+    setShowModal(false);  // hide modal
   }
 
-  const docs_columns = [
-    {
+  const docs_columns = [{
       dataField: 'name',
       text: 'Name'
     }, {
@@ -29,7 +30,7 @@ const MissDocuments = ({documents}) => {
     }, {
       dataField: 'signBtn',
       text: 'Sign',
-      formatter: MissingBtn,
+      formatter: MissedBtn,
       formatExtraData: {
         setModalInfo: setModalInfo,
         setShowModal: setShowModal
@@ -38,8 +39,7 @@ const MissDocuments = ({documents}) => {
     }
   ];
 
-  const expandDocsColumns = [
-    {
+  const expandDocsColumns = [{
       dataField: 'anet_id',
       text: 'AnetID'
     }, {
@@ -48,7 +48,7 @@ const MissDocuments = ({documents}) => {
     }, {
       dataField: 'signBtn',
       text: 'Sign',
-      formatter: MissingBtn,
+      formatter: MissedBtn,
       formatExtraData: {
         setModalInfo: setModalInfo,
         setShowModal: setShowModal
@@ -58,12 +58,12 @@ const MissDocuments = ({documents}) => {
   ];
 
   const expandRow = {
-    nonExpandable: docs.map(doc => Object.keys(doc).includes('sub') ? null : doc.id),  // docs that should not expand
+    nonExpandable: nonExpandableDocs(docs),
     renderer: (cell, row) => (
       <BootstrapTable
         keyField="id"
         hover
-        data={docs[row].sub} todo
+        data={docs[row].sub}
         columns={expandDocsColumns}/>
     )
   };
@@ -77,7 +77,7 @@ const MissDocuments = ({documents}) => {
         data={docs}
         columns={docs_columns}
         expandRow={expandRow}
-        noDataIndication={ EmptyTable }
+        noDataIndication={EmptyTable}
       />
       { showModal &&
       <ConfirmModal
@@ -91,4 +91,4 @@ const MissDocuments = ({documents}) => {
   )
 }
 
-export default MissDocuments;
+export default MissedDocuments;

@@ -1,6 +1,6 @@
 import {Button} from "react-bootstrap";
 import React from "react";
-import {hasSubs} from "./TableBtns";
+import {hasSubs} from "../../functions";
 
 const EditBtn = (cell, row, rowIndex, {setFormData, setFormType}) => {
 

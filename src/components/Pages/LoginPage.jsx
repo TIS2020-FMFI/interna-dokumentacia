@@ -2,28 +2,66 @@ import React, {useState} from "react";
 import {useForm} from "react-hook-form";
 import {Form, Button, ButtonGroup} from "react-bootstrap";
 import {employees} from "../../data"
+import {Redirect} from "react-router";
+import {ErrorMessage} from "../Others/ErrorMessage";
+import useSession from "../Others/useSession";
 
 const LoginPage = () => {
 
   const {register, handleSubmit} = useForm();
-  const [language, setLanguage] = useState("sk");
+  const [language, setLanguage] = useSession('language', "sk");
+  const [user, setUser] = useSession('user', undefined);
   const [loginError, setLoginError] = useState("");
 
-  const changeLanguage = (event) => {
-    console.log(`language: ${event.target.id}`);
-    setLanguage(event.target.id);
-    // TODO JOZO translate and set lang cookie
+  let time = 0;
+  let lastInput = '';
+  let cardInput = '';
+
+  document.addEventListener('keydown', (e) => {
+    console.log(`keyPressed ${e.key}`)
+
+    if(isCardInput()) {
+      if(lastInput !== '') {
+        cardInput = lastInput;
+        lastInput = '';
+      }
+      cardInput += e.key;
+      const emp = findByCard(cardInput);
+      if(emp !== undefined) {
+        console.log('Found Employee');
+        console.log(emp);
+      }
+    } else {
+      cardInput = '';
+      lastInput = e.key;
+    }
+
+    time = Date.now();
+    console.log(cardInput);
+
+  })
+
+  const changeLanguage = (e) => {
+    sessionStorage.setItem('language', e.target.id);
+    setLanguage(e.target.id);
+  }
+
+  const isCardInput = () => {
+    return (Date.now() - time) < 30;
   }
 
   const onSubmit = (data) => {
     const employee = findMatch(data);
-    if (typeof employee !== 'undefined') {
-      console.log('Success');
-      // TODO JOZO set login cookies
+    if (employee !== undefined) {
+      // setUser(employee); // TODO JANO
+      sessionUser(employee);
     } else {
       setLoginError("Wrong pass");
-      console.log('Failed');
     }
+  }
+
+  const sessionUser = (employee) => {
+    sessionStorage.setItem('user', JSON.stringify(employee));
   }
 
   const findMatch = (data) => {
@@ -34,14 +72,20 @@ const LoginPage = () => {
     );
   }
 
+  const findByCard = (input) => {
+    // TODO MATO find employee with cardID
+    return employees.find(e => e.card === input)
+  }
+
   const active = (id) => {
     return language === id && 'active';
   }
 
-  const ErrorMessage = () => {
-    return (<p>{loginError}</p>)
-  }
-
+  if (sessionStorage.getItem('user') !== null) {
+    return (
+      <Redirect to="/missed-docs"/>
+    )
+  } else
   return (
     // TODO JOZO style login form
     <Form onSubmit={handleSubmit(onSubmit)}>
@@ -77,10 +121,10 @@ const LoginPage = () => {
           required
         />
       </Form.Group>
-      { loginError && <ErrorMessage/> }
+      { loginError && <ErrorMessage text={loginError}/> }
       <Button type="submit" variant="dark" className="btn-block">Login</Button>
     </Form>
   );
-}
+};
 
 export default LoginPage

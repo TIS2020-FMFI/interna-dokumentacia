@@ -1,14 +1,9 @@
 import React from 'react';
-import {
-  Navbar,
-  Nav,
-  NavLink,
-} from 'react-bootstrap';
+import {Navbar, Nav, NavLink} from 'react-bootstrap';
 
 const Navigation = ({location}) => {
 
-  const login = true;
-  const role = "admin";
+  const user = sessionStorage.getItem('user');
 
   const LoginNav = () => {
     return (
@@ -19,10 +14,10 @@ const Navigation = ({location}) => {
         <NavLink href="/add-record">Add Record</NavLink>
         <NavLink href='/finder'>Finder</NavLink>
         <NavLink href='/settings'>Settings</NavLink>
-        <NavLink href='/'>Log out</NavLink>
+        <NavLink href='/logout'>Log out</NavLink>
       </>
     )
-  }
+  };
 
   const LogoutNav = () => {
     return (
@@ -43,7 +38,7 @@ const Navigation = ({location}) => {
           />
         </Navbar.Brand>
         <Nav className="ml-auto" navbar activeKey={location.pathname}>
-          {login ? <LoginNav/> : <LogoutNav/>}
+          { user === null ? <LogoutNav/> : <LoginNav/> }
         </Nav>
       </Navbar>
     </>

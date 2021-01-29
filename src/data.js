@@ -1,3 +1,7 @@
+/**
+ * toto som čisto len testovacie dáta, náhradou za databázu
+ */
+
 export const employees = [{
   anet_id: '1',
   name: 'ja',
@@ -18,7 +22,7 @@ export const employees = [{
   complete: '10%'
 }];
 
-export const documents = [
+export const docs = [
   {
     id: '1',
     name: 'Document1',

@@ -3,13 +3,14 @@ import React, {useState} from "react";
 import {useForm} from "react-hook-form";
 import MyHookForm from "./MyHookForm";
 import Combinations from "../Others/Combinations";
-import {ErrorMsg} from "../Others/ErrorMsg";
+import {ErrorMessage} from "../Others/ErrorMessage";
 import {types} from "../../data";
+import {getSelectOptions} from "../../functions";
 
 const DocumentForm = ({data}) => {
 
   const {register, handleSubmit, errors} = useForm({
-    defaultValues: data // TODO JOZO release date is not fill out with defaultValues the date needs to be in _____ format
+    defaultValues: data
   });
 
   const [combinations, setCombinations] = useState([{
@@ -20,21 +21,17 @@ const DocumentForm = ({data}) => {
     city: "Bratislava",
   }]) // #TEST
 
-  const notEmpty = (val) => {
-    return val !== "";
-  }
-
-  const getSelectOptions = (field) => {
-    return field.map(value => <option>{value}</option>);
-  }
-
   const onSubmit = (data, event) => {
     console.log(combinations);
 
-    // TODO MATO save form data into DB (and SEND)
+    // TODO MATO save document's data into DB (and SEND) with combination
     event.target.id === "save"
       ? console.log("save", data)
       : console.log("save & send", data)
+  }
+
+  const notEmpty = (val) => {
+    return val !== "";
   }
 
   return (
@@ -51,7 +48,7 @@ const DocumentForm = ({data}) => {
             <option hidden value="">Select option ...</option>
             { getSelectOptions(types) }
           </Form.Control>
-          { errors.doc_type && <ErrorMsg text={"Select a type"}/> }
+          { errors.doc_type && <ErrorMessage text={"Select a type"}/> }
         </Col>
       </Form.Group>
 

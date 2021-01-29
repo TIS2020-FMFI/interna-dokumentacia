@@ -1,11 +1,8 @@
 import React from "react";
 import {Button} from "react-bootstrap";
+import {hasSubs} from "../../functions";
 
-export const hasSubs = (row) => {
-  return Object.keys(row).includes('sub');
-};
-
-export const MissingBtn = (c, row, i, {setModalInfo, setShowModal}) => {
+export const MissedBtn = (cell, row, index, {setModalInfo, setShowModal}) => {
 
   const handleClick = () => {
     if (!hasSubs(row)) {
@@ -21,8 +18,11 @@ export const MissingBtn = (c, row, i, {setModalInfo, setShowModal}) => {
   );
 };
 
+/**
+ * @return Sign Date or Details Button
+ * */
 export const SignedBtn = (cell, row) => {
-  return !hasSubs(row) ? row.sign : (
-      <Button size="sm">Details</Button>
-  );
+  return !hasSubs(row)
+    ? row.sign
+    : (<Button size="sm">Details</Button>);
 };

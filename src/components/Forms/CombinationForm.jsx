@@ -1,15 +1,12 @@
 import React from "react";
 import {Form, Col, Row} from "react-bootstrap";
 import {branches, divisions, departments, cities} from "../../data";
+import {getSelectOptions} from "../../functions";
 
 const CombinationForm = ({register}) => {
 
   // TODO JOZO implement dynamic generated options
   // note: ...according to requirements catalog
-
-  const getSelectOptions = (field) => {
-    return field.map(value => <option>{value}</option>);
-  }
 
   return (
     <Col>

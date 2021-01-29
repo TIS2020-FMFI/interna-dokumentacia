@@ -1,62 +1,48 @@
 import React, {useState} from "react";
-import {useForm} from "react-hook-form";
 import {Button, Col, Form, Row} from "react-bootstrap";
-import {branches, cities, combinations, departments, divisions, documents, employees, types} from "../../data";
+import {branches, cities, types} from "../../data";
 import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
 
 const Filter = () => {
 
-  // TODO JANO implement me
+  const [combinations, setCombination] = useState([
+    // tu mam nejak ulozene vsetky moznosti, ktore viem vyklikat v Dropdown
+  ]);
 
-  const {register, handleSubmit} = useForm();
-  const [combinations, setCombination] = useState([]);
+  // filter =
   const [filter, setFilter] = useState({
-    type: [],
-    branch: [],
-    division: [],
+    // filter, ktory prave tvorim / vyberam
+    // zrejme ma podobnu strukturu ako combinations
   });
 
-  const onSubmit = (data) => {
+  const handleSubmit = (data) => {
+    // tu uz prebehne search
     console.log(data);
     console.log(filter);
   };
 
   const handleChange = (data, key) => {
-
-    setFilter({...filter, type: [...data]});
-
-    // Object.keys(filter).forEach(f => {
-    //   if (f === key) {
-    //     setFilter({...filter, f: new_type});
-    //     console.log('filter', filter);
-    //     return;
-    //   }
-    //   console.log('f', f);
-    // });
-
-    shrinkFilter();
+    // tu pridam vybrane data a ulozim to do filtra, ktory mam vyklikany
+    shrinkCombinations();
   }
 
-  const shrinkFilter = () => {
-    console.log(combinations);
-    Object.keys(filter).forEach(f => {
-      console.log('f', f);
-    });
+  const shrinkCombinations = () => {
+    // potom je este dolezite zuzit vsetky moznosti, ktore viem vyklikat v Dropdown
   }
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit}>
       <Row>
         <DropdownMultiselect
           name="type"
           options={types}
-          handleOnChange={(data) => handleChange(data, 'type')}
+          handleOnChange={handleChange}
+          // handleOnChange={(data) => handleChange(data, 'type')}
         />
         <DropdownMultiselect
           name="branch"
           options={branches}
-          // handleOnChange={handleChange}
-          handleOnChange={(data) => handleChange(data, 'branch')}
+          handleOnChange={handleChange}
         />
         <DropdownMultiselect
           name="city"

@@ -14,14 +14,11 @@ const Combinations = ({combinations, setCombinations}) => {
         <PlusSquare size="25" color="green"/>
       </span>
 
-      { combinations.map(c => {
-        return (
+      { combinations.map(c =>
           <Combination
             c={c}
             combinations={combinations}
-            setCombinations={setCombinations}/>
-        )
-      })}
+            setCombinations={setCombinations}/>)}
 
       { showModal &&
         <CombinationModal

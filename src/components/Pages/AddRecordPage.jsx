@@ -2,11 +2,11 @@ import React, {useState} from 'react';
 import {Button, ButtonGroup} from 'react-bootstrap';
 import DocumentForm from "../Forms/DocumentForm";
 import TrainingForm from "../Forms/TrainingForm";
-import Editable from "../Tables/Editable";
+import EditableRecords from "../Tables/EditableRecords";
 
 const AddRecordPage = () => {
 
-  const [formType, setFormType] = useState('new_doc');
+  const [formType, setFormType] = useState('new_document');
   const [formData, setFormData] = useState({});
 
   const handleClick = (event) => {
@@ -20,16 +20,16 @@ const AddRecordPage = () => {
   return (
     <>
       <ButtonGroup onClick={handleClick} className="btn-header">
-        <Button id="new_doc" className={active("new_doc")}>Document</Button>
+        <Button id="new_document" className={active("new_document")}>Document</Button>
         <Button id="new_training" className={active("new_training")}>Online training</Button>
-        <Button id="editable" className={active("editable")}>Editable</Button>
+        <Button id="editable_docs" className={active("editable_docs")}>Editable</Button>
       </ButtonGroup>
 
-      {formType === 'new_doc'
+      {formType === 'new_document'
         ? <DocumentForm data={formData}/>
         : formType === 'new_training'
           ? <TrainingForm data={formData}/>
-          : <Editable
+          : <EditableRecords
               setFormType={setFormType}
               setFormData={setFormData}
             />
