@@ -1,5 +1,4 @@
-import React, {useState} from "react";
-import {useForm} from "react-hook-form";
+import React, {useEffect, useState} from "react";
 import {employees} from "../../data"
 import {Redirect} from "react-router";
 import useSession from "../Others/useSession";
@@ -8,14 +7,14 @@ import LoginForm from "../Forms/LoginForm";
 
 const LoginPage = () => {
 
-  const [language, setLanguage] = useSession('language', "sk");
+  const [language, setLanguage] = useSession('language', 'sk');
   const [loginError, setLoginError] = useState("");
 
   let time = 0;
   let lastInput = '';
   let cardInput = '';
 
-  document.addEventListener('keydown', (e) => {
+  const event = (e) => {
     console.log(`keyPressed ${e.key}`)
 
     if(isCardInput()) {
@@ -36,7 +35,12 @@ const LoginPage = () => {
 
     time = Date.now();
     console.log(cardInput);
-  })
+  }
+
+  useEffect(() => {
+    document.addEventListener('keydown', event)
+    return () => document.removeEventListener("keydown", event); // cleanup
+  }, [])
 
   const changeLanguage = (e) => {
     sessionStorage.setItem('language', e.target.id);
@@ -49,33 +53,34 @@ const LoginPage = () => {
 
   const onSubmit = (data) => {
     const employee = findMatch(data);
-    if (employee !== undefined) {
+    if (employee !== undefined && employee !== {}) {
       setUser(employee);
     } else {
       setLoginError("Wrong login input");
     }
   }
 
-  const findMatch = (data) =>{
-    return fetch('http://localhost:7777/login', {
-      method:"POST",
-      body:new URLSearchParams(name_e+"="+data.name+"&"+password+"="+data.password )
-    })
-      .then(response => response.json())
-      .then(res => {
-        return {
-          anet_id: res.Id,
-          full_name: res.first_name+" "+res.last_name,
-          job: res.job_title
-        };
-      }).catch(e =>console.log(e));
-  }
-
-  // const findMatch = (data) => {
-  //   return employees.find((e) =>
-  //     e.name === data.name && e.pass === data.password
-  //   );
+  // const findMatch = (data) =>{
+  //   return fetch('http://localhost:7777/login', {
+  //     method:"POST",
+  //     body:new URLSearchParams(`first_name=${data.name}&password=${data.password}`)
+  //   })
+  //     .then(response => response.json())
+  //     .then(res => {
+  //       return {
+  //         anet_id: res.Id,
+  //         full_name: res.first_name+" "+res.last_name,
+  //         job: res.job_title
+  //       };
+  //     }).catch(e =>console.log(e));
   // }
+
+  const findMatch = (data) => {
+    console.log("db request")
+    return employees.find((e) =>
+      e.name === data.name && e.pass === data.password
+    );
+  }
 
   const findByCard = (input) => {
     // TODO MATO find employee with cardID

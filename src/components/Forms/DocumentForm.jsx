@@ -1,5 +1,5 @@
-import {Form, Row, Col, Button, ButtonGroup, Container} from "react-bootstrap";
-import React, {useState} from "react";
+import {Form, Row, Col, Button, ButtonGroup, Container, Alert} from "react-bootstrap";
+import React, {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import MyHookForm from "./MyHookForm";
 import Combinations from "../Others/Combinations";
@@ -9,8 +9,7 @@ import {getSelectOptions} from "../../functions";
 
 const DocumentForm = ({data}) => {
 
-  // data = {...data, deadline: 14}
-  // console.log(data)
+  data = {...data, deadline: 14}
 
   const {register, handleSubmit, errors} = useForm({
     defaultValues: data
@@ -24,17 +23,20 @@ const DocumentForm = ({data}) => {
     city: "Bratislava",
   }]) // #TEST
 
+  const notEmpty = (val) => { return val !== "" }
+  const [error, setError] = useState(null)
+  useEffect(() => setError(""), combinations)
+
   const onSubmit = (data, event) => {
     console.log(combinations);
-
+    if (combinations.length === 0){
+      setError("At least one combination is required")
+      return
+    }
     // TODO MATO save document's data into DB (and SEND) with combination
     event.target.id === "save"
       ? console.log("save", data)
       : console.log("save & send", data)
-  }
-
-  const notEmpty = (val) => {
-    return val !== "";
   }
 
   return (
@@ -47,9 +49,10 @@ const DocumentForm = ({data}) => {
           <Form.Control
             as="select"
             name="doc_type"
-            ref={register({validate: notEmpty})}>
+            ref={register({validate: notEmpty})}
+          >
             <option hidden value="">Select option ...</option>
-            { getSelectOptions(types) }
+            {getSelectOptions(types)}
           </Form.Control>
           { errors.doc_type && <ErrorMessage text={"Select a type"}/> }
         </Col>
@@ -121,10 +124,11 @@ const DocumentForm = ({data}) => {
 
       {/* COMBINATIONS */}
       <Combinations combinations={combinations} setCombinations={setCombinations}/>
+      { error && <ErrorMessage text={error}/> }
 
       {/* SAVE | SEND BUTTONS */}
       <Container style={{display: 'flex', justifyContent: 'center', width: "100%"}}>
-      <ButtonGroup onClick={handleSubmit(onSubmit)} style={{width: "50%", paddingTop: "1rem"}}>
+        <ButtonGroup onClick={handleSubmit(onSubmit)} style={{width: "50%", paddingTop: "1rem"}}>
         <Button id="save" type="submit" className="mr-1">Save</Button>
         <Button id="send" type="submit" variant="danger">Send</Button>
       </ButtonGroup>

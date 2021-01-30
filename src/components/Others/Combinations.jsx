@@ -3,7 +3,7 @@ import BootstrapTable from "react-bootstrap-table-next";
 import {PlusSquare, DashSquare} from 'react-bootstrap-icons';
 import CombinationModal from "../Modals/CombinationModal";
 import EmptyTable from "../Tables/EmptyTable";
-import {Button} from "react-bootstrap";
+import Button from "react-bootstrap/Button";
 
 const Combinations = ({combinations, setCombinations}) => {
 
@@ -59,13 +59,13 @@ const Combinations = ({combinations, setCombinations}) => {
         noDataIndication={EmptyTable}
       />
       <AddIcon/>
-      { showModal &&
-        <CombinationModal
-          showModal={showModal}
-          setShowModal={setShowModal}
-          combinations={combinations}
-          setCombinations={setCombinations}
-        />
+      {showModal &&
+      <CombinationModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        combinations={combinations}
+        setCombinations={setCombinations}
+      />
       }
       <hr/>
     </>

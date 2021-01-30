@@ -6,6 +6,7 @@ export const MissedBtn = (cell, row, index, {setModalInfo, setShowModal}) => {
 
   const handleClick = () => {
     if (!hasSubs(row)) {
+      console.log(row)
       setModalInfo(row);
       setShowModal(true);
     }

@@ -6,5 +6,6 @@ export default function useSession(key, value) {
     sessionStorage.setItem(key, JSON.stringify(value))
   }, [value]);
 
-  return useState(sessionStorage.getItem(key));
+  const [state, setState] = useState(sessionStorage.getItem(key))
+  return [state, setState];
 }

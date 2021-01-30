@@ -14,6 +14,7 @@ const MissedDocuments = ({documents}) => {
 
   const handleAccept = () => {
     // TODO MATO uloz dokument ako podpisany
+    console.log(modalInfo);
     setDocs(docs.filter(d => d.id !== modalInfo.id)); // delete the document from the hook
     setShowModal(false);  // hide modal
   }
@@ -64,7 +65,6 @@ const MissedDocuments = ({documents}) => {
         keyField="id"
         hover
         data={docs[row].sub}
-        bordered={ false }
         columns={expandDocsColumns}/>
     )
   };
@@ -80,7 +80,7 @@ const MissedDocuments = ({documents}) => {
         expandRow={expandRow}
         noDataIndication={EmptyTable}
       />
-      { showModal &&
+      {showModal &&
       <ConfirmModal
         showModal={showModal}
         setShowModal={setShowModal}
