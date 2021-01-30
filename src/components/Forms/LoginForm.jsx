@@ -1,56 +1,57 @@
-// TODO JOZO style login form
+import React from "react";
 import {Button, ButtonGroup, Form} from "react-bootstrap";
-import React, {useState} from "react";
 import {useForm} from "react-hook-form";
 import {ErrorMessage} from "../Others/ErrorMessage";
+import Container from "react-bootstrap/Container";
 
-const LoginForm = ({onSubmit, changeLanguage}) => {
+const LoginForm = ({onSubmit, language, changeLanguage, loginError}) => {
 
   const {register, handleSubmit} = useForm();
-  const [language, setLanguage] = useState("sk");
-  const [loginError, setLoginError] = useState("");
 
   const active = (id) => {
     return language === id && 'active';
   }
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Container style={{maxWidth: "40%", paddingTop: "6rem"}}>
+      <Form onSubmit={handleSubmit(onSubmit)}>
 
-      <h3 align="center">Login</h3>
+        <h3 align="center">Login</h3>
 
-      <ButtonGroup onClick={changeLanguage} className="btn-header">
-        <Button id="sk" className={active("sk")}>Slovak</Button>
-        <Button id="cz" className={active("cz")}>Czech</Button>
-        <Button id="en" className={active("en")}>English</Button>
-        <Button id="hu" className={active("hu")}>Hungary</Button>
-      </ButtonGroup>
+        <ButtonGroup onClick={changeLanguage} className="btn-header">
+          <Button id="sk" className={active("sk")}>Slovak</Button>
+          <Button id="cz" className={active("cz")}>Czech</Button>
+          <Button id="en" className={active("en")}>English</Button>
+          <Button id="hu" className={active("hu")}>Hungary</Button>
+        </ButtonGroup>
 
-      {/* NAME */}
-      <Form.Group className="form-group">
-        <Form.Label>Name</Form.Label>
-        <Form.Control
-          name="name"
-          placeholder="Enter login name"
-          ref={register}
-          required
-        />
-      </Form.Group>
+        {/* NAME */}
+        <Form.Group className="form-group">
+          <Form.Label>Name</Form.Label>
+          <Form.Control
+            name="name"
+            placeholder="Enter login name"
+            ref={register}
+            required
+          />
+        </Form.Group>
 
-      {/* NAME */}
-      <Form.Group className="form-group">
-        <Form.Label>Password</Form.Label>
-        <Form.Control
-          name="password"
-          type="password"
-          placeholder="Enter login password"
-          ref={register}
-          required
-        />
-      </Form.Group>
-      { loginError && <ErrorMessage text={"Wrong email or password"}/> }
-      <Button type="submit" variant="dark" className="btn-block">Login</Button>
-    </Form>
+        {/* PASS */}
+        <Form.Group className="form-group">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            name="password"
+            type="password"
+            placeholder="Enter login password"
+            ref={register}
+            required
+          />
+        </Form.Group>
+
+        { loginError && <ErrorMessage text={loginError}/> }
+        <Button type="submit" variant="dark" className="btn-block">Login</Button>
+      </Form>
+    </Container>
   )
 };
 

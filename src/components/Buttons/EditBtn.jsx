@@ -1,12 +1,14 @@
 import {Button} from "react-bootstrap";
 import React from "react";
-import {hasSubs} from "../../functions";
+import {hasSubs, recordType} from "../../functions";
 
 const EditBtn = (cell, row, rowIndex, {setFormData, setFormType}) => {
 
   const handleClick = () => {
-    setFormData(row);       // FIXME TypeError: setFormData is not a function
-    hasSubs(row) ? setFormType("new_doc") : setFormType("new_training");
+    setFormData(row);
+    // FIXME do not redirect after click on document
+    console.log("edit")
+    recordType(row) === "doc" ? setFormType("new_doc") : setFormType("new_training");
   }
 
   return (

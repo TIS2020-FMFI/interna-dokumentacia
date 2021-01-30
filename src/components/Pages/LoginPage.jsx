@@ -1,16 +1,14 @@
 import React, {useState} from "react";
 import {useForm} from "react-hook-form";
-import {Form, Button, ButtonGroup} from "react-bootstrap";
 import {employees} from "../../data"
 import {Redirect} from "react-router";
-import {ErrorMessage} from "../Others/ErrorMessage";
 import useSession from "../Others/useSession";
+import {getUser, setUser} from "../../functions";
+import LoginForm from "../Forms/LoginForm";
 
 const LoginPage = () => {
 
-  const {register, handleSubmit} = useForm();
   const [language, setLanguage] = useSession('language', "sk");
-  const [user, setUser] = useSession('user', undefined);
   const [loginError, setLoginError] = useState("");
 
   let time = 0;
@@ -38,7 +36,6 @@ const LoginPage = () => {
 
     time = Date.now();
     console.log(cardInput);
-
   })
 
   const changeLanguage = (e) => {
@@ -53,78 +50,51 @@ const LoginPage = () => {
   const onSubmit = (data) => {
     const employee = findMatch(data);
     if (employee !== undefined) {
-      // setUser(employee); // TODO JANO
-      sessionUser(employee);
+      setUser(employee);
     } else {
-      setLoginError("Wrong pass");
+      setLoginError("Wrong login input");
     }
   }
 
-  const sessionUser = (employee) => {
-    sessionStorage.setItem('user', JSON.stringify(employee));
+  const findMatch = (data) =>{
+    return fetch('http://localhost:7777/login', {
+      method:"POST",
+      body:new URLSearchParams(name_e+"="+data.name+"&"+password+"="+data.password )
+    })
+      .then(response => response.json())
+      .then(res => {
+        return {
+          anet_id: res.Id,
+          full_name: res.first_name+" "+res.last_name,
+          job: res.job_title
+        };
+      }).catch(e =>console.log(e));
   }
 
-  const findMatch = (data) => {
-    // TODO MATO find employee with name and pass in db
-    // TODO send feedback what is wrong: login or pass
-    return employees.find((e) =>
-      e.name === data.name && e.pass === data.password
-    );
-  }
+  // const findMatch = (data) => {
+  //   return employees.find((e) =>
+  //     e.name === data.name && e.pass === data.password
+  //   );
+  // }
 
   const findByCard = (input) => {
     // TODO MATO find employee with cardID
     return employees.find(e => e.card === input)
   }
 
-  const active = (id) => {
-    return language === id && 'active';
-  }
-
-  if (sessionStorage.getItem('user') !== null) {
-    return (
-      <Redirect to="/missed-docs"/>
-    )
-  } else
   return (
-    // TODO JOZO style login form
-    <Form onSubmit={handleSubmit(onSubmit)}>
-
-      <h3 align="center">Login</h3>
-
-      <ButtonGroup onClick={changeLanguage} className="btn-header">
-        <Button id="sk" className={active("sk")}>Slovak</Button>
-        <Button id="cz" className={active("cz")}>Czech</Button>
-        <Button id="en" className={active("en")}>English</Button>
-        <Button id="hu" className={active("hu")}>Hungary</Button>
-      </ButtonGroup>
-
-      {/* NAME */}
-      <Form.Group className="form-group">
-        <Form.Label>Name</Form.Label>
-        <Form.Control
-          name="name"
-          placeholder="Enter login name"
-          ref={register}
-          required
-        />
-      </Form.Group>
-
-      {/* NAME */}
-      <Form.Group className="form-group">
-        <Form.Label>Password</Form.Label>
-        <Form.Control
-          name="password"
-          type="password"
-          placeholder="Enter login password"
-          ref={register}
-          required
-        />
-      </Form.Group>
-      { loginError && <ErrorMessage text={loginError}/> }
-      <Button type="submit" variant="dark" className="btn-block">Login</Button>
-    </Form>
-  );
+    <>
+      {getUser() !== null
+        ? <Redirect to="/missed-docs"/> // FIXME don't redirect right after click on login btn
+        : <LoginForm
+            onSubmit={onSubmit}
+            language={language}
+            changeLanguage={changeLanguage}
+            loginError={loginError}
+          />
+      }
+    </>
+  )
 };
 
 export default LoginPage

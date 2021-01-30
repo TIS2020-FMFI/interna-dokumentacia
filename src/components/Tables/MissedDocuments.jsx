@@ -64,6 +64,7 @@ const MissedDocuments = ({documents}) => {
         keyField="id"
         hover
         data={docs[row].sub}
+        bordered={ false }
         columns={expandDocsColumns}/>
     )
   };

@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {useForm} from "react-hook-form";
 import MyHookForm from "./MyHookForm";
-import {Row, Col, Form, Button, ButtonGroup} from "react-bootstrap";
+import {Row, Col, Form, Button, ButtonGroup, Container} from "react-bootstrap";
 import {Typeahead} from 'react-bootstrap-typeahead'
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import {employees} from "../../data";
@@ -102,10 +102,12 @@ const TrainingForm = ({data}) => {
       </Form.Group>
 
       {/* SAVE | SEND BUTTONS */}
-      <ButtonGroup onClick={handleSubmit(onSubmit)}>
-        <Button id="save" type="submit" className="mr-1">Save</Button>
-        <Button id="send" type="submit" variant="danger">Send</Button>
-      </ButtonGroup>
+      <Container style={{display: 'flex', justifyContent: 'center', width: "100%"}}>
+        <ButtonGroup onClick={handleSubmit(onSubmit)} style={{width: "50%", paddingTop: "1rem"}}>
+          <Button id="save" type="submit" className="mr-1">Save</Button>
+          <Button id="send" type="submit" variant="danger">Send</Button>
+        </ButtonGroup>
+      </Container>
     </Form>
   )
 }

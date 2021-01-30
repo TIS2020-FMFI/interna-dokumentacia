@@ -39,6 +39,7 @@ const SignedDocuments = ({documents}) => {
         keyField="id"
         hover
         data={documents[row].sub}
+        bordered={ false }
         columns={expandColumns}/>
     )
   };

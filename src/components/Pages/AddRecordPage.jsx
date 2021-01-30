@@ -25,7 +25,7 @@ const AddRecordPage = () => {
         <Button id="editable_docs" className={active("editable_docs")}>Editable</Button>
       </ButtonGroup>
 
-      {formType === 'new_document'
+      { formType === 'new_document'
         ? <DocumentForm data={formData}/>
         : formType === 'new_training'
           ? <TrainingForm data={formData}/>

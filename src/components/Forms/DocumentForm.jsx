@@ -1,4 +1,4 @@
-import {Form, Row, Col, Button, ButtonGroup} from "react-bootstrap";
+import {Form, Row, Col, Button, ButtonGroup, Container} from "react-bootstrap";
 import React, {useState} from "react";
 import {useForm} from "react-hook-form";
 import MyHookForm from "./MyHookForm";
@@ -8,6 +8,9 @@ import {types} from "../../data";
 import {getSelectOptions} from "../../functions";
 
 const DocumentForm = ({data}) => {
+
+  // data = {...data, deadline: 14}
+  // console.log(data)
 
   const {register, handleSubmit, errors} = useForm({
     defaultValues: data
@@ -59,6 +62,7 @@ const DocumentForm = ({data}) => {
         placeholder="Enter document name"
         register={register({required:true})}
       />
+      { errors.name && <ErrorMessage/> }
 
       {/* LINK */}
       <MyHookForm
@@ -75,6 +79,7 @@ const DocumentForm = ({data}) => {
         type="date"
         register={register({required:true})}
       />
+      { errors.date && <ErrorMessage/> }
 
       {/* DEADLINE */}
       <MyHookForm
@@ -84,6 +89,7 @@ const DocumentForm = ({data}) => {
         defaultValue="14"
         register={register({required:true})}
       />
+      {/*{ errors.number && <ErrorMessage/> }*/}
 
       {/* VERSION */}
       <MyHookForm
@@ -92,6 +98,7 @@ const DocumentForm = ({data}) => {
         placeholder="Enter version"
         register={register({required:true})}
       />
+      { errors.version && <ErrorMessage/> }
 
       {/* ORDER NUMBER */}
       <MyHookForm
@@ -101,6 +108,7 @@ const DocumentForm = ({data}) => {
         placeholder="Enter number"
         register={register({required:true})}
       />
+      { errors.number && <ErrorMessage/> }
 
       {/* NOTE */}
       <MyHookForm
@@ -115,10 +123,12 @@ const DocumentForm = ({data}) => {
       <Combinations combinations={combinations} setCombinations={setCombinations}/>
 
       {/* SAVE | SEND BUTTONS */}
-      <ButtonGroup onClick={handleSubmit(onSubmit)}>
+      <Container style={{display: 'flex', justifyContent: 'center', width: "100%"}}>
+      <ButtonGroup onClick={handleSubmit(onSubmit)} style={{width: "50%", paddingTop: "1rem"}}>
         <Button id="save" type="submit" className="mr-1">Save</Button>
         <Button id="send" type="submit" variant="danger">Send</Button>
       </ButtonGroup>
+      </Container>
 
     </Form>
   )
