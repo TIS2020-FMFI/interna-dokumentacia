@@ -7,7 +7,7 @@ const (
 )
 
 type Employee struct {
-	Id           int    `gorm:"primaryKey"`
+	Id           int    `gorm:"primaryKey" json:"id"`
 	FirstName    string `gorm:"column:first_name" json:"first_name"`
 	LastName     string `gorm:"column:last_name" json:"last_name"`
 	Login        string `gorm:"column:login" json:"login"`

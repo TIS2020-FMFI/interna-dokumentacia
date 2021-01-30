@@ -9,7 +9,7 @@ import (
 
 var (
 	name_column = "first_name"
-	password_column = "passwd"
+	password_column = "password"
 )
 
 func login(writer http.ResponseWriter, request *http.Request) {
