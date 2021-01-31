@@ -1,0 +1,22 @@
+
+--doc and sign
+SELECT document_signatures.*, documents.*
+FROM "documents" JOIN document_signatures on
+    document_signatures.id = documents.id
+WHERE employee_id=601 and e_date IS NULL
+  and not exists(select * from cancel_signs where document_signature_id=document_signatures.id)
+
+-- training and sign
+SELECT online_trainings.*, online_training_signatures.*
+FROM "online_training_signatures" JOIN online_trainings on
+    online_trainings.id = online_training_signatures.training_id
+WHERE employee_id=601 and "online_training_signatures".date IS NULL
+
+-- employees
+SELECT document_signatures.*, "employees".*, documents.*
+FROM "employees" JOIN document_signatures on
+    document_signatures.employee_id = employees.id JOIN documents on
+        document_signatures.id = documents.id
+WHERE superior_id=601 and s_date IS NULL
+  and not exists(select * from cancel_signs where document_signature_id=document_signatures.id)
+
