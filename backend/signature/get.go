@@ -41,7 +41,7 @@ func setSuperiorSign(query string, signatures *Signatures) {
 		"JOIN documents on document_signatures.id = documents.id"
 	select0 :="document_signatures.*, \"employees\".*, documents.* "
 	where:= "superior_id="+query+" and s_date IS NULL"+
-		" and not exists(select * from cancel_signs where document_signature_id=document_signatures.id)"
+		" and not exists(select * from cancel_signswhere document_signature_id=document_signatures.id)"
 	db := prepareDb(join, select0, where)
 	db.Table("employees").Find(&signatures.EmployeeSignature)
 }
