@@ -5,10 +5,10 @@ export const hasSubs = (row) => {
 };
 
 export const recordType = (row) => {
-  if (Object.keys(row).includes('link'))
-    return "doc";
-  else
-    return "training"
+  if (Object.keys(row).includes('link')) {
+    return "document";
+  }
+  return "training"
 };
 
 /**

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { BrowserRouter as Router, Switch, Route, withRouter } from "react-router-dom";
 import {Redirect} from "react-router";
 
@@ -12,21 +12,42 @@ import AddRecordPage from "./components/Pages/AddRecordPage.jsx";
 import FinderPage from "./components/Pages/FinderPage.jsx";
 import SettingsPage from "./components/Pages/SettingsPage.jsx";
 import LogoutPage from "./components/Pages/LogoutPage";
-import {isAdmin, getUser} from "./functions";
+import {isAdmin, getUser, removeUser} from "./functions";
 import Container from "react-bootstrap/Container";
+import IdleTimer from "./IdleTimer";
 
 function App() {
 
   const user = getUser();
   const admin = isAdmin();
 
+  const [isTimeout, setIsTimeout] = useState(false);
+  useEffect(() => {
+    const timer = new IdleTimer({
+      timeout: 300, //expire after 10 seconds
+      onTimeout: () => {
+        setIsTimeout(true);
+      },
+      onExpired: () => {
+        // FIXME Redirect
+        console.log("end of session")
+        removeUser()
+        setIsTimeout(true);
+      }
+    });
+
+    return () => {
+      timer.cleanUp();
+    };
+  }, []);
+
   const Private = ({ component: Component, ...rest }) => (
     // Show the component only when the user is logged in
     // Otherwise, redirect the user to /login page
-    <Route {...rest} render={props => (getUser() !== null
+    <Route {...rest} render={props => (user !== null
         ? <Component {...props} />
         : <Redirect to="/" />
-    )}
+        )}
     />
   )
 

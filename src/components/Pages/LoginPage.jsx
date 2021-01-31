@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {employees} from "../../data"
 import {Redirect} from "react-router";
 import useSession from "../Others/useSession";
-import {getUser, setUser} from "../../functions";
+import {defUser, getUser, setUser} from "../../functions";
 import LoginForm from "../Forms/LoginForm";
 
 const LoginPage = () => {
@@ -51,35 +51,20 @@ const LoginPage = () => {
     return (Date.now() - time) < 30;
   }
 
-  const onSubmit = (data) => {
-    const employee = findMatch(data);
-    if (employee !== undefined && employee !== {}) {
-      setUser(employee);
-    } else {
-      setLoginError("Wrong login input");
-    }
-  }
-
-  // const findMatch = (data) =>{
-  //   return fetch('http://localhost:7777/login', {
-  //     method:"POST",
-  //     body:new URLSearchParams(`first_name=${data.name}&password=${data.password}`)
-  //   })
-  //     .then(response => response.json())
-  //     .then(res => {
-  //       return {
-  //         anet_id: res.Id,
-  //         full_name: res.first_name+" "+res.last_name,
-  //         job: res.job_title
-  //       };
-  //     }).catch(e =>console.log(e));
-  // }
-
-  const findMatch = (data) => {
-    console.log("db request")
-    return employees.find((e) =>
-      e.name === data.name && e.pass === data.password
-    );
+  const onSubmit = (data) =>{
+    defUser()
+    return fetch('http://localhost:7777/login', {
+      method:"POST"
+      , body:new URLSearchParams(`first_name=${data.name}&password=${data.password}`)
+    })
+      .then(response => response.json())
+      .then(respon => {
+        setUser({
+          anet_id: respon.id,
+          name: respon.first_name+" "+respon.last_name,
+          job: respon.job_title
+        })
+      }).catch(() => setLoginError("Wrong login input"));
   }
 
   const findByCard = (input) => {

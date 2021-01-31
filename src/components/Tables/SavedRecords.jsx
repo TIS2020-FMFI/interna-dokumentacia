@@ -5,7 +5,7 @@ import EmptyTable from "./EmptyTable";
 import {docs} from "../../data";
 import SendBtn from "../Buttons/SendBtn";
 
-const EditableRecords = ({setFormType, setFormData}) => {
+const SavedRecords = ({setFormType, setFormData}) => {
 
   // TODO MATO get editable documents from DB
   const editable_docs = docs;
@@ -52,5 +52,5 @@ const EditableRecords = ({setFormType, setFormData}) => {
   )
 }
 
-export default EditableRecords;
+export default SavedRecords;
 

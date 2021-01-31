@@ -22,8 +22,7 @@ export const employees = [{
   complete: '10%'
 }];
 
-export const docs = [
-  {
+export const docs = [{
     id: '1',
     name: 'Document1',
     release: '1.7.2020',
@@ -67,48 +66,52 @@ export const sm_data = [
   {
     id: 1,
     name: 'Document1',
+    type: 'A',
+    deadline: new Date("2021/3/16"),
     employees: [
       {
         anet_id: '1',
-        state: 'A'
+        state: ''
       }, {
         anet_id: '2',
-        state: 'B'
+        state: 's'
       }, {
         anet_id: '3',
-        state: 'A'
+        state: 'es'
       }
     ]
   }, {
     id: 2,
     name: 'Document2',
     type: 'B',
+    deadline: new Date("2021/1/16"),
     employees: [
       {
         anet_id: '1',
-        state: 'B'
+        state: '-'
       }, {
         anet_id: '2',
-        state: 'A'
+        state: ''
       }, {
         anet_id: '3',
-        state: 'A'
+        state: ''
       }
     ]
   }, {
     id: 3,
     name: 'Document3',
-    type: 'C',
+    type: 'B',
+    deadline: new Date("2021/1/16"),
     employees: [
       {
         anet_id: '1',
-        state: 'A'
+        state: '-'
       }, {
         anet_id: '2',
-        state: 'B'
+        state: 's'
       }, {
         anet_id: '3',
-        state: 'B'
+        state: 's'
       }
     ]
   }

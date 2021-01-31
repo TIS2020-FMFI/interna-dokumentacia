@@ -44,7 +44,7 @@ const DocumentForm = ({data}) => {
 
       {/* TYPE OF DOCUMENT */}
       <Form.Group as={Row}>
-        <Form.Label column sm="2">Type *</Form.Label>
+        <Form.Label column sm="2">Type*</Form.Label>
         <Col>
           <Form.Control
             as="select"
@@ -54,18 +54,43 @@ const DocumentForm = ({data}) => {
             <option hidden value="">Select option ...</option>
             {getSelectOptions(types)}
           </Form.Control>
-          { errors.doc_type && <ErrorMessage text={"Select a type"}/> }
+          {/*{ errors.doc_type && <ErrorMessage text={"Select a type"}/> }*/}
+        </Col>
+      </Form.Group>
+
+      <Form.Group as={Row}>
+        <Form.Label column sm="2">Require superior</Form.Label>
+        <Col>
+          <Form.Check
+            type="radio"
+            id="yes"
+            label="yes"
+            value={true}
+            inline
+            name="require_superior"
+            ref={register}
+          />
+          <Form.Check
+            type="radio"
+            id="no"
+            label="no"
+            value={false}
+            name="require_superior"
+            inline
+            defaultChecked
+            ref={register}
+          />
         </Col>
       </Form.Group>
 
       {/* NAME */}
       <MyHookForm
-        label="Document name *"
+        label="Document name*"
         name="name"
         placeholder="Enter document name"
         register={register({required:true})}
       />
-      { errors.name && <ErrorMessage/> }
+      {/*{ errors.name && <ErrorMessage/> }*/}
 
       {/* LINK */}
       <MyHookForm
@@ -77,16 +102,16 @@ const DocumentForm = ({data}) => {
 
       {/* RELEASE */}
       <MyHookForm
-        label="Release date *"
+        label="Release date*"
         name="release"
         type="date"
         register={register({required:true})}
       />
-      { errors.date && <ErrorMessage/> }
+      {/*{ errors.date && <ErrorMessage/> }*/}
 
       {/* DEADLINE */}
       <MyHookForm
-        label="Days to deadline *"
+        label="Days to deadline*"
         name="deadline"
         type="number"
         defaultValue="14"
@@ -96,22 +121,22 @@ const DocumentForm = ({data}) => {
 
       {/* VERSION */}
       <MyHookForm
-        label="Version *"
+        label="Version*"
         name="version"
         placeholder="Enter version"
         register={register({required:true})}
       />
-      { errors.version && <ErrorMessage/> }
+      {/*{ errors.version && <ErrorMessage/> }*/}
 
       {/* ORDER NUMBER */}
       <MyHookForm
-        label="Order number *"
+        label="Order number*"
         name="number"
         type="number"
         placeholder="Enter number"
         register={register({required:true})}
       />
-      { errors.number && <ErrorMessage/> }
+      {/*{ errors.number && <ErrorMessage/> }*/}
 
       {/* NOTE */}
       <MyHookForm
@@ -127,12 +152,10 @@ const DocumentForm = ({data}) => {
       { error && <ErrorMessage text={error}/> }
 
       {/* SAVE | SEND BUTTONS */}
-      <Container style={{display: 'flex', justifyContent: 'center', width: "100%"}}>
-        <ButtonGroup onClick={handleSubmit(onSubmit)} style={{width: "50%", paddingTop: "1rem"}}>
+      <ButtonGroup onClick={handleSubmit(onSubmit)} className="w-25 pt-1">
         <Button id="save" type="submit" className="mr-1">Save</Button>
         <Button id="send" type="submit" variant="danger">Send</Button>
       </ButtonGroup>
-      </Container>
 
     </Form>
   )

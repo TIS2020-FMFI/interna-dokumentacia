@@ -1,10 +1,17 @@
-import React from "react";
+import React, {useState} from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import EditBtn from "../Buttons/EditBtn";
 import SMBtn from "../Buttons/SMBtn";
 import {docs} from "../../data";
+import DocumentForm from "../Forms/DocumentForm";
+import TrainingForm from "../Forms/TrainingForm";
+import SavedRecords from "./SavedRecords";
+import EditRecordModal from "../Modals/EditRecordModal";
 
 const FoundRecords = () => {
+
+  const [formType, setFormType] = useState('');
+  const [formData, setFormData] = useState({});
 
   const columns = [
     {
@@ -36,8 +43,8 @@ const FoundRecords = () => {
       text: 'Edit',
       formatter: EditBtn,
       formatExtraData: { // FIXME JANO
-        setFormType: undefined,
-        setFormData: undefined
+        setFormType: setFormType,
+        setFormData: setFormData
       },
       headerStyle: () => {return {width: '1%'}}
     }, {
@@ -48,6 +55,14 @@ const FoundRecords = () => {
     }
   ];
 
+  const doc_form = () => {
+    return <DocumentForm data={formData}/>
+  }
+
+  const train_form = () => {
+    return <TrainingForm data={formData}/>
+  }
+
   return (
     <>
       <BootstrapTable
@@ -56,9 +71,22 @@ const FoundRecords = () => {
         data={docs}
         columns={columns}
       />
+      {formType === 'new_document' &&
+        <EditRecordModal
+          form={doc_form}
+          setFormType={setFormType}
+        />
+      }
+      {formType === 'new_training' &&
+        <EditRecordModal
+          form={train_form}
+          setFormType={setFormType}
+        />
+      }
+      {/*{ formType === 'new_training' && <TrainingForm data={formData}/> }*/}
     </>
   );
-}
+};
 
 export default FoundRecords;
 

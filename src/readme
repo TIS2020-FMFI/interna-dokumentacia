@@ -21,7 +21,6 @@
 
 #03
 #05 -> ... administrátor sa môže prepnúť do role ľubovoľného nadriadeného
-#10 -> todo
 #11
  ..
 #15
@@ -29,12 +28,11 @@
 #17
 #18
 #20 -> BUG
-#21 -> todo
- .. -> todo
-#23 -> todo
+#21 -> TODO state 9
+#24
  ..
 #30
-#31 -> todo
+#31 -> todo request.session.set_expiry(300) 
 #32
 #34
 #35

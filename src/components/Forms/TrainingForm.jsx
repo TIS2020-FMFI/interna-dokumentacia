@@ -27,7 +27,7 @@ const TrainingForm = ({data}) => {
     <Form>
       {/* NAME */}
       <MyHookForm
-        label="Training name *"
+        label="Training name*"
         name="name"
         placeholder="Enter document name"
         register={register({required:true})}
@@ -59,7 +59,7 @@ const TrainingForm = ({data}) => {
 
       {/* DATE */}
       <MyHookForm
-        label="Date *"
+        label="Date*"
         name="date"
         type="date"
         placeholder="Enter date"
@@ -77,7 +77,7 @@ const TrainingForm = ({data}) => {
 
       {/* AGENDA */}
       <MyHookForm
-        label="Agenda *"
+        label="Agenda*"
         name="agenda"
         as="textarea"
         placeholder="Enter agenda"
@@ -102,12 +102,10 @@ const TrainingForm = ({data}) => {
       </Form.Group>
 
       {/* SAVE | SEND BUTTONS */}
-      <Container style={{display: 'flex', justifyContent: 'center', width: "100%"}}>
-        <ButtonGroup onClick={handleSubmit(onSubmit)} style={{width: "50%", paddingTop: "1rem"}}>
-          <Button id="save" type="submit" className="mr-1">Save</Button>
-          <Button id="send" type="submit" variant="danger">Send</Button>
-        </ButtonGroup>
-      </Container>
+      <ButtonGroup onClick={handleSubmit(onSubmit)} className="w-25 pt-1">
+        <Button id="save" type="submit" className="mr-1">Save</Button>
+        <Button id="send" type="submit" variant="danger">Send</Button>
+      </ButtonGroup>
     </Form>
   )
 }

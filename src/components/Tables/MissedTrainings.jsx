@@ -39,13 +39,6 @@ const MissedTrainings = ({trainings}) => {
     }
   ];
 
-  // const trns_columns = docs_columns.map(o => {
-  //   if (o.dataField === 'release') {
-  //     o.dataField = 'took_place';
-  //     o.text = 'Took place';
-  //   } return o;
-  // });
-
   return (
     <>
       <CaptionElement title="Trainings to sign"/>
