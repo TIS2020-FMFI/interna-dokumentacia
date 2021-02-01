@@ -6,6 +6,7 @@ import (
 	"gorm.io/gorm"
 	"log"
 	"net/http"
+	h "tisko/helper_func"
 )
 
 var (
@@ -15,7 +16,7 @@ var (
 
 func Start() {
 	myRouter.HandleFunc("/", homePage)
-	port := returnTrimFile("./config/port.txt")
+	port := h.ReturnTrimFile("./config/port.txt")
 	fmt.Println("Listen on "+port)
 	log.Fatal(http.ListenAndServe(port, myRouter))
 }

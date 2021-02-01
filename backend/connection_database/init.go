@@ -4,14 +4,13 @@ import (
 	"github.com/gorilla/mux"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"io/ioutil"
-	"strings"
 	"time"
+	h"tisko/helper_func"
 )
 
 func init() {
 	myRouter = mux.NewRouter().StrictSlash(true)
-	dsn := returnTrimFile("./config/postgres_config.txt")
+	dsn := h.ReturnTrimFile("./config/postgres_config.txt")
 	Db, _ = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if Db == nil {
 		panic("nepripojene")
@@ -20,16 +19,4 @@ func init() {
 	sqlDB.SetMaxIdleConns(100)
 	sqlDB.SetMaxOpenConns(100)
 	sqlDB.SetConnMaxLifetime(time.Hour)
-}
-
-func returnTrimFile(nameFile string) string {
-	dat, err := ioutil.ReadFile(nameFile)
-	check(err)
-	return strings.TrimSpace(string(dat))
-}
-
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
 }
