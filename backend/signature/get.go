@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"net/http"
+	"strconv"
 	con "tisko/connection_database"
 	h "tisko/helper_func"
 )
@@ -19,15 +20,21 @@ func init() {
 
 func GetSignatures(writer http.ResponseWriter, request *http.Request) {
 	if con.SetHeadersReturnIsContunue(writer,request)  {
-		id := mux.Vars(request)["id"]
+		id, err := strconv.Atoi(mux.Vars(request)["id"])
+		if err != nil || id<0 {
+			http.Error(writer, "must give number > 0", http.StatusInternalServerError)
+			return
+		}
 		signatures := &Signatures{}
-		
+
 		con.Db.Raw(queryDocumentSignEmployee, id).Find(&signatures.EmployeeSignature)
 		con.Db.Raw(queryOnlineSign, id).Find(&signatures.OnlineSignature)
 		con.Db.Raw(queryDocumentSign, id).Find(&signatures.DocumentSignature)
 
+		modifySignature := signatures.convertToModifySignature()
+
 		writer.Header().Set("Content-Type", "application/json")
 		writer.WriteHeader(http.StatusOK)
-		_ = json.NewEncoder(writer).Encode(signatures)
+		_ = json.NewEncoder(writer).Encode(modifySignature)
 	}
 }

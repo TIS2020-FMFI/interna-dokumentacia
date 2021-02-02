@@ -5,7 +5,7 @@ import (
 )
 
 type OnlineTraining struct {
-	Id     int       `gorm:"primaryKey" json:"id"`
+	Id     uint       `gorm:"primaryKey" json:"id"`
 	Name   string    `gorm:"column:name" json:"name"`
 	Lector string    `gorm:"column:lector" json:"lector"`
 	Date   time.Time `gorm:"column:date" json:"date"`

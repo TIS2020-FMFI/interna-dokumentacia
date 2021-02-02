@@ -16,6 +16,9 @@ func AddHeaderPost(path string, f func(http.ResponseWriter, *http.Request)) {
 }
 
 func AddHeaderGetID(path string, f func(http.ResponseWriter, *http.Request)) {
-
 	myRouter.HandleFunc(path+"/{id}", f).Methods("GET")
+}
+
+func AddHeaderGet(path string, f func(http.ResponseWriter, *http.Request)) {
+	myRouter.HandleFunc(path, f).Methods("GET")
 }

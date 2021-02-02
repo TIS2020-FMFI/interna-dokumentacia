@@ -3,4 +3,4 @@ FROM "employees" JOIN document_signatures on
     document_signatures.employee_id = employees.id JOIN documents on
         document_signatures.document_id = documents.id
 WHERE superior_id = ? and s_date IS NULL
-  and not exists(select * from cancel_signs where document_signature_id=document_signatures.id)
+  and not exists(select * from cancel_signs where document_signature_id=document_signatures.id limit 1)

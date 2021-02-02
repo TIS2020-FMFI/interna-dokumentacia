@@ -1,10 +1,12 @@
 package helper_func
 
+import (
+"io/ioutil"
+"strings"
+)
 
-
-
-func Check(e error) {
-	if e != nil {
-		panic(e)
-	}
+func ReturnTrimFile(nameFile string) string {
+	dat, err := ioutil.ReadFile(nameFile)
+	Check(err)
+	return strings.TrimSpace(string(dat))
 }

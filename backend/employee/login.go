@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	name_column = "first_name"
+	name_column = "login"
 	password_column = "password"
 )
 
