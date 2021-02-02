@@ -48,7 +48,7 @@ const DocumentForm = ({data}) => {
         <Col>
           <Form.Control
             as="select"
-            name="doc_type"
+            name="type"
             ref={register({validate: notEmpty})}
           >
             <option hidden value="">Select option ...</option>
@@ -103,7 +103,7 @@ const DocumentForm = ({data}) => {
       {/* RELEASE */}
       <MyHookForm
         label="Release date*"
-        name="release"
+        name="release_date"
         type="date"
         register={register({required:true})}
       />
@@ -131,7 +131,7 @@ const DocumentForm = ({data}) => {
       {/* ORDER NUMBER */}
       <MyHookForm
         label="Order number*"
-        name="number"
+        name="order_number"
         type="number"
         placeholder="Enter number"
         register={register({required:true})}

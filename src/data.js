@@ -68,8 +68,7 @@ export const sm_data = [
     name: 'Document1',
     type: 'A',
     deadline: new Date("2021/3/16"),
-    employees: [
-      {
+    employees: [{
         anet_id: '1',
         state: ''
       }, {
@@ -85,8 +84,7 @@ export const sm_data = [
     name: 'Document2',
     type: 'B',
     deadline: new Date("2021/1/16"),
-    employees: [
-      {
+    employees: [{
         anet_id: '1',
         state: '-'
       }, {
@@ -102,8 +100,7 @@ export const sm_data = [
     name: 'Document3',
     type: 'B',
     deadline: new Date("2021/1/16"),
-    employees: [
-      {
+    employees: [{
         anet_id: '1',
         state: '-'
       }, {
@@ -145,10 +142,12 @@ export const combinations = [
   }];
 
 export const types = [...new Set(combinations.map(c => c.type))];
-export const branches = ["B1", "B2", "B3"];
+export const branches = [...new Set(combinations.map(c => c.branch))];
+export const cities = [...new Set(combinations.map(c => c.city))];
+// export const branches = ["B1", "B2", "B3"];
 export const divisions = ["D1", "D2", "D3"];
 export const departments = ["Dep1", "Dep2", "Dep3"];
-export const cities = ["C1", "C2", "C3"];
+// export const cities = ["C1", "C2", "C3"];
 
 // export const combinations = [{
 //   types: [],

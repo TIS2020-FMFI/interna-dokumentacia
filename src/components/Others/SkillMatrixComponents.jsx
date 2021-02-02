@@ -1,11 +1,15 @@
 import React from "react";
-import {Button, ButtonGroup, Col, Row} from "react-bootstrap";
+import {Button, ButtonGroup, Col, Row, Badge} from "react-bootstrap";
 import {ExclamationTriangle} from "react-bootstrap-icons";
 
-export const RowButtons = ({setEvent, setShowModal, handleExport}) => {
+export const RowButtons = ({setEvent, setShowModal, handleAccept, handleExport}) => {
 
   const handleClick = (e) => {
-    setShowModal(true)
+    if (e.target.id === "cancel") {
+      handleAccept()
+    } else {
+      setShowModal(true)
+    }
     setEvent(e.target.id)
   }
 
@@ -26,15 +30,41 @@ export const RowButtons = ({setEvent, setShowModal, handleExport}) => {
 }
 
 export const Legend = () => {
+  // todo
+
+  const style = (color, textColor="white") => {
+    return {
+      background: color,
+      borderColor: color,
+      color: textColor,
+      width: "100px"
+    }
+  }
+
+  // const Badge = ({color, textColor="white", text}) => {
+  //   const style = {
+  //     background: color,
+  //     borderColor: color,
+  //     color: textColor,
+  //     width: "100px"
+  //   }
+  //
+  //   return (<Button>badge</Button>)
+  // }
+
   return (
     <div className="pt-5">
-      <h5>Legend: TODO</h5>
-      {/*<h6><Badge variant="secondary">no need</Badge> Example heading</h6>*/}
-      {/*<h6><Badge variant="danger">not signed</Badge> Example heading</h6>*/}
-      {/*<h6><Badge variant="warning">superior not signed</Badge> Example heading</h6>*/}
+      <h5 className="pb-2">Legend:</h5>
+      <p><Button style={style("gray")} size="sm">No need</Button>{' '}Zamestnanec bol odznačený z potreby oboznámenia alebo sa ho dokument netýka</p>
+      <p><Button style={style("red")} size="sm">miss e+s</Button>{' '}Ani zamestnanec ani nadriadený ešte nepotvrdili</p>
+      <p><Button style={style("orange")} size="sm">miss e</Button>{' '}Zamestnanec nepotvrdil</p>
+      <p><Button style={style("yellow", "black")} size="sm">miss s</Button>{' '}Nadriadený nepotvrdil</p>
+      <p><Button style={style("green")} size="sm">done</Button>{' '}Dokument je potvrdený</p>
+      <p>hviezdička <strong>*</strong> znamena, ze zamestnanec sa opakovane preškoluje</p>
+      <p><ExclamationTriangle style={{color: "red"}}/>{' '}Uplynul deadline a chýbajú podpisy</p>
     </div>
   )
-};
+}
 
 export const DocumentLabel = (col, row, index, {data}) => {
 

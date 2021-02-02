@@ -1,6 +1,6 @@
 // TODO JOZO
-- login cez sušienky a čítačku
-- upravit nejake vizuálne detaily
+- čítačka
+- preloziť web
 - nakodit stránku setting
 - spravit dynamický selector
 
@@ -13,13 +13,12 @@
 
 // TODO MATO
 - CRUD
-- preloziť web
 - zamysliet sa nad bezpecnostou
 - tiež otestovať web cez scenáre
 
 
-
-#03
+#03 -> ... nutnosť zadania hesla sa dá zrušiť pre kiosky alebo globálne nastavením premennej v konfiguračnom súbore
+           (vyžadované vždy, vyžadované iba on-line, nevyžadované nikdy)
 #05 -> ... administrátor sa môže prepnúť do role ľubovoľného nadriadeného
 #11
  ..
@@ -27,12 +26,10 @@
 #16 -> ... v zozname je zobrazené aj jeho ANET, oddelenie a divízia
 #17
 #18
-#20 -> BUG
-#21 -> TODO state 9
+#21 -> TODO state 9 + 'blue' state!
 #24
  ..
 #30
-#31 -> todo request.session.set_expiry(300) 
 #32
 #34
 #35

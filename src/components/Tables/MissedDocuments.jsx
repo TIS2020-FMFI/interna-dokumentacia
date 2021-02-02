@@ -23,7 +23,7 @@ const MissedDocuments = ({documents}) => {
       dataField: 'name',
       text: 'Name'
     }, {
-      dataField: 'release',
+      dataField: 'release_date',
       text: 'Release'
     }, {
       dataField: 'deadline',
@@ -41,10 +41,10 @@ const MissedDocuments = ({documents}) => {
   ];
 
   const expandDocsColumns = [{
-      dataField: 'anet_id',
+      dataField: 'id',
       text: 'AnetID'
     }, {
-      dataField: 'name',
+      dataField: 'full_name',
       text: 'Name'
     }, {
       dataField: 'signBtn',

@@ -4,8 +4,11 @@ import {Redirect} from "react-router";
 import useSession from "../Others/useSession";
 import {defUser, getUser, setUser} from "../../functions";
 import LoginForm from "../Forms/LoginForm";
+import { useHistory } from "react-router-dom";
 
 const LoginPage = () => {
+
+  const history = useHistory();
 
   const [language, setLanguage] = useSession('language', 'sk');
   const [loginError, setLoginError] = useState("");
@@ -40,7 +43,7 @@ const LoginPage = () => {
   useEffect(() => {
     document.addEventListener('keydown', event)
     return () => document.removeEventListener("keydown", event); // cleanup
-  }, [])
+  })
 
   const changeLanguage = (e) => {
     sessionStorage.setItem('language', e.target.id);
@@ -53,18 +56,21 @@ const LoginPage = () => {
 
   const onSubmit = (data) =>{
     defUser()
-    return fetch('http://localhost:7777/login', {
-      method:"POST"
-      , body:new URLSearchParams(`first_name=${data.name}&password=${data.password}`)
-    })
-      .then(response => response.json())
-      .then(respon => {
-        setUser({
-          anet_id: respon.id,
-          name: respon.first_name+" "+respon.last_name,
-          job: respon.job_title
-        })
-      }).catch(() => setLoginError("Wrong login input"));
+    history.push("/")
+
+    // return fetch('http://localhost:7777/login', {
+    //   method:"POST"
+    //   , body:new URLSearchParams(`first_name=${data.name}&password=${data.password}`)
+    // })
+    //   .then(response => response.json())
+    //   .then(respon => {
+    //     setUser({
+    //       anet_id: respon.id,
+    //       name: respon.first_name+" "+respon.last_name,
+    //       job: respon.job_title
+    //     })
+    //     history.push("/")
+    //   }).catch(() => setLoginError("Wrong login input"));
   }
 
   const findByCard = (input) => {

@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {useForm} from "react-hook-form";
 import MyHookForm from "./MyHookForm";
-import {Row, Col, Form, Button, ButtonGroup, Container} from "react-bootstrap";
+import {Row, Col, Form, Button, ButtonGroup} from "react-bootstrap";
 import {Typeahead} from 'react-bootstrap-typeahead'
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import {employees} from "../../data";
@@ -10,8 +10,13 @@ const TrainingForm = ({data}) => {
 
   // const employees = ... TODO MATO load employees
 
+  const curr = new Date();
+  curr.setDate(curr.getDate() + 3);
+  const date = curr.toISOString().substr(0,10);
+  console.log(date)
+
   const {register, handleSubmit} = useForm({
-    defaultValues: data
+    defaultValues: {...data, date: date}
   });
 
   const [attendees, setAttendees] = useState([])
@@ -35,8 +40,8 @@ const TrainingForm = ({data}) => {
 
       {/* TRAINEE */}
       <MyHookForm
-        label="Name of trainee"
-        name="trainee"
+        label="Name of lector"
+        name="lector"
         placeholder="Enter document link to sharepoint"
         register={register}
       />
@@ -63,7 +68,7 @@ const TrainingForm = ({data}) => {
         name="date"
         type="date"
         placeholder="Enter date"
-        register={register({required:true})}
+        register={register({required:true, valueAsDate: true})} // todo valueAsDate?
       />
 
       {/* DURATION */}
@@ -72,7 +77,7 @@ const TrainingForm = ({data}) => {
         name="duration"
         type="number"
         placeholder="Enter duration"
-        register={register}
+        register={register({valueAsNumber: true})}
       />
 
       {/* AGENDA */}

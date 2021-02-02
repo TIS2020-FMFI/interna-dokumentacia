@@ -29,7 +29,7 @@ const LoginForm = ({onSubmit, language, changeLanguage, loginError}) => {
         <Form.Group className="form-group">
           <Form.Label>Name</Form.Label>
           <Form.Control
-            name="name"
+            name="login"
             placeholder="Enter login name"
             ref={register}
             required
