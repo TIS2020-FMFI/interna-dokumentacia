@@ -1,0 +1,5 @@
+SELECT document_signatures.*, documents.*
+FROM "documents" JOIN document_signatures on
+        document_signatures.document_id = documents.id
+WHERE employee_id = ?
+and e_date IS NULL and not exists(select * from cancel_signs where document_signature_id=document_signatures.id)

@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"time"
 	comb "tisko/combination"
 	conn "tisko/connection_database"
 	"tisko/document"
@@ -9,6 +11,12 @@ import (
 )
 
 func main() {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println(r)
+			time.Sleep(time.Second*5)
+		}
+	}()
 	comb.AddHandle()
 	employee.AddHandle()
 	document.AddHandle()

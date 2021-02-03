@@ -2,24 +2,28 @@ package document
 
 import (
 	"encoding/json"
+	"gorm.io/gorm"
 	"net/http"
 	con "tisko/connection_database"
 )
 
 func createDoc(writer http.ResponseWriter, request *http.Request) {
 	if con.SetHeadersReturnIsContunue(writer, request) {
-		var doc Document
-		_ = json.NewDecoder(request.Body).Decode(&doc)
-		result := con.Db.Omit("Id").Create(&doc)
-		if result.Error != nil {
-			http.Error(writer, result.Error.Error(), http.StatusInternalServerError)
+		id, ok := doCreate(writer, request, nil)
+		if !ok {
+			return
 		}
-		responseStruct := struct {
-			status string
-			id     uint
-		}{"accept", doc.Id}
-		writer.Header().Set("Content-Type", "application/json")
-		writer.WriteHeader(http.StatusOK)
-		_ = json.NewEncoder(writer).Encode(responseStruct)
+		sendAccept(id, writer)
 	}
+}
+
+func doCreate(writer http.ResponseWriter, request *http.Request, tx *gorm.DB) (uint, bool) {
+	var doc Document
+	_ = json.NewDecoder(request.Body).Decode(&doc)
+	result := con.Db.Omit("Id").Create(&doc)
+	if result.Error != nil {
+		http.Error(writer, result.Error.Error(), http.StatusInternalServerError)
+		return 0,false
+	}
+	return doc.Id, true
 }

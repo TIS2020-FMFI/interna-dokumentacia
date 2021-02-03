@@ -5,7 +5,7 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"time"
-	h"tisko/helper_func"
+	h"tisko/helper"
 )
 
 func init() {

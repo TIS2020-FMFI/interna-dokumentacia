@@ -2,11 +2,12 @@ package document
 
 import (
 	"github.com/gorilla/mux"
+	"gorm.io/gorm"
 	"net/http"
 	"strconv"
 	comb "tisko/combination"
 	con "tisko/connection_database"
-	h "tisko/helper_func"
+	h "tisko/helper"
 )
 
 var (
@@ -15,21 +16,30 @@ var (
 
 func confirmDoc(writer http.ResponseWriter, request *http.Request) {
 	tx := con.Db.Begin()
-	defer h.IfRecoverRollBack(tx)
+	defer h.IfRecoverRollBack(tx, writer)
 	if con.SetHeadersReturnIsContunue(writer, request) {
-		id, err := strconv.Atoi(mux.Vars(request)["id"])
+		id, err := strconv.ParseUint(mux.Vars(request)["id"],10,32)
 		if err != nil || id<0 {
 			http.Error(writer, "must give number > 0", http.StatusInternalServerError)
 			return
 		}
-		var assignedTo string
-		tx.Raw(confirm, id).Find(&assignedTo)
-		com, err := comb.GetCombinations(assignedTo)
-		if err != nil {
-			http.Error(writer, "error at give sign to doc", http.StatusInternalServerError)
-			panic("error at give sign to doc")
-		}
-		AddSignature(com, id, tx)
-		tx.Commit()
+		doConfirm(uint(id), tx, writer)
+		sendAccept(uint(id), writer)
 	}
+}
+
+func doConfirm(id uint, tx *gorm.DB, writer http.ResponseWriter) {
+	var respon h.StringBool
+	tx.Raw(confirm, id).Find(&respon)
+	com, err := comb.GetCombinations(respon)
+	if err != nil {
+		http.Error(writer, "error at give sign to doc", http.StatusInternalServerError)
+		panic("error at give sign to doc")
+	}
+	val := h.IntBool{
+		Int0:  id,
+		Bool0: respon.Whether,
+	}
+	AddSignature(com, val, tx)
+	tx.Commit()
 }

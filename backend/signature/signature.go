@@ -109,7 +109,5 @@ func  (signatures *Signatures)signFlushMapsToSlices(doc map[uint]*ModifyDocument
 	for  _, value := range online {
 		result.OnlineSignature = append(result.OnlineSignature, *value)
 	}
-
 	return result
-
 }

@@ -6,10 +6,10 @@ import (
 )
 
 type Combination struct {
-	BranchId     uint    `gorm:"column:branch_id" json:"branch_id"`
-	DivisionId   uint    `gorm:"column:division_id" json:"division_id"`
-	DepartmentId uint    `gorm:"column:department_id" json:"department_id"`
-	CityId       uint    `gorm:"column:city_id" json:"city_id"`
+	BranchId     uint    `json:"branch_id"`
+	DivisionId   uint    `json:"division_id"`
+	DepartmentId uint    `json:"department_id"`
+	CityId       uint    `json:"city_id"`
 }
 type CombinationFull struct {
 	DivisionId uint`gorm:"column:division_id" json:"division_id"`

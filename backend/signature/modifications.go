@@ -1,17 +1,10 @@
 package signature
 
 import (
-	con "tisko/connection_database"
 	"tisko/document"
 	"tisko/employee"
-	path "tisko/paths"
 	"tisko/training"
 )
-
-func AddHandle() {
-	con.AddHeaderGetID(path.Signatures, GetSignatures)
-}
-
 type ModifyDocument struct {
 	document.Document
 	Sign []ModifySignDocument `json:"signatures"`

@@ -22,3 +22,8 @@ func AddHeaderGetID(path string, f func(http.ResponseWriter, *http.Request)) {
 func AddHeaderGet(path string, f func(http.ResponseWriter, *http.Request)) {
 	myRouter.HandleFunc(path, f).Methods("GET")
 }
+
+func HeaderSendOk(writer http.ResponseWriter) {
+	writer.Header().Set("Content-Type", "application/json")
+	writer.WriteHeader(http.StatusOK)
+}

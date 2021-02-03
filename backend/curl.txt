@@ -1,1 +1,0 @@
-$ curl --data "first_name=first_name_601&password=601" -i localhost:7777/login

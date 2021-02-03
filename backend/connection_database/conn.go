@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
-	h "tisko/helper_func"
+	h "tisko/helper"
 )
 
 var (

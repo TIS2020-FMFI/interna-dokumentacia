@@ -1,0 +1,8 @@
+create or replace function Is_suitable(id1 integer, id2 integer)
+    returns bool
+    language plpgsql as
+$$
+begin
+    return (id1 = id2 or id1 isnull or id2 isnull or id2 = 0);
+end;
+$$

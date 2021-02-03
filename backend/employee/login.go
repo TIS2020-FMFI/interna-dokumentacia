@@ -28,8 +28,7 @@ func login(writer http.ResponseWriter, request *http.Request) {
 			http.Error(writer, re.Error.Error(), http.StatusInternalServerError)
 			return
 		}
-		writer.Header().Set("Content-Type", "application/json")
-		writer.WriteHeader(http.StatusOK)
+		con.HeaderSendOk(writer)
 		_ = json.NewEncoder(writer).Encode(e)
 	}
 }

@@ -2,6 +2,8 @@ package signature
 
 import (
 	"time"
+	con "tisko/connection_database"
+	path "tisko/paths"
 )
 
 type DocumentSignature struct {
@@ -12,4 +14,9 @@ type DocumentSignature struct {
 	EmployeeId uint       `gorm:"column:employee_id" json:"employee_id"`
 	SuperiorId uint       `gorm:"column:superior_id" json:"superior_id"`
 	DocumentId uint       `gorm:"column:document_id" json:"document_id"`
+}
+
+func AddHandle() {
+	con.AddHeaderGetID(path.UnsignedSigns, GetUnsignedSignatures)
+	con.AddHeaderGetID(path.SkillMatrix, GetSkillMatrix)
 }

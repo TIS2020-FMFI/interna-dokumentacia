@@ -1,0 +1,11 @@
+insert into document_signatures(employee_id, e_date,
+superior_id, s_date, document_id)
+ SELECT e.id, null, case
+      when (? ) THEN e.manager_id
+          else null end, null, ?
+from employees e
+where
+    Is_suitable(branch_id, ?)   and
+    Is_suitable(city_id, ?) and
+    Is_suitable(department_id, ?) and
+    Is_suitable(division_id, ?);
