@@ -18,17 +18,17 @@ func confirmDoc(writer http.ResponseWriter, request *http.Request) {
 	tx := con.Db.Begin()
 	defer h.IfRecoverRollBack(tx, writer)
 	if con.SetHeadersReturnIsContunue(writer, request) {
-		id, err := strconv.ParseUint(mux.Vars(request)["id"],10,32)
+		id, err := strconv.ParseUint(mux.Vars(request)["id"],10,64)
 		if err != nil || id<0 {
 			http.Error(writer, "must give number > 0", http.StatusInternalServerError)
 			return
 		}
-		doConfirm(uint(id), tx, writer)
-		con.SendAccept(uint(id), writer)
+		doConfirm(id, tx, writer)
+		con.SendAccept(id, writer)
 	}
 }
 
-func doConfirm(id uint, tx *gorm.DB, writer http.ResponseWriter) {
+func doConfirm(id uint64, tx *gorm.DB, writer http.ResponseWriter) {
 	var respon h.StringBool
 	tx.Raw(confirm, id).Find(&respon)
 	com, err := comb.GetCombinations(respon)

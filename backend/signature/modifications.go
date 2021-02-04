@@ -7,17 +7,17 @@ import (
 )
 type ModifyDocument struct {
 	document.Document
-	Sign []ModifySignDocument `json:"signatures"`
+	Sign []ModifySignDocument ` json:"signatures"`
 }
 
 type ModifySignDocument struct {
 	DocumentSignature
-	Employee *employee.Employee `json:"employee"`
+	Employee *employee.Employee ` json:"employee"`
 }
 
 type ModifyTraining struct {
 	training.OnlineTraining
-	Sign []OnlineTrainingSignature `json:"signatures"`
+	Sign []OnlineTrainingSignature ` json:"signatures"`
 
 }
 

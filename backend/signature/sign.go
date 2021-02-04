@@ -38,7 +38,7 @@ func signTraining(writer http.ResponseWriter, request *http.Request) {
 }
 
 func signCommon(rw helper.RquestWriter, q string) {
-	id, err := strconv.ParseUint(mux.Vars(rw.R)["id"],10,32)
+	id, err := strconv.ParseUint(mux.Vars(rw.R)["id"],10,64)
 	if err != nil {
 		http.Error(rw.W, "must give number > 0", http.StatusInternalServerError)
 		return
@@ -49,5 +49,5 @@ func signCommon(rw helper.RquestWriter, q string) {
 		http.Error(rw.W, "error at sign", http.StatusInternalServerError)
 		return
 	}
-	con.SendAccept(uint(id), rw.W)
+	con.SendAccept(id, rw.W)
 }

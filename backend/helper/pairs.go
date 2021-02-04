@@ -9,7 +9,7 @@ type StringBool struct {
 
 
 type IntBool struct {
-	Int0 uint
+	Int0 uint64
 	Bool0 bool
 }
 

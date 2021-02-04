@@ -13,11 +13,11 @@ func createDoc(writer http.ResponseWriter, request *http.Request) {
 		if !ok {
 			return
 		}
-		con.SendAccept(uint(id), writer)
+		con.SendAccept(id, writer)
 	}
 }
 
-func doCreate(writer http.ResponseWriter, request *http.Request, tx *gorm.DB) (uint, bool) {
+func doCreate(writer http.ResponseWriter, request *http.Request, tx *gorm.DB) (uint64, bool) {
 	var doc Document
 	_ = json.NewDecoder(request.Body).Decode(&doc)
 	result := con.Db.Omit("Id").Create(&doc)

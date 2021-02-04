@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"gorm.io/gorm"
 	"net/http"
+	"strconv"
 	con "tisko/connection_database"
 )
 
@@ -14,11 +15,11 @@ func updateDoc(writer http.ResponseWriter, request *http.Request) {
 		if !ok {
 			return
 		}
-		con.SendAccept(uint(id), writer)
+		con.SendAccept(id, writer)
 	}
 }
 
-func doUpdate(writer http.ResponseWriter, request *http.Request, tx *gorm.DB) (bool, uint) {
+func doUpdate(writer http.ResponseWriter, request *http.Request, tx *gorm.DB) (bool, uint64) {
 	var doc map[string]interface{}
 	err := json.NewDecoder(request.Body).Decode(&doc)
 	id, err2 := getIdMap(doc)
@@ -34,9 +35,9 @@ func doUpdate(writer http.ResponseWriter, request *http.Request, tx *gorm.DB) (b
 	return true, id
 }
 
-func getIdMap(doc map[string]interface{}) (uint, error) {
-	result, ok := doc["id"].(uint)
-	if ok {
+func getIdMap(doc map[string]interface{}) (uint64, error) {
+	result, err := strconv.ParseUint(fmt.Sprint(doc["id"]),10,64)
+	if err==nil {
 		return result, nil
 	}
 	return 0, fmt.Errorf("convert error")

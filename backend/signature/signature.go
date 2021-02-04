@@ -1,42 +1,15 @@
 package signature
 
-import (
-	"tisko/document"
-	"tisko/employee"
-	"tisko/training"
-)
-
-type SignatureAndEmployee struct {
-	employee.Employee `json:"employee"`
-	document.Document `json:"document"`
-	DocumentSignature `json:"signature"`
-}
-
-type SignatureAndDocument struct {
-	document.Document `json:"document"`
-	DocumentSignature `json:"signature"`
-}
-
-type OnlineTrainingAndSignature struct {
-	training.OnlineTraining`json:"training"`
-	OnlineTrainingSignature`json:"signature"`
-}
-
-type Signatures struct {
-	DocumentSignature []SignatureAndDocument
-	EmployeeSignature []SignatureAndEmployee
-	OnlineSignature []OnlineTrainingAndSignature
-}
 
 func (signatures *Signatures)convertToModifySignature() *ModifySignatures {
-	containsMapDoc := make(map[uint]*ModifyDocument, len(signatures.DocumentSignature))
+	containsMapDoc := make(map[uint64]*ModifyDocument, len(signatures.DocumentSignature))
 	signatures.convertToModifySignatureDoc(containsMapDoc)
-	containsMapOnline := make(map[uint]*ModifyTraining, len(signatures.OnlineSignature))
+	containsMapOnline := make(map[uint64]*ModifyTraining, len(signatures.OnlineSignature))
 	signatures.convertToModifySignatureOnline(containsMapOnline)
 	return signatures.signFlushMapsToSlices(containsMapDoc, containsMapOnline)
 }
 
-func (signatures *Signatures) convertToModifySignatureDoc(containsMap map[uint]*ModifyDocument) {
+func (signatures *Signatures) convertToModifySignatureDoc(containsMap map[uint64]*ModifyDocument) {
 	for i := 0; i < len(signatures.DocumentSignature); i++ {
 		documentSignature := signatures.DocumentSignature[i]
 		convertOneSigniture(containsMap, documentSignature)
@@ -47,7 +20,7 @@ func (signatures *Signatures) convertToModifySignatureDoc(containsMap map[uint]*
 	}
 }
 
-func convertOneSigniture(containsMap map[uint]*ModifyDocument, signature SignatureAndDocument) {
+func convertOneSigniture(containsMap map[uint64]*ModifyDocument, signature SignatureAndDocument) {
 	var ModifyDocument *ModifyDocument
 	m, ok:= containsMap[signature.Document.Id]
 	ModifyDocument = m
@@ -63,7 +36,7 @@ func careSign(modifyDocument *ModifyDocument, signature SignatureAndDocument) {
 	modifyDocument.Sign = append(modifyDocument.Sign, signatureModify)
 }
 
-func convertOneSignitureEmployee(containsMap map[uint]*ModifyDocument,
+func convertOneSignitureEmployee(containsMap map[uint64]*ModifyDocument,
 	signature SignatureAndEmployee) {
 	var ModifyDocument *ModifyDocument
 	m, ok:= containsMap[signature.Document.Id]
@@ -81,14 +54,14 @@ func careSignEmployee(modifyDocument *ModifyDocument, signature SignatureAndEmpl
 	modifyDocument.Sign = append(modifyDocument.Sign, signatureModify)
 }
 
-func (signatures *Signatures) convertToModifySignatureOnline(online map[uint]*ModifyTraining) {
+func (signatures *Signatures) convertToModifySignatureOnline(online map[uint64]*ModifyTraining) {
 	for i := 0; i < len(signatures.OnlineSignature); i++ {
 		documentSignature := signatures.OnlineSignature[i]
 		convertOneSignitureOnline(online, documentSignature)
 	}
 }
 
-func convertOneSignitureOnline(online map[uint]*ModifyTraining, signature OnlineTrainingAndSignature) {
+func convertOneSignitureOnline(online map[uint64]*ModifyTraining, signature OnlineTrainingAndSignature) {
 	var modifyTraining *ModifyTraining
 	m, ok:= online[signature.OnlineTraining.Id]
 	modifyTraining = m
@@ -99,7 +72,7 @@ func convertOneSignitureOnline(online map[uint]*ModifyTraining, signature Online
 	modifyTraining.Sign = append(modifyTraining.Sign, signature.OnlineTrainingSignature)
 }
 
-func  (signatures *Signatures)signFlushMapsToSlices(doc map[uint]*ModifyDocument, online map[uint]*ModifyTraining) *ModifySignatures {
+func  (signatures *Signatures)signFlushMapsToSlices(doc map[uint64]*ModifyDocument, online map[uint64]*ModifyTraining) *ModifySignatures {
 
 	result := createEmptyModifySignaturesWithCapacity(signatures)
 

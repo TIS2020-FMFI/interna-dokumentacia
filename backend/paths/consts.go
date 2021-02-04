@@ -12,7 +12,7 @@ const (
 	DocumentUpdate = "/document/update"
 	DocumentConfirm = "/document/confirm"
 	DocumentUpdateConfirm = "/document/update/confirm"
-	UnsignedSigns = "/unsigned/ignatures"
+	UnsignedSigns = "/unsigned/signatures"
 	SkillMatrix = "/skill/matrix"
 	Sign  = "/sign"
 	SignSuperior  = "/sign/superior"
