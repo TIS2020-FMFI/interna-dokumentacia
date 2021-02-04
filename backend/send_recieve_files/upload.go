@@ -14,7 +14,7 @@ func AddHandle() {
 
 func upload(writer http.ResponseWriter, request *http.Request) {
 	if con.SetHeadersReturnIsContunue(writer,request) {
-		file, fileHeader, err := request.FormFile("import")
+		file, fileHeader, err := request.FormFile("file")
 		if err != nil {
 			http.Error(writer, "must give me file with key \"import\"", http.StatusInternalServerError)
 			return

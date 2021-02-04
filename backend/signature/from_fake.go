@@ -75,5 +75,6 @@ func convertToNormalTraining(onlineTraining fake_structs.OnlineTraining) trainin
 		Date:     onlineTraining.Date,
 		Duration: onlineTraining.Duration,
 		Agenda:   onlineTraining.Agenda,
+		Deadline: onlineTraining.Deadline,
 	}
 }
