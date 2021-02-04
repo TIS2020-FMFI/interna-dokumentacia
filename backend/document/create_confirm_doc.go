@@ -15,6 +15,6 @@ func createConfirmDoc(writer http.ResponseWriter, request *http.Request) {
 			return
 		}
 		doConfirm(id, tx, writer)
-		sendAccept(id, writer)
+		con.SendAccept(uint(id), writer)
 	}
 }

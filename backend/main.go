@@ -21,5 +21,7 @@ func main() {
 	employee.AddHandle()
 	document.AddHandle()
 	signature.AddHandle()
+	runMailSenders()
 	conn.Start()
 }
+

@@ -1,7 +1,6 @@
 package document
 
 import (
-	"encoding/json"
 	"net/http"
 	con "tisko/connection_database"
 	h "tisko/helper"
@@ -17,16 +16,6 @@ func updateConfirmDoc(writer http.ResponseWriter, request *http.Request) {
 			return
 		}
 		doConfirm(id, tx, writer)
-		sendAccept(id, writer)
+		con.SendAccept(uint(id), writer)
 	}
-}
-
-func sendAccept(id uint, writer http.ResponseWriter) {
-	responseStruct := struct {
-		status string
-		id     uint
-	}{"accept", id}
-	con.HeaderSendOk(writer)
-	_ = json.NewEncoder(writer).Encode(responseStruct)
-
 }

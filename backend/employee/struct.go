@@ -26,4 +26,5 @@ type Employee struct {
 
 func AddHandle() {
 	con.AddHeaderPost(path.Login, login)
+	con.AddHeaderPost(path.Kiosk, kiosk)
 }

@@ -14,7 +14,7 @@ func updateDoc(writer http.ResponseWriter, request *http.Request) {
 		if !ok {
 			return
 		}
-		sendAccept(id, writer)
+		con.SendAccept(uint(id), writer)
 	}
 }
 

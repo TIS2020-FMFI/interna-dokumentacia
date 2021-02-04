@@ -4,6 +4,7 @@ package paths
 
 const (
 	Login = "/login"
+	Kiosk = "/kiosk"
 	file = "/fileupload"
 	Comninations ="/combination"
 	DocumentAdd = "/document/create"
@@ -11,7 +12,9 @@ const (
 	DocumentUpdate = "/document/update"
 	DocumentConfirm = "/document/confirm"
 	DocumentUpdateConfirm = "/document/update/confirm"
-	UnsignedSigns = "/unsignedSignatures"
-	SkillMatrix = "/skillMatrix"
-	Sign  = "/"
+	UnsignedSigns = "/unsigned/ignatures"
+	SkillMatrix = "/skill/matrix"
+	Sign  = "/sign"
+	SignSuperior  = "/sign/superior"
+	SignTraining = "/sign/training"
 )

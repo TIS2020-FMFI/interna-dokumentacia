@@ -1,6 +1,9 @@
 package connection_database
 
-import "net/http"
+import (
+	"encoding/json"
+	"net/http"
+)
 
 func SetHeadersReturnIsContunue(writer http.ResponseWriter, request *http.Request) bool {
 	writer.Header().Set("Access-Control-Allow-Origin", "*")
@@ -26,4 +29,13 @@ func AddHeaderGet(path string, f func(http.ResponseWriter, *http.Request)) {
 func HeaderSendOk(writer http.ResponseWriter) {
 	writer.Header().Set("Content-Type", "application/json")
 	writer.WriteHeader(http.StatusOK)
+}
+
+func SendAccept(id uint, writer http.ResponseWriter) {
+	responseStruct := struct {
+		status string
+		id     uint
+	}{"accept", id}
+	HeaderSendOk(writer)
+	_ = json.NewEncoder(writer).Encode(responseStruct)
 }

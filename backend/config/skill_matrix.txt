@@ -1,4 +1,6 @@
-SELECT document_signatures.*, "employees".*, documents.*
+SELECT document_signatures.*,
+       exists(select * from cancel_signs where document_signature_id=document_signatures.id )as cancel,
+       "employees".*, documents.*
 FROM "employees" JOIN document_signatures on
         document_signatures.employee_id = employees.id JOIN documents on
         document_signatures.document_id = documents.id
