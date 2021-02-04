@@ -1,5 +1,6 @@
 package signature
 
+import "sort"
 
 func (signatures *Signatures)convertToModifySignature() *ModifySignatures {
 	containsMapDoc := make(map[uint64]*ModifyDocument, len(signatures.DocumentSignature))
@@ -79,6 +80,9 @@ func  (signatures *Signatures)signFlushMapsToSlices(doc map[uint64]*ModifyDocume
 	for  _, value := range doc {
 		result.DocumentSignature = append(result.DocumentSignature, *value)
 	}
+	sort.SliceStable(result.DocumentSignature, func(i, j int) bool {
+		return result.DocumentSignature[i].Deadline.Time.Before(result.DocumentSignature[j].Deadline.Time)
+	})
 	for  _, value := range online {
 		result.OnlineSignature = append(result.OnlineSignature, *value)
 	}

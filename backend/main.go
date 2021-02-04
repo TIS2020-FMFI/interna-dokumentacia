@@ -7,6 +7,9 @@ import (
 	conn "tisko/connection_database"
 	"tisko/document"
 	"tisko/employee"
+	"tisko/helper"
+	"tisko/mail"
+	files"tisko/send_recieve_files"
 	"tisko/signature"
 )
 
@@ -14,6 +17,7 @@ func main() {
 	defer func() {
 		if r := recover(); r != nil {
 			fmt.Println(r)
+			helper.WriteErr(r)
 			time.Sleep(time.Second*5)
 		}
 	}()
@@ -21,7 +25,8 @@ func main() {
 	employee.AddHandle()
 	document.AddHandle()
 	signature.AddHandle()
-	runMailSenders()
+	files.AddHandle()
+	mail.RunMailSenders()
 	conn.Start()
 }
 

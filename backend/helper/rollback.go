@@ -10,11 +10,11 @@ import (
 func IfRecoverRollBack(tx *gorm.DB, writer http.ResponseWriter) {
 	if r := recover(); r != nil {
 		tx.Rollback()
-		writeErr(r)
+		WriteErr(r)
 	}
 }
 
-func writeErr(r interface{}) {
+func WriteErr(r interface{}) {
 	f, err := os.OpenFile("logfile", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
 	if err != nil {
 		log.Fatalf("error opening file: %v", err)

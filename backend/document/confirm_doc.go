@@ -19,7 +19,7 @@ func confirmDoc(writer http.ResponseWriter, request *http.Request) {
 	defer h.IfRecoverRollBack(tx, writer)
 	if con.SetHeadersReturnIsContunue(writer, request) {
 		id, err := strconv.ParseUint(mux.Vars(request)["id"],10,64)
-		if err != nil || id<0 {
+		if err != nil {
 			http.Error(writer, "must give number > 0", http.StatusInternalServerError)
 			return
 		}

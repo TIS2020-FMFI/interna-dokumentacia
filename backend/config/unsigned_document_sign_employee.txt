@@ -1,6 +1,7 @@
 SELECT document_signatures.id as d_s_id,
        employee_id as e_d_s_id, e_date,
-       superior_id, s_date, document_id, false  as cancel,
+       superior_id, s_date, document_id,
+       exists(select * from cancel_signs where document_signature_id=document_signatures.id )as cancel,
 
        "employees".id as e_id, first_name,
        last_name, login, password, role, email,
@@ -16,7 +17,5 @@ FROM "employees" JOIN document_signatures on
         document_signatures.employee_id = employees.id JOIN documents on
         document_signatures.document_id = documents.id
 
-WHERE superior_id = ? and s_date ISNULL and not edited
-  and not exists(select * from cancel_signs
-  where document_signature_id = document_signatures.id)
+WHERE superior_id = ? and not edited
 order by deadline

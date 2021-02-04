@@ -5,7 +5,7 @@ package paths
 const (
 	Login = "/login"
 	Kiosk = "/kiosk"
-	file = "/fileupload"
+	File = "/file/upload"
 	Comninations ="/combination"
 	DocumentAdd = "/document/create"
 	DocumentCreateConfirm = "/document/create/confirm"
