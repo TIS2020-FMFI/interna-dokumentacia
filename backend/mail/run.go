@@ -1,14 +1,28 @@
 package mail
 
 import (
+	"encoding/json"
 	"time"
+	h "tisko/helper"
 )
 
 const (
 	day = time.Hour*24
 )
+
+var (
+	configuration *config
+)
+
 func RunMailSenders() {
+	loadConfig()
 	go clockControl()
+}
+
+func loadConfig() {
+	stringConfig := h.ReturnTrimFile("./config/mail_config.txt")
+	err := json.Unmarshal([]byte(stringConfig), &configuration)
+	h.Check(err)
 }
 
 func clockControl() {
@@ -27,6 +41,7 @@ func clockControl() {
 	}
 }
 func readLastDate() time.Time {
+
 	return time.Now()
 }
 

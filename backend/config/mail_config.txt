@@ -1,0 +1,12 @@
+
+
+
+
+{
+"from": "from@gmail.com",
+"password": "<Email Password>",
+"smtpHost": "smtp.gmail.com",
+"smtpPort": "587",
+"message_doc": "podpíš dokumenty čísel:",
+"message_training": "podpíš online meeting čísel:"
+}
