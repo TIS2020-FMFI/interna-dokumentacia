@@ -1,9 +1,7 @@
 import {Col, Form, Row} from "react-bootstrap";
 import React from "react";
 
-const MyHookForm = (props) => {
-
-  const {label, name, placeholder, type, register, as, defaultValue} = props
+const MyHookForm = ({label, name, placeholder, type, register, as, defaultValue, required}) => {
 
   return (
     <Form.Group as={Row}>
@@ -16,6 +14,7 @@ const MyHookForm = (props) => {
           defaultValue={defaultValue}
           type={type}
           as={as}
+          required={required}
         />
       </Col>
     </Form.Group>

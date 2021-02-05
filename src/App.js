@@ -13,7 +13,7 @@ import FinderPage from "./components/Pages/FinderPage.jsx";
 import SettingsPage from "./components/Pages/SettingsPage.jsx";
 import LogoutPage from "./components/Pages/LogoutPage";
 import {isAdmin, getUser, removeUser} from "./functions";
-import {Container} from "react-bootstrap/Container";
+import Container from "react-bootstrap/Container";
 import IdleTimer from "./IdleTimer";
 import { useHistory } from "react-router-dom";
 
@@ -34,7 +34,7 @@ function App() {
         // FIXME Redirect
         console.log("end of session")
         removeUser()
-        history.push("/")
+        // history.push("/")
         setIsTimeout(true);
       }
     });

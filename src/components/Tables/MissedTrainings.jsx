@@ -4,16 +4,18 @@ import {MissedBtn} from "../Buttons/TableBtns";
 import CaptionElement from "../Others/CaptionElement";
 import ConfirmModal from "../Modals/ConfirmModal";
 import EmptyTable from "./EmptyTable";
+import {FormattedDeadline, FormattedTookPlace} from "../Others/DateFormatter";
 
 const MissedTrainings = ({trainings}) => {
 
-  const [trns, setTrns] = useState(trainings)
+  console.log("trainings", trainings)
+
   const [modalInfo, setModalInfo] = useState([])
   const [showModal, setShowModal] = useState(false)
 
   const handleAccept = () => {
     // TODO MATO uloz trening ako podpisany
-    setTrns(trns.filter(t => t.id !== modalInfo.id)); // delete the document
+    // setTrns(trns.filter(t => t.id !== modalInfo.id)); // delete the document
     setShowModal(false);
   }
 
@@ -22,11 +24,13 @@ const MissedTrainings = ({trainings}) => {
       dataField: 'name',
       text: 'Name'
     }, {
-      dataField: 'took_place',
-      text: 'Took place'
+      dataField: 'date',
+      text: 'Date',
+      formatter: FormattedTookPlace,
     }, {
       dataField: 'deadline',
-      text: 'Deadline'
+      text: 'Deadline',
+      formatter: FormattedDeadline,
     }, {
       dataField: 'signBtn',
       text: 'Sign',
@@ -45,7 +49,7 @@ const MissedTrainings = ({trainings}) => {
       <BootstrapTable
         keyField="id"
         hover
-        data={trns}
+        data={trainings}
         columns={columns}
         noDataIndication={EmptyTable}
       />

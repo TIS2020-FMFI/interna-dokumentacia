@@ -1,3 +1,4 @@
+// copy paste
 class IdleTimer {
 
   constructor({ timeout, onTimeout, onExpired }) {
@@ -7,7 +8,6 @@ class IdleTimer {
     const expiredTime = parseInt(localStorage.getItem("_expiredTime"), 10);
     if (expiredTime > 0 && expiredTime < Date.now()) {
       onExpired();
-      console.log("expired")
       return;
     }
 

@@ -15,7 +15,6 @@ const CombinationForm = ({register}) => {
       <Form.Group as={Row}>
         <Form.Label>Branch</Form.Label>
         <Form.Control as="select" name="branch" ref={register}>
-          <option hidden value="">Select option ...</option>
           { getSelectOptions(branches) }
         </Form.Control>
       </Form.Group>
@@ -24,7 +23,6 @@ const CombinationForm = ({register}) => {
       <Form.Group as={Row}>
         <Form.Label>Division</Form.Label>
         <Form.Control as="select" name="division" ref={register}>
-          <option hidden value="">Select option ...</option>
           { getSelectOptions(divisions) }
         </Form.Control>
       </Form.Group>
@@ -33,7 +31,6 @@ const CombinationForm = ({register}) => {
       <Form.Group as={Row}>
         <Form.Label>Department</Form.Label>
         <Form.Control as="select" name="department" ref={register}>
-          <option hidden value="">Select option ...</option>
           { getSelectOptions(departments) }
         </Form.Control>
       </Form.Group>
@@ -42,7 +39,6 @@ const CombinationForm = ({register}) => {
       <Form.Group as={Row}>
         <Form.Label>City</Form.Label>
         <Form.Control as="select" name="city" ref={register}>
-          <option hidden value="">Select option ...</option>
           { getSelectOptions(cities) }
         </Form.Control>
       </Form.Group>

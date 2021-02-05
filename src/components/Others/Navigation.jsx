@@ -32,19 +32,22 @@ const Navigation = ({location}) => {
   };
 
   return (
-    <Navbar expand="sm" bg="dark" variant="dark">
+    <Navbar expand="md" bg="dark" variant="dark" className="sticky-nav">
       <Navbar.Brand href="#home">
         <img
           alt="logo"
           src="/gefco_logo.png"
-          width="40"
-          height="40"
+          width="50"
+          height="50"
           className="d-inline-block align-top"
         />
       </Navbar.Brand>
-      <Nav className="ml-auto" navbar activeKey={location.pathname}>
-        { user !== null ? <LoginNav/> : <LogoutNav/> }
+      <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+      <Navbar.Collapse id="responsive-navbar-nav">
+      <Nav className="ml-auto" variant="pills" activeKey={location.pathname}>
+        {user !== null ? <LoginNav/> : <LogoutNav/>}
       </Nav>
+      </Navbar.Collapse>
     </Navbar>
   )
 };

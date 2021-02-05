@@ -22,39 +22,43 @@ const Filter = () => {
   });
 
   const handleSubmit = (data) => {
-    // tu uz prebehne search
     console.log(data);
     console.log(filter);
   };
 
   const handleType = (data) => {
     const n = {...filter, type: data}
-    console.log(n)
+    console.log('new', n)
     setFilter({type: data, branch: [], city: []})
-    // tu pridam vybrane data a ulozim to do filtra, ktory mam vyklikany
     console.log('filter', filter)
-    const update = combinations.filter(c=>data.includes(c.type))
+    const update = combinations.filter(c => data.includes(c.type))
     setCombination(update)
     console.log('combination', update)
-    shrinkSelect()
+    shrinkSelect(update)
   }
 
-  function shrinkSelect() {
-    setT()
-    setB()
-    setC()
+  function shrinkSelect(combinations) {
+    setT(combinations)
+    setB(combinations)
+    setC(combinations)
   }
 
-  function setT() {
-    setTypes([...new Set(combinations.map(c => c.type))])
+  function setT(combinations) {
+    const t = [...new Set(combinations.map(c => c.type))]
+    console.log('types', t)
+    setTypes(t)
   }
 
-  function setB() {
-    setBranches([...new Set(combinations.map(c => c.branch))]);
+  function setB(combinations) {
+    const t = [...new Set(combinations.map(c => c.branch))]
+    console.log('branches', t)
+    setBranches(t);
   }
 
-  function setC() {
-    setCities([...new Set(combinations.map(c => c.city))]);
+  function setC(combinations) {
+    const t = [...new Set(combinations.map(c => c.city))]
+    console.log('cities', t)
+    setCities(t);
   }
 
   return (

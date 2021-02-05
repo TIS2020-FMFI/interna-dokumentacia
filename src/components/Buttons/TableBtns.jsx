@@ -1,11 +1,11 @@
 import React from "react";
 import {Button} from "react-bootstrap";
-import {hasSubs} from "../../functions";
+import {hasSubs, require_superior} from "../../functions";
 
 export const MissedBtn = (cell, row, index, {setModalInfo, setShowModal}) => {
 
   const handleClick = () => {
-    if (!hasSubs(row)) {
+    if (!require_superior(row)) {
       console.log(row)
       setModalInfo(row);
       setShowModal(true);
@@ -13,17 +13,15 @@ export const MissedBtn = (cell, row, index, {setModalInfo, setShowModal}) => {
   }
 
   return (
-    <Button onClick={handleClick} size="sm">
-      {hasSubs(row) ? 'Details' : 'Sign'}
+    <Button onClick={handleClick} size="sm" className="btn-block">
+      {require_superior(row) ? 'Details' : 'Sign'}
     </Button>
   );
 };
 
-/**
- * @return Sign Date or Details Button
- * */
 export const SignedBtn = (cell, row) => {
-  return !hasSubs(row)
-    ? row.sign
-    : (<Button size="sm">Details</Button>);
+
+  return require_superior(row)
+    ? <Button size="sm">Details</Button>
+    : row.sign
 };

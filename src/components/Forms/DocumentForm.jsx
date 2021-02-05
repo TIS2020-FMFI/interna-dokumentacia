@@ -1,42 +1,63 @@
-import {Form, Row, Col, Button, ButtonGroup, Container, Alert} from "react-bootstrap";
+import {Form, Row, Col, Button} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import MyHookForm from "./MyHookForm";
 import Combinations from "../Others/Combinations";
 import {ErrorMessage} from "../Others/ErrorMessage";
-import {types} from "../../data";
+import {proxy, types} from "../../data";
 import {getSelectOptions} from "../../functions";
 
-const DocumentForm = ({data}) => {
-
-  data = {...data, deadline: 14}
+const DocumentForm = ({form_data}) => {
 
   const {register, handleSubmit, errors} = useForm({
-    defaultValues: data
+    defaultValues: {...form_data, deadline: 14}
   });
 
-  const [combinations, setCombinations] = useState([{
-    id: 1,
-    branch: "OVL",
-    division: "IT",
-    department: "TESTER",
-    city: "Bratislava",
-  }]) // #TEST
+  const [combinations, setCombinations] = useState([])
 
-  const notEmpty = (val) => { return val !== "" }
   const [error, setError] = useState(null)
   useEffect(() => setError(""), combinations)
 
   const onSubmit = (data, event) => {
-    console.log(combinations);
     if (combinations.length === 0){
       setError("At least one combination is required")
       return
     }
-    // TODO MATO save document's data into DB (and SEND) with combination
-    event.target.id === "save"
-      ? console.log("save", data)
-      : console.log("save & send", data)
+
+    data = {...data, combinations: combinations}
+    console.log('combinations', combinations);
+    console.log('data', data)
+
+    const doc_id = insertDocument(data)
+    if (event.target.id === "send"){
+      sendDocument(doc_id)
+    }
+  }
+
+  const insertDocument = (data) => {
+    return fetch(`${proxy}/document/create`, {
+      method: "POST",
+      body: new URLSearchParams(`document=${data}`)
+    })
+      .then(response => response.json())
+      .then(respon => {
+        console.log(respon)
+        return null; // id
+      })
+      .catch((e) => console.log(e))
+  }
+
+  const sendDocument = (id) => {
+    return fetch(`${proxy}/document/confirm`, {
+      method: "POST",
+      body: new URLSearchParams(`document=${id}`)
+    })
+      .then(response => response.json())
+      .then(respon => {
+        console.log(respon)
+        return null;
+      })
+      .catch((e) => console.log(e))
   }
 
   return (
@@ -49,12 +70,12 @@ const DocumentForm = ({data}) => {
           <Form.Control
             as="select"
             name="type"
-            ref={register({validate: notEmpty})}
+            ref={register({validate: v => v !== ""})}
+            // ref={register}
           >
-            <option hidden value="">Select option ...</option>
             {getSelectOptions(types)}
           </Form.Control>
-          {/*{ errors.doc_type && <ErrorMessage text={"Select a type"}/> }*/}
+          { errors.doc_type && <ErrorMessage text={"Select a type"}/> }
         </Col>
       </Form.Group>
 
@@ -88,16 +109,18 @@ const DocumentForm = ({data}) => {
         label="Document name*"
         name="name"
         placeholder="Enter document name"
-        register={register({required:true})}
+        ref={register({required:true})}
+        // required={true}
+        // ref={register}
       />
-      {/*{ errors.name && <ErrorMessage/> }*/}
+      { errors.name && <ErrorMessage/> }
 
       {/* LINK */}
       <MyHookForm
         label="Link to sharepoint"
         name="link"
         placeholder="Enter document link to sharepoint"
-        register={register}
+        ref={register}
       />
 
       {/* RELEASE */}
@@ -105,9 +128,10 @@ const DocumentForm = ({data}) => {
         label="Release date*"
         name="release_date"
         type="date"
-        register={register({required:true})}
+        // ref={register({required:true})}
+        ref={register}
       />
-      {/*{ errors.date && <ErrorMessage/> }*/}
+      { errors.date && <ErrorMessage/> }
 
       {/* DEADLINE */}
       <MyHookForm
@@ -115,18 +139,20 @@ const DocumentForm = ({data}) => {
         name="deadline"
         type="number"
         defaultValue="14"
-        register={register({required:true})}
+        // ref={register({required:true})}
+        ref={register}
       />
-      {/*{ errors.number && <ErrorMessage/> }*/}
+      { errors.number && <ErrorMessage/> }
 
       {/* VERSION */}
       <MyHookForm
         label="Version*"
         name="version"
         placeholder="Enter version"
-        register={register({required:true})}
+        // ref={register({required:true})}
+        ref={register}
       />
-      {/*{ errors.version && <ErrorMessage/> }*/}
+      { errors.version && <ErrorMessage/> }
 
       {/* ORDER NUMBER */}
       <MyHookForm
@@ -134,9 +160,10 @@ const DocumentForm = ({data}) => {
         name="order_number"
         type="number"
         placeholder="Enter number"
-        register={register({required:true})}
+        // register={register({required:true})}
+        register={register}
       />
-      {/*{ errors.number && <ErrorMessage/> }*/}
+      { errors.number && <ErrorMessage/> }
 
       {/* NOTE */}
       <MyHookForm
@@ -152,10 +179,10 @@ const DocumentForm = ({data}) => {
       { error && <ErrorMessage text={error}/> }
 
       {/* SAVE | SEND BUTTONS */}
-      <ButtonGroup onClick={handleSubmit(onSubmit)} className="w-25 pt-1">
+      <div onClick={handleSubmit(onSubmit)} className="pt-1 btn-block text-right">
         <Button id="save" type="submit" className="mr-1">Save</Button>
         <Button id="send" type="submit" variant="danger">Send</Button>
-      </ButtonGroup>
+      </div>
 
     </Form>
   )

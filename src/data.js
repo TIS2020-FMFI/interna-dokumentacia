@@ -2,6 +2,8 @@
  * toto som čisto len testovacie dáta, náhradou za databázu
  */
 
+export const proxy = "http://localhost:7777"
+
 export const employees = [{
   anet_id: '1',
   name: 'ja',

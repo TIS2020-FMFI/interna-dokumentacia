@@ -1,6 +1,7 @@
 import React from "react";
 import {Button, ButtonGroup, Col, Row, Badge} from "react-bootstrap";
 import {ExclamationTriangle} from "react-bootstrap-icons";
+import Container from "react-bootstrap/Container";
 
 export const RowButtons = ({setEvent, setShowModal, handleAccept, handleExport}) => {
 
@@ -14,23 +15,23 @@ export const RowButtons = ({setEvent, setShowModal, handleAccept, handleExport})
   }
 
   return (
-    // TODO JOZO prettify
     <Row>
-      <Col xs="7">
-        <Button id="export" variant="secondary" onClick={handleExport}>Export</Button>
+      <Col xs="2">
+        <Button id="export" variant="dark" onClick={handleExport}>Export</Button>
       </Col>
-      <ButtonGroup onClick={handleClick} className="ml-5">
-        <Button id="sign" className="mr-1">Sign</Button>
-        <Button id="cancelDuty" className="mr-1">Cancel duty</Button>
-        <Button id="trainAgain" className="mr-1">Train again</Button>
-        <Button id="cancel"> Cancel </Button>
-      </ButtonGroup>
+      <Col className="text-right">
+        <div onClick={handleClick} className="div-btn">
+          <Button id="sign" className="mr-1">Sign</Button>
+          <Button id="cancelDuty" className="mr-1">Cancel duty</Button>
+          <Button id="trainAgain" className="mr-1">Train again</Button>
+          <Button id="cancel"> Cancel </Button>
+        </div>
+      </Col>
     </Row>
   )
 }
 
 export const Legend = () => {
-  // todo
 
   const style = (color, textColor="white") => {
     return {
@@ -53,7 +54,7 @@ export const Legend = () => {
   // }
 
   return (
-    <div className="pt-5">
+    <Container className="pt-5 pl-0">
       <h5 className="pb-2">Legend:</h5>
       <p><Button style={style("gray")} size="sm">No need</Button>{' '}Zamestnanec bol odznačený z potreby oboznámenia alebo sa ho dokument netýka</p>
       <p><Button style={style("red")} size="sm">miss e+s</Button>{' '}Ani zamestnanec ani nadriadený ešte nepotvrdili</p>
@@ -62,7 +63,7 @@ export const Legend = () => {
       <p><Button style={style("green")} size="sm">done</Button>{' '}Dokument je potvrdený</p>
       <p>hviezdička <strong>*</strong> znamena, ze zamestnanec sa opakovane preškoluje</p>
       <p><ExclamationTriangle style={{color: "red"}}/>{' '}Uplynul deadline a chýbajú podpisy</p>
-    </div>
+    </Container>
   )
 }
 

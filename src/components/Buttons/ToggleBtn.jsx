@@ -1,12 +1,11 @@
 import React from "react";
 import {Button} from "react-bootstrap";
 
-// FIXME JANO
 const ToggleBtn = (c, row, rowIndex, {data, setData, id}) => {
 
   const document = data[rowIndex]
-  const anet_id = document.employees[id].anet_id;
-  let state = document.employees[id].state;
+  const signature = document.signatures[id]
+  let state = getState(signature);
   const mark = state.includes('X');
   if (mark) state = unMarkState();
 
@@ -25,39 +24,16 @@ const ToggleBtn = (c, row, rowIndex, {data, setData, id}) => {
   const handleClick = () => {
     const stt = mark ? unMarkState() : markState()
 
-    const new_employees = [...document.employees];
-    new_employees[id] = {
-      anet_id: anet_id,
+    const new_signatures = [...document.signatures];
+    new_signatures[id] = {
+      ...new_signatures[id],
       state: stt
     };
     console.log(stt)
     const new_data = [...data];
-    new_data[rowIndex] = {...document, employees: new_employees};
+    new_data[rowIndex] = {...document, signatures: new_signatures};
 
     setData(new_data);
-  }
-
-  const getColor = (state) => {
-    switch (state){
-      case "-": return 'gray'
-      case "es": return 'red'
-      case "e": return 'orange'
-      case "s": return 'yellow'
-      default: return 'green'
-    }
-  }
-
-  const getLabel = () => {
-    // TODO create better labels
-    const labels = [
-      {state: "-", label: "no need"},
-      {state: "es", label: "miss e+s"},
-      {state: "e", label: "miss e"},
-      {state: "s", label: "miss s"},
-      {state: "", label: "done"},
-      {state: "X", label: "bug"},
-    ]
-    return labels.find(l => l.state === state).label
   }
 
   const styledBtn = {
@@ -68,9 +44,46 @@ const ToggleBtn = (c, row, rowIndex, {data, setData, id}) => {
 
   return (
     <Button style={styledBtn} onClick={handleClick}>
-      {getLabel()}
+      {getLabel(state)}
     </Button>
   )
 }
 
 export default ToggleBtn;
+
+
+const getState = (signature) => { // TODO TEST
+  if (signature.cancel) {
+    return "-"
+  }
+  if (signature.training) {
+    if (signature.s_date === null && signature.e_date === null) return "es"
+    if (signature.s_date === null && signature.e_date !== null) return "s"
+  }
+  if (signature.e_date === null) {
+    return "e"
+  }
+  return ""
+}
+
+const getColor = (state) => {
+  switch (state){
+    case "-": return 'gray'
+    case "es": return 'red'
+    case "e": return 'orange'
+    case "s": return 'golden'
+    default: return 'green'
+  }
+}
+
+const getLabel = (state) => {
+  // TODO create better labels
+  return [
+    {state: "-", label: "no needed"},
+    {state: "es", label: "miss e+s"},
+    {state: "e", label: "miss e"},
+    {state: "s", label: "miss s"},
+    {state: "", label: "well done"},
+    {state: "X", label: "some bug"},
+  ].find(l => l.state === state).label
+}

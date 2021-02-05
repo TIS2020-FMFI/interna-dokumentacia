@@ -13,9 +13,7 @@ const AddRecordPage = (props) => {
     setFormType(event.target.id)
   };
 
-  const active = (id) => {
-    return formType === id && 'active';
-  }
+  const active = id => formType === id && 'active'
 
   return (
     <Container className="w-80">
@@ -24,7 +22,7 @@ const AddRecordPage = (props) => {
         <Button id="new_training" className={active("new_training")}>Online training</Button>
         <Button id="editable_docs" className={active("editable_docs")}>Saved records</Button>
       </ButtonGroup>
-      { formType === 'new_document'
+      {formType === 'new_document'
         ? <DocumentForm data={formData}/>
         : formType === 'new_training'
           ? <TrainingForm data={formData}/>
