@@ -1,7 +1,6 @@
 package signature
 
 import (
-	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
 	con "tisko/connection_database"
@@ -33,12 +32,13 @@ func signTraining(writer http.ResponseWriter, request *http.Request) {
 			W: writer,
 			R: request,
 		}
-		signCommon(rw, querysign)
+		signCommon(rw, querysignTraining)
 	}
 }
 
 func signCommon(rw helper.RquestWriter, q string) {
-	id, err := strconv.ParseUint(mux.Vars(rw.R)["id"],10,64)
+	x := rw.R.FormValue("id")
+	id, err := strconv.ParseUint(x+"",10,64)
 	if err != nil {
 		http.Error(rw.W, "must give number > 0", http.StatusInternalServerError)
 		return

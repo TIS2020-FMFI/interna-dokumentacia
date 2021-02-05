@@ -1,4 +1,5 @@
 package mail
 
-func weeklyControlAgeDocucument() {
+func sendNotifications() {
+
 }

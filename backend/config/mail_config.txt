@@ -3,10 +3,10 @@
 
 
 {
-"from": "from@gmail.com",
-"password": "<Email Password>",
-"smtpHost": "smtp.gmail.com",
-"smtpPort": "587",
-"message_doc": "podpíš dokumenty čísel:",
+"from": "magat4@uniba.sk",
+"password": "Matejkmagk305",
+"smtpHost": "smtp.office365.com",
+"smtpPort": "465",
+"message_doc": "podpíš dokument:",
 "message_training": "podpíš online meeting čísel:"
 }
