@@ -14,27 +14,20 @@ func AddHandle() {
 
 func upload(writer http.ResponseWriter, request *http.Request) {
 	if con.SetHeadersReturnIsContunue(writer,request) {
+		_ = request.ParseMultipartForm(10 << 30)
 		file, fileHeader, err := request.FormFile("file")
 		if err != nil {
 			http.Error(writer, "must give me file with key \"import\"", http.StatusInternalServerError)
 			return
 		}
-		defer func() {
-			if file != nil {
-				_ = file.Close()
-			}}()
-
-		// copy example
-		f, err := os.OpenFile("./"+fileHeader.Filename, os.O_WRONLY|os.O_CREATE, 0666)
-		defer func() {
-			if f != nil {
-				f.Close()
-			}}()
-		if err != nil {
+		f, err := os.OpenFile("./imports/"+fileHeader.Filename, os.O_WRONLY|os.O_CREATE, 77770)
+		if err == nil {
 			_,err = io.Copy(f, file)
-			if err != nil {
+			if err == nil {
 				con.SendAccept(0,writer)
 			}
+			f.Close()
 		}
+		_ = file.Close()
 	}
 }

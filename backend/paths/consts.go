@@ -17,4 +17,5 @@ const (
 	Sign  = "/sign"
 	SignSuperior  = "/sign/superior"
 	SignTraining = "/sign/training"
+	SignedSigns = "/signed/signatures"
 )

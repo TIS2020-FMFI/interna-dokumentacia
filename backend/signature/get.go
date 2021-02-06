@@ -12,13 +12,21 @@ import (
 
 
 func getUnsignedSignatures(writer http.ResponseWriter, request *http.Request) {
+	getSignatures(writer, request, unsignedSigns)
+}
+
+func getSignedSignatures(writer http.ResponseWriter, request *http.Request) {
+	getSignatures(writer, request, signedSigns)
+}
+
+func getSignatures(writer http.ResponseWriter, request *http.Request, signs h.QueryThreeStrings) {
 	if con.SetHeadersReturnIsContunue(writer, request) {
 		id, err := strconv.Atoi(mux.Vars(request)["id"])
 		if err != nil || id < 0 {
 			http.Error(writer, "must give number > 0", http.StatusInternalServerError)
 			return
 		}
-		modifySignature := getSignaturesByscript(unsignedSigns, id)
+		modifySignature := getSignaturesByscript(signs, id)
 
 		con.HeaderSendOk(writer)
 		_ = json.NewEncoder(writer).Encode(modifySignature)
