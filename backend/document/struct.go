@@ -13,6 +13,7 @@ type Document struct {
 	Name            string    `gorm:"column:name" json:"name"`
 	Link            string    `gorm:"column:link" json:"link"`
 	Note            string    `gorm:"column:note" json:"note"`
+	Type            string    `gorm:"column:type" json:"type"`
 	ReleaseDate     sql.NullTime `gorm:"column:release_date" json:"release_date"`
 	Deadline        sql.NullTime `gorm:"column:deadline" json:"deadline"`
 	OrderNumber     uint64      `gorm:"column:order_number" json:"order_number"`
@@ -22,7 +23,6 @@ type Document struct {
 	RequireSuperior bool      `gorm:"column:require_superior" json:"require_superior"`
 	Edited          bool      `gorm:"column:edited" json:"-"`
 }
-
 func init() {
 	confirm=h.ReturnTrimFile("./config/confirm.txt")
 	addSignAfterConfirmDoc = h.ReturnTrimFile("./config/add_sign_after_confirm_doc.txt")
