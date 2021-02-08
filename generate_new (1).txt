@@ -2,9 +2,9 @@ BEGIN ISOLATION LEVEL READ COMMITTED;
 
 
 TRUNCATE TABLE
-backlog, branches, cancel_signs, cities, departments, divisions, document_signatures,
-documents, employees, imports, online_training_signatures, online_trainings
-RESTART IDENTITY CASCADE;
+    backlog, branches, cancel_signs, cities, departments, divisions, document_signatures,
+    documents, employees, imports, online_training_signatures, online_trainings
+    RESTART IDENTITY CASCADE;
 
 CREATE or replace FUNCTION random_timestamp() RETURNS timestamp LANGUAGE SQL AS  $$
 SELECT random() * (current_timestamp - timestamp '2017-01-01') + timestamp '2017-01-01' $$;
@@ -45,25 +45,25 @@ INSERT INTO departments  SELECT id, 'department_' || id FROM generate_series(1, 
 INSERT INTO imports      SELECT id, 'import_' || id     FROM generate_series(1, 5)    AS seq(id);
 
 INSERT INTO employees SELECT
-    id,
-    'first_name_' || id,
-    'last_name_' || id,
-    id, -- login
-    id, -- passwd
-    'role_' || id,
-    'email' || id || '@gefco.sk',
-    'job_title_' || id,
-    random(ma()),
-    random(br()),
-    random(di()),
-    random(de()),
-    random(ci()),
-    case random(20) when 1 then true else false end, -- deleted 5%
-    random(5)  -- import_id
+                          id,
+                          'first_name_' || id,
+                          'last_name_' || id,
+                          id, -- login
+                          id, -- passwd
+                          'role_' || id,
+                          'email' || id || '@gefco.sk',
+                          'job_title_' || id,
+                          random(ma()),
+                          random(br()),
+                          random(di()),
+                          random(de()),
+                          random(ci()),
+                          case random(20) when 1 then true else false end, -- deleted 5%
+                          random(5)  -- import_id
 FROM generate_series(1, em()) AS seq(id);
 
 UPDATE employees SET
-role = 'admin'
+    role = 'admin'
 WHERE id = 1;
 
 INSERT INTO documents
@@ -97,32 +97,32 @@ SELECT
 FROM generate_series(1, total_signatures()) AS seq(id) ON CONFLICT DO NOTHING;;
 
 UPDATE document_signatures ds SET
-superior_id = get_manager_id(employee_id),
-s_date = case random(3) when 1 then null else random_timestamp() end
+                                  superior_id = get_manager_id(employee_id),
+                                  s_date = case random(3) when 1 then null else random_timestamp() end
 WHERE (select d.require_superior from documents d where ds.document_id = d.id);
 
 INSERT INTO online_trainings SELECT
-    id,
-    'name_' || id,
-    'lector_' || id,
-    'agency_' || id,
-    'place_' || id,
-    random_timestamp(),
-    id,
-    'agenda_' || id
+                                 id,
+                                 'name_' || id,
+                                 'lector_' || id,
+                                 'agency_' || id,
+                                 'place_' || id,
+                                 random_timestamp(),
+                                 id,
+                                 'agenda_' || id
 FROM generate_series(1, tr()) AS seq(id);
 
 
 UPDATE online_trainings SET
-deadline = date + interval '3 days'
+    deadline = date + interval '3 days'
 WHERE id != 0;
 
 
 INSERT INTO online_training_signatures SELECT
-    id,
-    random(tr()),
-    random(em()),
-    case random(2) when 1 then random_timestamp() end
+                                           id,
+                                           random(tr()),
+                                           random(em()),
+                                           case random(2) when 1 then random_timestamp() end
 FROM generate_series(1, tr()) AS seq(id) ON CONFLICT DO NOTHING;
 
 INSERT INTO cancel_signs
@@ -130,7 +130,7 @@ SELECT random(total_signatures()), random_timestamp()
 FROM generate_series(1, 100) AS seq(id) ON CONFLICT DO NOTHING;;
 
 
-SELECT setval('customers_customer_id_seq', (SELECT coalesce(max(customer_id), 1) FROM customers));
+SELECT setval('document_signatures_id_seq', (SELECT coalesce(max(id), 1) FROM document_signatures));
 
 COMMIT;
 -- rollback
