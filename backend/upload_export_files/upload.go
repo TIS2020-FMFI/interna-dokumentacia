@@ -1,6 +1,7 @@
 package upload_export_files
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -16,13 +17,20 @@ func upload(writer http.ResponseWriter, request *http.Request) {
 			return
 		}
 		h.MkdDirIfNotExist(imports)
-		f, err := os.OpenFile("./"+imports+"/"+fileHeader.Filename, os.O_WRONLY|os.O_CREATE, 77770)
+		path := fmt.Sprint("./",imports,"/",fileHeader.Filename)
+		f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE, 77770)
 		if err == nil {
 			_,err = io.Copy(f, file)
 			if err == nil {
 				con.SendAccept(0,writer)
+				go parseUpload(path) 
 			}
 			f.Close()
 		}
 		_ = file.Close()
+}
+
+func parseUpload(path string) {
+
+	//Pato
 }

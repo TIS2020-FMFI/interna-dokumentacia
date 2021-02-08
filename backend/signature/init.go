@@ -4,7 +4,7 @@ import h "tisko/helper"
 
 var (
 	unsignedSigns, signedSigns h.QueryThreeStrings
-	skillMatrix string
+	skillMatrix, cancel_signs string
 	querysign, querysignSuperior, querysignTraining string
 )
 
@@ -18,6 +18,7 @@ func init() {
 		OnlineSign:           queryOnlineSign,
 		DocumentSign:         queryDocumentSign,
 	}
+
 	queryDocumentSign = h.ReturnTrimFile("./config/signed_document_sign.txt")
 	queryOnlineSign = h.ReturnTrimFile("./config/signed_online_sign.txt")
 	queryDocumentSignEmployee = h.ReturnTrimFile("./config/signed_document_sign_employee.txt")
@@ -32,4 +33,5 @@ func init() {
 	querysign = h.ReturnTrimFile("./config/sign.txt")
 	querysignSuperior = h.ReturnTrimFile("./config/sign_superior.txt")
 	querysignTraining = h.ReturnTrimFile("./config/sign_training.txt")
+	cancel_signs = h.ReturnTrimFile("./config/cancel_signs_on_off.txt")
 }
