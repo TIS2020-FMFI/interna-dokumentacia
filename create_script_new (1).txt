@@ -158,6 +158,23 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION resign( in_array integer[] )
+    RETURNS void AS $$
+DECLARE
+    i integer;
+BEGIN
+    FOR i IN 1 .. array_upper(in_array, 1)
+        LOOP
+
+            insert into document_signatures(employee_id, e_date,
+                                            superior_id, s_date, document_id)
+            SELECT employee_id, null, superior_id, null, document_id
+            from document_signatures
+            where document_signatures.id = in_array[ i ];
+
+        END LOOP;
+END;
+$$ LANGUAGE plpgsql;
 
 COMMIT;
 -- rollback
