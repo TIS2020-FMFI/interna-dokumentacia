@@ -132,5 +132,32 @@ begin
 end;
 $$;
 
+CREATE OR REPLACE FUNCTION insert_delete_cancel_signs( in_array integer[] )
+    RETURNS void AS $$
+DECLARE
+    i integer;
+    row_exists NUMERIC;
+BEGIN
+    FOR i IN 1 .. array_upper(in_array, 1)
+        LOOP
+
+            SELECT count(*)
+            INTO row_exists
+            FROM cancel_signs
+            WHERE document_signature_id = in_array[ i ];
+
+            IF (row_exists > 0) THEN
+                delete FROM cancel_signs
+                WHERE document_signature_id = in_array[ i ];
+            ELSE
+                INSERT INTO cancel_signs(document_signature_id, date)
+                VALUES(in_array[i], now());
+            END IF;
+
+        END LOOP;
+END;
+$$ LANGUAGE plpgsql;
+
+
 COMMIT;
 -- rollback
