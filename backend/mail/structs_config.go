@@ -4,7 +4,7 @@ import "time"
 
 type config struct {
 	From            string `json:"from"`
-	Password        string `json:"password"`
+	Password        string `json:"password_allow.txt"`
 	SmtpHost        string `json:"smtpHost"`
 	SmtpPort        string `json:"smtpPort"`
 	MessageDoc      string `json:"message_doc"`

@@ -1,6 +1,10 @@
 package helper
 
-import "net/http"
+import (
+	"fmt"
+	"net/http"
+	"strings"
+)
 
 type StringBool struct {
 	What    string
@@ -18,11 +22,39 @@ type RquestWriter struct {
 	R *http.Request
 }
 
-type MyStrings struct {
-	First, Second string
-}
-
 type DataWR struct {
 	S *MyStrings
 	RW *RquestWriter
+}
+
+type PasswordConfig struct {
+	KioskPasswordFree    bool `json:"kiosk_password_free"`
+	InternetPasswordFree bool `json:"internet_password_free"`
+}
+const (
+	NameColumn     = "login"
+	PasswordColumn = "password"
+	Email          = "email"
+)
+func (rw *DataWR) BuildQuery(Config *PasswordConfig) {
+	b := Config.KioskPasswordFree
+	if strings.EqualFold(rw.S.First, NameColumn) {
+		b=Config.InternetPasswordFree
+	}
+	name,passwd := rw.getNamePassword()
+	var query string
+	if b {
+		query=fmt.Sprint(rw.S.First,"='", name)
+	}else {
+		query=fmt.Sprint(rw.S.First,"='", name, "' and ",
+			rw.S.Second,"=", passwd,"::varchar")
+	}
+	rw.S.Query=query
+}
+
+func (rw *DataWR) getNamePassword() (string, string) {
+	name := rw.RW.R.FormValue(rw.S.First)
+	passwd := rw.RW.R.FormValue(rw.S.Second)
+	fmt.Println(name, passwd)
+	return name, passwd
 }

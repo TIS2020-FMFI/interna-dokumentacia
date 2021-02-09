@@ -3,10 +3,10 @@ package upload_export_files
 import (
 	"fmt"
 	"io"
+	"mime/multipart"
 	"net/http"
 	"os"
 	con "tisko/connection_database"
-	h "tisko/helper"
 )
 
 func upload(writer http.ResponseWriter, request *http.Request) {
@@ -16,18 +16,33 @@ func upload(writer http.ResponseWriter, request *http.Request) {
 			http.Error(writer, "must give me file with key \"file\"", http.StatusInternalServerError)
 			return
 		}
-		h.MkdDirIfNotExist(imports)
-		path := fmt.Sprint("./",imports,"/",fileHeader.Filename)
-		f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE, 77770)
-		if err == nil {
-			_,err = io.Copy(f, file)
-			if err == nil {
-				con.SendAccept(0,writer)
-				go parseUpload(path) 
-			}
-			f.Close()
-		}
+		path := carryPath(fileHeader)
+		success := saveFile(file, path)
+	if success {
+		con.SendAccept(0,writer)
+	}
 		_ = file.Close()
+}
+
+func carryPath(fileHeader *multipart.FileHeader) string {
+	division := fileHeader.Header.Get("divisions")
+	if len(division)!=0 {
+		return fmt.Sprint("./",imports,"/", divisions, "/",fileHeader.Filename)
+	}
+	return fmt.Sprint("./",imports,"/", card, "/",fileHeader.Filename)
+}
+
+func saveFile(file multipart.File, path string) bool {
+	f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE, 77770)
+	if err == nil {
+		_,err = io.Copy(f, file)
+		if err == nil {
+			go parseUpload(path)
+			return true
+		}
+		f.Close()
+	}
+	return false
 }
 
 func parseUpload(path string) {

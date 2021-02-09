@@ -30,7 +30,7 @@ func exportSkillMatrixReturnName(request *http.Request) (string,error) {
 	if err != nil {
 		return "",err
 	}
-	h.MkdDirIfNotExist(exports)
+	h.MkDirIfNotExist(exports)
 	return fmt.Sprint(name), nil
 }
 

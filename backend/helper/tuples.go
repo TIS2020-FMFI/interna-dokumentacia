@@ -5,3 +5,7 @@ type QueryThreeStrings struct {
 	OnlineSign,
 	DocumentSign string
 }
+
+type MyStrings struct {
+	First, Second, Query string
+}
