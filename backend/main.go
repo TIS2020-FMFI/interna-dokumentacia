@@ -8,9 +8,10 @@ import (
 	"tisko/document"
 	"tisko/employee"
 	"tisko/helper"
+	"tisko/languages"
 	"tisko/mail"
-	files"tisko/upload_export_files"
 	"tisko/signature"
+	files "tisko/upload_export_files"
 )
 
 func main() {
@@ -26,6 +27,7 @@ func main() {
 	document.AddHandle()
 	signature.AddHandle()
 	files.AddHandle()
+	languages.AddHandle()
 	mail.RunMailSenders()
 	conn.Start()
 }
