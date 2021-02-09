@@ -21,4 +21,6 @@ const (
 	SignedSigns = "/signed/signatures"
 	AllLanguages = "/languages/all"
 	Language = "/languages/"
+	TrainingCreate = "/training/create"
+	CancelsResigns = "/cancels_resigns"
 )

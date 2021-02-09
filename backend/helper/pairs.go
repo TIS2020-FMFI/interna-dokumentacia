@@ -3,7 +3,6 @@ package helper
 import (
 	"fmt"
 	"net/http"
-	"strings"
 )
 
 type StringBool struct {
@@ -27,6 +26,11 @@ type DataWR struct {
 	RW *RquestWriter
 }
 
+type SignsSkillMatrix struct {
+	Cancel []string `json:"cancel"`
+	Resign []string `json:"resign"`
+}
+
 type PasswordConfig struct {
 	KioskPasswordFree    bool `json:"kiosk_password_free"`
 	InternetPasswordFree bool `json:"internet_password_free"`
@@ -38,7 +42,7 @@ const (
 )
 func (rw *DataWR) BuildQuery(Config *PasswordConfig) {
 	b := Config.KioskPasswordFree
-	if strings.EqualFold(rw.S.First, NameColumn) {
+	if rw.S.First == Email {
 		b=Config.InternetPasswordFree
 	}
 	name,passwd := rw.getNamePassword()

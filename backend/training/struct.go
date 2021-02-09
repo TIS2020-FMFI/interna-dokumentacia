@@ -14,4 +14,5 @@ type OnlineTraining struct {
 	Duration uint64       `gorm:"column:duration" json:"duration"`
 	Agenda   string       `gorm:"column:agenda" json:"agenda"`
 	Deadline sql.NullTime `gorm:"column:deadline" json:"deadline"`
+	IdEmployees []uint64 `json:"employees"`
 }

@@ -19,7 +19,11 @@ func createDoc(writer http.ResponseWriter, request *http.Request) {
 
 func doCreate(writer http.ResponseWriter, request *http.Request, tx *gorm.DB) (uint64, bool) {
 	var doc Document
-	_ = json.NewDecoder(request.Body).Decode(&doc)
+	e := json.NewDecoder(request.Body).Decode(&doc)
+	if e != nil {
+		http.Error(writer, e.Error(), http.StatusInternalServerError)
+		return 0,false
+	}
 	result := con.Db.Create(&doc)
 	if result.Error != nil {
 		http.Error(writer, result.Error.Error(), http.StatusInternalServerError)
