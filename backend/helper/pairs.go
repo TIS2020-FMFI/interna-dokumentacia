@@ -48,7 +48,7 @@ func (rw *DataWR) BuildQuery(Config *PasswordConfig) {
 	name,passwd := rw.getNamePassword()
 	var query string
 	if b {
-		query=fmt.Sprint(rw.S.First,"='", name)
+		query=fmt.Sprint(rw.S.First,"='", name,"'")
 	}else {
 		query=fmt.Sprint(rw.S.First,"='", name, "' and ",
 			rw.S.Second,"=", passwd,"::varchar")

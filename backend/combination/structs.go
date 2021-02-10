@@ -24,7 +24,17 @@ type CombinationFull struct {
 	BranchId uint64  `gorm:"column:branch_id" json:"branch_id"`
 	BranchName string `gorm:"column:branch_name" json:"branch_name"`
 }
-func AddHandle() {
-	con.AddHeaderGet(path.Comninations, sendAll)
+
+type IdName struct {
+	Id uint64  `gorm:"column:id" json:"id"`
+	Name string `gorm:"column:name" json:"name"`
+
 }
 
+func AddHandle() {
+	con.AddHeaderGet(path.Comninations, sendAll)
+	con.AddHeaderGet(path.Branches, sendAllBranches)
+	con.AddHeaderGet(path.Cities, sendAllCities)
+	con.AddHeaderGet(path.Departments, sendAllDepartments)
+	con.AddHeaderGet(path.Divisions, sendAllDivisions)
+}

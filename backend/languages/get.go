@@ -25,7 +25,7 @@ func AddHandle() {
 
 func listAll(writer http.ResponseWriter, request *http.Request) {
 	if con.SetHeadersReturnIsContunue(writer, request) {
-		files := make([]string,0, 10)
+		files := make([]string, 0, 10)
 		err := filepath.Walk(dir, visit(&files))
 		if err != nil || len(files) == 0 {
 			http.Error(writer, "error at find languages", http.StatusInternalServerError)
@@ -42,7 +42,7 @@ func visit(files *[]string) filepath.WalkFunc {
 			log.Fatal(err)
 		}
 		x := strings.Split(info.Name(), ".")
-		if len(x)==2 && strings.EqualFold(x[1],"txt"){
+		if len(x) == 2 && strings.EqualFold(x[1], "txt") {
 			*files = append(*files, x[0])
 		}
 		return nil
@@ -50,20 +50,22 @@ func visit(files *[]string) filepath.WalkFunc {
 }
 
 func readOne(writer http.ResponseWriter, request *http.Request) {
-	map0 := mux.Vars(request)
-	defer func() {
-		if r := recover(); r != nil {
-			http.Error(writer, "error at find language", http.StatusInternalServerError)
+	if con.SetHeadersReturnIsContunue(writer, request) {
+		map0 := mux.Vars(request)
+		defer func() {
+			if r := recover(); r != nil {
+				http.Error(writer, "error at find language", http.StatusInternalServerError)
+			}
+		}()
+		file := h.ReturnTrimFile(fmt.Sprint(dir, map0["name"], ".txt"))
+
+		var data map[string]string
+		if err := json.Unmarshal([]byte(file), &data); err != nil {
+			http.Error(writer, "error at parse language", http.StatusInternalServerError)
+			return
 		}
-	}()
-	file := h.ReturnTrimFile(fmt.Sprint(dir, map0["name"], ".txt"))
+		con.HeaderSendOk(writer)
+		_ = json.NewEncoder(writer).Encode(data)
 
-	var data map[string]string
-	if err := json.Unmarshal([]byte(file), &data); err != nil {
-		http.Error(writer, "error at parse language", http.StatusInternalServerError)
-		return
 	}
-	con.HeaderSendOk(writer)
-	_ = json.NewEncoder(writer).Encode(data)
-
 }
