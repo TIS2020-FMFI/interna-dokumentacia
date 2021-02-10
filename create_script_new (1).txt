@@ -58,7 +58,7 @@ CREATE TABLE Online_trainings (
                                   duration integer,
                                   agenda varchar,
                                   deadline Date,
-                                  edited boolean
+                           edited boolean default true
 );
 
 DROP TABLE IF EXISTS Online_training_signatures CASCADE;
