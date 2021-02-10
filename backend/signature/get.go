@@ -44,15 +44,19 @@ func getSignaturesByscript(Q h.QueryThreeStrings, id int) *ModifySignatures {
 
 func getSkillMatrix(writer http.ResponseWriter, request *http.Request) {
 	if con.SetHeadersReturnIsContunue(writer, request) {
-		signatures := &fake_structs.Signatures{}
 		id, err := strconv.ParseUint(mux.Vars(request)["id"],10,64)
-		if err != nil || id < 0 {
+		if err != nil || id == 0 {
 			http.Error(writer, "must give number > 0", http.StatusInternalServerError)
 			return
 		}
-		con.Db.Raw(skillMatrix, id).Find(&signatures.EmployeeSignature)
-		modify := convertSignatureFromFake(signatures).convertToModifySignature()
+		modify := FetchMatrix(id)
 		con.HeaderSendOk(writer)
 		_ = json.NewEncoder(writer).Encode(modify)
 	}
+}
+
+func FetchMatrix(id uint64) *ModifySignatures {
+	signatures := &fake_structs.Signatures{}
+	con.Db.Raw(skillMatrix, id).Find(&signatures.EmployeeSignature)
+	return convertSignatureFromFake(signatures).convertToModifySignature()
 }

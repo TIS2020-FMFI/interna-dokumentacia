@@ -23,6 +23,6 @@ func AddHandle() {
 	con.AddHeaderPost(path.Sign, sign)
 	con.AddHeaderPost(path.SignSuperior, signSuperior)
 	con.AddHeaderPost(path.SignTraining, signTraining)
-	con.AddHeaderPost(path.TrainingCreate, createTrainingAndSignature)
+	con.AddHeaderPost(path.TrainingConfirm, createTrainingAndSignature)
 	con.AddHeaderPost(path.CancelsResigns, cancelResigns)
 }

@@ -2,13 +2,16 @@ package upload_export_files
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
 	"io"
 	"net/http"
 	"os"
 	"os/exec"
+	"strconv"
 	h "tisko/helper"
+	"tisko/signature"
 )
 
 func export(writer http.ResponseWriter, request *http.Request) {
@@ -26,12 +29,41 @@ func export(writer http.ResponseWriter, request *http.Request) {
 
 func exportSkillMatrixReturnName(request *http.Request) (string,error) {
 	map0 := mux.Vars(request)
+	e := saveJson(map0["id"])
+	if e != nil {
+		return "",e
+	}
 	name, err := runScript(map0["id"], map0["format"])
 	if err != nil {
 		return "",err
 	}
 	h.MkDirIfNotExist(exports)
 	return fmt.Sprint(name), nil
+}
+
+func saveJson(s string) error {
+	id, err := strconv.ParseUint(s,10,64)
+	if err != nil || id == 0 {
+		return  err
+	}
+	modify := signature.FetchMatrix(id)
+
+	file, err := os.Create(fmt.Sprint(imports,"/", dirJson, "/",id,".json"))
+	if err != nil {
+		return  err
+	}
+	b, err := json.Marshal(modify)
+	if err != nil {
+		file.Close()
+		return  err
+	}
+	_, err = file.Write(b)
+	if err != nil {
+		file.Close()
+		return  err
+	}
+	err = file.Close()
+	return err
 }
 
 func runScript(id string, format string) (string, error) {

@@ -14,13 +14,17 @@ func createTrainingAndSignature(writer http.ResponseWriter, request *http.Reques
 	tx := con.Db.Begin()
 	defer h.IfRecoverRollBack(tx, writer)
 	if con.SetHeadersReturnIsContunue(writer, request) {
-		var newTraining training.OnlineTraining
-		e := json.NewDecoder(request.Body).Decode(&newTraining)
+		var (
+			newTraining  training.OnlineTraining
+			map0  map[string]interface{}
+		)
+		e := json.NewDecoder(request.Body).Decode(&map0)
+		e = json.NewDecoder(request.Body).Decode(&newTraining)
 		if e != nil {
 			http.Error(writer, e.Error(), http.StatusInternalServerError)
 			return
 		}
-		result := tx.Create(&newTraining)
+		result := tx.Model(&newTraining).Updates(&map0)
 		if result.Error != nil {
 			http.Error(writer, result.Error.Error(), http.StatusInternalServerError)
 			return

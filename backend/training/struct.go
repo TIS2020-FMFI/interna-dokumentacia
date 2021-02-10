@@ -29,5 +29,7 @@ type OnlineTraining struct {
 	IdEmployees []uint64 `json:"employees"`
 }
 func AddHandle() {
-	con.AddHeaderGet(path.EditedTraining, getEditedTrianing)
+	con.AddHeaderGet(path.EditedTraining, getEditedTrainings)
+	con.AddHeaderGet(path.TrainingSave, createEditedTraining)
+	con.AddHeaderGet(path.TrainingUpdate, updateEditedTraining)
 }

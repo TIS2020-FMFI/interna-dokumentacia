@@ -6,7 +6,7 @@ import (
 	con "tisko/connection_database"
 )
 
-func getEditedTrianing(writer http.ResponseWriter, request *http.Request) {
+func getEditedTrainings(writer http.ResponseWriter, request *http.Request) {
 	if con.SetHeadersReturnIsContunue(writer,request) {
 		var docs []OnlineTraining
 		con.Db.Raw(editedTraining).Find(&docs)

@@ -12,6 +12,7 @@ const (
 	exports = "exports"
 	card = "employee_card"
 	divisions = "divisions"
+	dirJson = "json"
 )
 
 func AddHandle() {
@@ -21,4 +22,5 @@ func AddHandle() {
 func init() {
 	h.MkTree2DirsIfNotExist(imports, card)
 	h.MkTree2DirsIfNotExist(imports, divisions)
+	h.MkTree2DirsIfNotExist(imports, dirJson)
 }
