@@ -1,0 +1,14 @@
+package document
+
+import h "tisko/helper"
+
+var (
+	confirm, actualDoc, editedDoc string
+)
+
+func init() {
+	confirm=h.ReturnTrimFile("./config/confirm.txt")
+	addSignAfterConfirmDoc = h.ReturnTrimFile("./config/add_sign_after_confirm_doc.txt")
+	actualDoc=h.ReturnTrimFile("./config/aktual_doc.txt")
+	editedDoc=h.ReturnTrimFile("./config/edited_doc.txt")
+}

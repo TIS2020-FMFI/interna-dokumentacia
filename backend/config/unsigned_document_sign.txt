@@ -12,3 +12,4 @@ FROM "documents" JOIN document_signatures on
 WHERE employee_id = ? and not edited
   and e_date IS NULL and
   not exists(select * from cancel_signs where document_signature_id=document_signatures.id)
+and not old

@@ -10,5 +10,5 @@ SELECT document_signatures.id as d_s_id,
 FROM "documents" JOIN document_signatures on
         document_signatures.document_id = documents.id
 WHERE employee_id = ? and not edited
-  and e_date IS not NULL and
+  and e_date IS not NULL and not old and
     not exists(select * from cancel_signs where document_signature_id=document_signatures.id)

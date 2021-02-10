@@ -16,7 +16,8 @@ func upload(writer http.ResponseWriter, request *http.Request) {
 			http.Error(writer, "must give me file with key \"file\"", http.StatusInternalServerError)
 			return
 		}
-		path := carryPath(fileHeader)
+    	division :=request.FormValue("division")
+		path := carryPath(fileHeader, division )
 		success := saveFile(file, path)
 	if success {
 		con.SendAccept(0,writer)
@@ -24,8 +25,7 @@ func upload(writer http.ResponseWriter, request *http.Request) {
 		_ = file.Close()
 }
 
-func carryPath(fileHeader *multipart.FileHeader) string {
-	division := fileHeader.Header.Get("divisions")
+func carryPath(fileHeader *multipart.FileHeader, division string) string {
 	if len(division)!=0 {
 		return fmt.Sprint("./",imports,"/", divisions, "/",fileHeader.Filename)
 	}

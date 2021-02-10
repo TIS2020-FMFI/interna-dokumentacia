@@ -11,6 +11,7 @@ import (
 	"tisko/languages"
 	"tisko/mail"
 	"tisko/signature"
+	"tisko/training"
 	files "tisko/upload_export_files"
 )
 
@@ -28,6 +29,7 @@ func main() {
 	signature.AddHandle()
 	files.AddHandle()
 	languages.AddHandle()
+	training.AddHandle()
 	mail.RunMailSenders()
 	conn.Start()
 }

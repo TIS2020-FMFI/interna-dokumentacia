@@ -10,10 +10,6 @@ import (
 	h "tisko/helper"
 )
 
-var (
-	confirm string
-)
-
 func confirmDoc(writer http.ResponseWriter, request *http.Request) {
 	tx := con.Db.Begin()
 	defer h.IfRecoverRollBack(tx, writer)

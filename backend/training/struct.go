@@ -2,7 +2,18 @@ package training
 
 import (
 	"database/sql"
+	con "tisko/connection_database"
+	h "tisko/helper"
+	path "tisko/paths"
 )
+
+var (
+	editedTraining string
+)
+
+func init() {
+	editedTraining=h.ReturnTrimFile("./config/edited_training.txt")
+}
 
 type OnlineTraining struct {
 	Id       uint64       `gorm:"primaryKey" json:"id"`
@@ -14,5 +25,9 @@ type OnlineTraining struct {
 	Duration uint64       `gorm:"column:duration" json:"duration"`
 	Agenda   string       `gorm:"column:agenda" json:"agenda"`
 	Deadline sql.NullTime `gorm:"column:deadline" json:"deadline"`
+	Edited          bool         `gorm:"column:edited" json:"-"`
 	IdEmployees []uint64 `json:"employees"`
+}
+func AddHandle() {
+	con.AddHeaderGet(path.EditedTraining, getEditedTrianing)
 }

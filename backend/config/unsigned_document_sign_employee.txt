@@ -18,5 +18,5 @@ FROM "employees" JOIN document_signatures on
 
 WHERE superior_id = ? and not edited and s_date is null and
     not exists(select * from cancel_signs where document_signature_id=document_signatures.id)
-
+  and not old
 order by deadline

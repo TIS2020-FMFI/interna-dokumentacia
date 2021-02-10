@@ -17,5 +17,5 @@ FROM "employees" JOIN document_signatures on
         document_signatures.employee_id = employees.id JOIN documents on
         document_signatures.document_id = documents.id
 
-WHERE superior_id = ? and not edited
+WHERE superior_id = ? and not edited and not old
 order by deadline
