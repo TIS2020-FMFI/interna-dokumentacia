@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/smtp"
 	con "tisko/connection_database"
+	h "tisko/helper"
 )
 
 func sendEmails() {
@@ -18,21 +19,46 @@ func sendEmployee() {
 		if emails[i].Email=="" {
 			continue
 		}
-		auth := smtp.PlainAuth("",
-			configuration.From, configuration.Password, configuration.SmtpHost)
-
-		// Sending email.
-		err := smtp.SendMail(configuration.SmtpHost+":"+configuration.SmtpPort,
-			auth, configuration.From,[]string{ emails[i].Email},
-			[]byte(configuration.MessageDoc+emails[i].Name+ " - "+emails[i].Link))
-		if err != nil {
-			fmt.Println(err)
-			continue
+		email := emailNameLinkMessange{
+			emails[i].Email,
+			emails[i].Name,
+			emails[i].Link,
+			configuration.MessageDoc,
 		}
-		fmt.Println("Email Sent Successfully!")
+		sendEmail(email)
 	}
 }
 
+type emailNameLinkMessange struct {
+email string
+name string
+link string
+massange string
+}
+
+func sendEmail(ee emailNameLinkMessange) {
+
+	auth := smtp.PlainAuth("",
+		configuration.From, configuration.Password, configuration.SmtpHost)
+
+	// Sending email.
+	err := smtp.SendMail(configuration.SmtpHost+":"+configuration.SmtpPort,
+		auth, configuration.From,[]string{ ee.email },
+		[]byte(ee.massange+ee.name+ " - "+ee.link))
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+func SendFistMail(mails []h.TwoEmails, combinations h.StringsBool) {
+	//mails.EmployeeEmail
+	//ee := emailNameLinkMessange{
+	//	email:  ,
+	//	name:     "",
+	//	link:     "",
+	//	massange: "",
+	//}
+	
+}
 func sendSuperior() {
 
 }

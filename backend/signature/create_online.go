@@ -48,7 +48,7 @@ func createOnlineSigns(training training.OnlineTraining) []OnlineTrainingSignatu
 			TrainingId: training.Id,
 			Date:       sql.NullTime{
 				Time:  time.Now(),
-				Valid: true,
+				Valid: false,
 			},
 		})
 	}

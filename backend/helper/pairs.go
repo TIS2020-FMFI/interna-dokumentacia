@@ -5,14 +5,10 @@ import (
 	"net/http"
 )
 
-type StringBool struct {
-	What    string
-	Whether bool
-}
 
 type TwoEmails struct {
-	EmployeeEmail string`gorm:"column:e_email"`
-	ManagerEmail string `gorm:"column:m_email"`
+	EmployeeEmail string`gorm:"column:e_email" json:"e_email"`
+	ManagerEmail string `gorm:"column:m_email" json:"m_email"`
 }
 
 type IntBool struct {

@@ -24,7 +24,7 @@ func confirmDoc(writer http.ResponseWriter, request *http.Request) {
 }
 
 func doConfirm(id uint64, tx *gorm.DB, writer http.ResponseWriter) {
-	var respon h.StringBool
+	var respon h.StringsBool
 	err := tx.Raw(confirm, id).Find(&respon)
 	if err != nil {
 		http.Error(writer, "error at give sign to doc", http.StatusInternalServerError)
