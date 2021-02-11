@@ -17,6 +17,7 @@ const (
 	DocumentUpdateConfirm = "/document/update/confirm"
 	AktualDokument        = "/document/actual"
 	EditedDokument        = "/document/edited"
+	FilterDokument        = "/document/filter"
 	UnsignedSigns         = "/unsigned/signatures"
 	SkillMatrix           = "/skill/matrix"
 	Sign                  = "/sign"
@@ -30,4 +31,5 @@ const (
 	TrainingUpdate        = "/training/update"
 	CancelsResigns        = "/cancels_resigns"
 	EditedTraining        = "/training/edited"
+
 )

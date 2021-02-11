@@ -1,0 +1,10 @@
+
+select *,
+(select (count(*)
+ filter ( where document_signatures.employee_id is not null and
+not exists(select * from cancel_signs
+where cancel_signs.document_signature_id=document_signatures.id)))::float
+/ count(*)::float
+from document_signatures where document_id=documents.id) as completness
+from documents
+where not old Query1 Query2 -- Query3 Query4 Query5ion_id

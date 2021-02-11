@@ -1,11 +1,21 @@
-insert into document_signatures(employee_id, e_date,
-superior_id, s_date, document_id)
- SELECT e.id, null, case
-      when (? ) THEN e.manager_id
-          else null end, null, ?
-from employees e
-where
-    Is_suitable(branch_id, ?)   and
-    Is_suitable(city_id, ?) and
-    Is_suitable(department_id, ?) and
-    Is_suitable(division_id, ?);
+with employees_managers as (
+    select e.id  as employee_id, null as  e_date,
+           case when ? then e.manager_id else null end  as superior_id,
+           null as  s_date, ?  as document_id,
+           e.email as e_email, manager.email as m_email
+    from "employees" as e  inner join "employees" as manager
+                                      on e.manager_id=manager.id and not e.deleted
+    where ?::varchar similar to '%'|| e.branch_id || '; '
+                                    || e.city_id|| '; '|| e.department_id || '; '
+                                    || e.division_id || '%'
+),
+     insert as ( insert into  "document_signatures"(
+                                   employee_id,    e_date,
+                                   superior_id, s_date,
+                                   document_id)
+             select employee_id::integer ,    e_date::date,
+                    superior_id::integer, s_date::date,
+                    document_id::integer from employees_managers
+
+     )
+select e_email, m_email from employees_managers;

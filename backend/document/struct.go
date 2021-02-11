@@ -24,6 +24,15 @@ type Document struct {
 	Old             bool         `gorm:"column:old" json:"-"`
 }
 
+type DocumentCompleteness struct {
+	Document
+	Complete float64
+}
+
+func (DocumentCompleteness) TableName() string {
+	return "documents"
+}
+
 func AddHandle() {
 	con.AddHeaderPost(path.DocumentAdd, createDoc)
 	con.AddHeaderPost(path.DocumentUpdate, updateDoc)
@@ -32,4 +41,5 @@ func AddHandle() {
 	con.AddHeaderPost(path.DocumentCreateConfirm, createConfirmDoc)
 	con.AddHeaderGet(path.AktualDokument, aktualDoc)
 	con.AddHeaderGet(path.EditedDokument, getEditedDoc)
+	con.AddHeaderGet(path.FilterDokument, getFilterDoc)
 }

@@ -10,6 +10,10 @@ type StringBool struct {
 	Whether bool
 }
 
+type TwoEmails struct {
+	EmployeeEmail string`gorm:"column:e_email"`
+	ManagerEmail string `gorm:"column:m_email"`
+}
 
 type IntBool struct {
 	Int0 uint64
@@ -27,8 +31,8 @@ type DataWR struct {
 }
 
 type SignsSkillMatrix struct {
-	Cancel []string `json:"cancel"`
-	Resign []string `json:"resign"`
+	Cancel []uint64 `json:"cancel"`
+	Resign []uint64 `json:"resign"`
 }
 
 type PasswordConfig struct {

@@ -5,3 +5,7 @@ func Check(e error) {
 		panic(e)
 	}
 }
+
+func Isempty(slice []uint64) bool {
+	return slice==nil || len(slice)==0
+}
