@@ -16,7 +16,7 @@ var (
 	configuration *config
 	adminMails *adminEmails
 	numTime *DateNumber
-	querySuperiorEmails, queryEmployeeEmails string
+	querySuperiorEmails, queryEmployeeEmails, oldDoc string
 )
 
 func init() {
@@ -27,6 +27,7 @@ func init() {
 func loadQuery() {
 	querySuperiorEmails = h.ReturnTrimFile("./config/mail_superior.txt")
 	queryEmployeeEmails = h.ReturnTrimFile("./config/mail_employee.txt")
+	oldDoc = h.ReturnTrimFile("./config/old_document.txt")
 }
 
 

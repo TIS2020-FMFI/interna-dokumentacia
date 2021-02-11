@@ -41,5 +41,5 @@ func AddHandle() {
 	con.AddHeaderPost(path.DocumentCreateConfirm, createConfirmDoc)
 	con.AddHeaderGet(path.AktualDokument, aktualDoc)
 	con.AddHeaderGet(path.EditedDokument, getEditedDoc)
-	con.AddHeaderGet(path.FilterDokument, getFilterDoc)
+	con.AddHeaderPost(path.FilterDokument, getFilterDoc)
 }

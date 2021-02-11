@@ -14,8 +14,7 @@ func clockControl() {
 	lastDate :=numTime.date
 	now := time.Now()
 	if now.Sub(lastDate)> day || debug{
-		sendEmails()
-		sendNotifications()
+		upgrade()
 	}
 	tomorovAt01Hour := time.Date(now.Year(), now.Month(),
 		now.Day()+1,01,0,0,0,time.UTC)

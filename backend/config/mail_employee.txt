@@ -6,5 +6,5 @@ FROM "employees" JOIN document_signatures on
 
 WHERE   not edited and
     not exists(select * from cancel_signs where document_signature_id=document_signatures.id)
-
-order by deadline
+and deadline <= now()- ('1 day'::interval)*3
+and not old
