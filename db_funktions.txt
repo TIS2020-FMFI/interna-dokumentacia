@@ -60,3 +60,23 @@ BEGIN
         END LOOP;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION
+    set_sign_new_employees_return_emails (ids integer[],ids_superior integer[],
+    assigned_to_e varchar[], lenght integer)
+    RETURNS TABLE (mail varchar) AS
+$func$
+DECLARE
+    i integer;
+BEGIN
+    FOR i IN 1..lenght LOOP
+        insert into document_signatures(employee_id, e_date, superior_id, s_date, document_id)
+        SELECT ids[i], null, case when (require_superior) then ids_superior[i] else null end, null, documents.id
+               from documents where not  old and assigned_to similar to '%'||assigned_to_e[i]||'%';
+        END LOOP;
+
+    RETURN QUERY
+        SELECT email
+    from employees where id = ANY(ids);
+END
+$func$  LANGUAGE plpgsql;
