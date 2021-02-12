@@ -22,6 +22,7 @@ func main() {
 			time.Sleep(time.Second*5)
 		}
 	}()
+	conn.Init0()
 	comb.AddHandle()
 	employee.AddHandle()
 	document.AddHandle()

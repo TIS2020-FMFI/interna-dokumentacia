@@ -7,6 +7,7 @@ import (
 )
 
 func RunMailSenders() {
+	init0()
 	go clockControl()
 }
 

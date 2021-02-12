@@ -19,7 +19,7 @@ var (
 	querySuperiorEmails, queryEmployeeEmails, oldDoc string
 )
 
-func init() {
+func init0() {
 	loadConfig()
 	loadQuery()
 }

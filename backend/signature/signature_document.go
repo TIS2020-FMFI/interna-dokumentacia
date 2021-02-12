@@ -17,6 +17,7 @@ type DocumentSignature struct {
 }
 
 func AddHandle() {
+	init0()
 	con.AddHeaderGetID(path.UnsignedSigns, getUnsignedSignatures)
 	con.AddHeaderGetID(path.SignedSigns, getSignedSignatures)
 	con.AddHeaderGetID(path.SkillMatrix, getSkillMatrix)

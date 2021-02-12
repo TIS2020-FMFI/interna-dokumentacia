@@ -2,6 +2,7 @@ package document
 
 import (
 	"database/sql"
+	"fmt"
 	con "tisko/connection_database"
 	path "tisko/paths"
 )
@@ -34,6 +35,7 @@ func (DocumentCompleteness) TableName() string {
 }
 
 func AddHandle() {
+	init0()
 	con.AddHeaderPost(path.DocumentAdd, createDoc)
 	con.AddHeaderPost(path.DocumentUpdate, updateDoc)
 	con.AddHeaderGetID(path.DocumentConfirm, confirmDoc)
@@ -41,5 +43,8 @@ func AddHandle() {
 	con.AddHeaderPost(path.DocumentCreateConfirm, createConfirmDoc)
 	con.AddHeaderGet(path.AktualDokument, aktualDoc)
 	con.AddHeaderGet(path.EditedDokument, getEditedDoc)
-	con.AddHeaderPost(path.FilterDokument, getFilterDoc)
+	con.AddHeaderGet(fmt.Sprint(path.FilterDokument,
+		"/{type}", "/{branch}",
+		"/{city}","/{department}",
+		"/{division}"), getFilterDoc)
 }

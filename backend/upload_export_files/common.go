@@ -16,10 +16,11 @@ const (
 )
 
 func AddHandle() {
+	init0()
 	con.AddHeaderPost(path.Upload, upload)
 	con.AddHeaderGetID(fmt.Sprint(path.Export, "/{format}"), export)
 }
-func init() {
+func init0() {
 	h.MkTree2DirsIfNotExist(imports, card)
 	h.MkTree2DirsIfNotExist(imports, divisions)
 	h.MkTree2DirsIfNotExist(imports, dirJson)

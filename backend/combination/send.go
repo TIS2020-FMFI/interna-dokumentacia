@@ -9,7 +9,7 @@ import (
 
 var queryCombinationAll string
 
-func init() {
+func init0() {
 	queryCombinationAll = h.ReturnTrimFile(
 		"./config/combinations.txt")
 }

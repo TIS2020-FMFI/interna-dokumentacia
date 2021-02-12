@@ -44,7 +44,7 @@ func executeIfNotErr(query string, err error) int {
 }
 
 func formatQuery(array []uint64, query string) (string, error) {
-	if h.Isempty(array) {
+	if h.IsemptyUint64(array) {
 		return "", fmt.Errorf("empty")
 	}
 	return strings.ReplaceAll(query, "?",

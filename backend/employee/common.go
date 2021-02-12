@@ -23,7 +23,7 @@ func loginBy(rw h.DataWR) {
 
 }
 
-func init() {
+func init0() {
 	stringConfig := h.ReturnTrimFile("./config/password_allow.txt")
 	err := json.Unmarshal([]byte(stringConfig), &passwd)
 	h.Check(err)

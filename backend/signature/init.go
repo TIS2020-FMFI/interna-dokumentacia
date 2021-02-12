@@ -8,7 +8,7 @@ var (
 	querysign, querysignSuperior, querysignTraining string
 )
 
-func init() {
+func init0() {
 	var queryDocumentSign, queryOnlineSign, queryDocumentSignEmployee string
 	queryDocumentSign = h.ReturnTrimFile("./config/unsigned_document_sign.txt")
 	queryOnlineSign = h.ReturnTrimFile("./config/unsigned_online_sign.txt")

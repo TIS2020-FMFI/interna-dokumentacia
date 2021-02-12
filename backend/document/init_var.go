@@ -6,7 +6,7 @@ var (
 	confirm, actualDoc, editedDoc, filterDoc string
 )
 
-func init() {
+func init0() {
 	confirm=h.ReturnTrimFile("./config/confirm.txt")
 	addSignAfterConfirmDoc = h.ReturnTrimFile("./config/add_sign_after_confirm_doc.txt")
 	actualDoc=h.ReturnTrimFile("./config/aktual_doc.txt")

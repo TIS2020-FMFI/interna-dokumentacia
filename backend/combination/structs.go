@@ -32,6 +32,7 @@ type IdName struct {
 }
 
 func AddHandle() {
+	init0()
 	con.AddHeaderGet(path.Comninations, sendAll)
 	con.AddHeaderGet(path.Branches, sendAllBranches)
 	con.AddHeaderGet(path.Cities, sendAllCities)
