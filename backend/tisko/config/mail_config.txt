@@ -1,0 +1,15 @@
+
+
+
+
+{
+"from": "matejmag305@gmail.com",
+"password": "matejmag305matejmag305matejmag305matejmag305",
+"smtpHost": "smtp.gmail.com",
+"smtpPort": 465,
+"message_doc": "podpíš dokument:",
+"message_new_doc": "podpíš dokument:",
+"message_old_doc": "treba riešiť:",
+"message_new_doc_manager": "podpíš svojim zamestnancom dokument:",
+"message_training": "podpíš online meeting čísel:"
+}
