@@ -15,7 +15,7 @@ const (
 	dirJson = "json"
 )
 
-func AddHandle() {
+func AddHandleInitVars() {
 	init0()
 	con.AddHeaderPost(path.Upload, upload)
 	con.AddHeaderGetID(fmt.Sprint(path.Export, "/{format}"), export)

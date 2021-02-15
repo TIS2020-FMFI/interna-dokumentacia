@@ -17,7 +17,7 @@ func cancelResigns(writer http.ResponseWriter, request *http.Request) {
 	if con.SetHeadersReturnIsContunue(writer, request) {
 		e := json.NewDecoder(request.Body).Decode(&sign)
 		if e != nil {
-			http.Error(writer, e.Error(), http.StatusInternalServerError)
+			h.WriteErrWriteHaders(e, writer)
 			return
 		}
 		queryResign, err := formatQuery(sign.Resign, resigns)
@@ -28,7 +28,7 @@ func cancelResigns(writer http.ResponseWriter, request *http.Request) {
 		if num > 0 {
 			con.SendAccept(0, writer)
 		}else {
-			http.Error(writer, "nothing was execute", http.StatusInternalServerError)
+			h.WriteErrWriteHaders(fmt.Errorf(fmt.Sprint("nothing was execute", err, ", ", err0)), writer)
 		}
 	}
 }

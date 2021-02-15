@@ -2,7 +2,6 @@ package document
 
 import (
 	"encoding/json"
-	"net/http"
 	con "tisko/connection_database"
 	h "tisko/helper"
 )
@@ -10,9 +9,9 @@ import (
 func sendDocByQuery(query string, rw h.RquestWriter) {
 	if con.SetHeadersReturnIsContunue(rw.W, rw.R) {
 		var docs []Document
-		con.Db.Raw(query).Find(&docs)
+		re := con.Db.Raw(query).Find(&docs)
 		if docs == nil {
-			http.Error(rw.W, "", http.StatusInternalServerError)
+			h.WriteErrWriteHaders(re.Error, rw.W)
 			return
 		}
 		con.HeaderSendOk(rw.W)

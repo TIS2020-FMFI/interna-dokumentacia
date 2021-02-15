@@ -8,7 +8,7 @@ import (
 	h"tisko/helper"
 )
 
-func Init0() {
+func InitVars() {
 	myRouter = mux.NewRouter().StrictSlash(true)
 	dsn := h.ReturnTrimFile("./config/postgres_config.txt")
 	Db, _ = gorm.Open(postgres.Open(dsn), &gorm.Config{})

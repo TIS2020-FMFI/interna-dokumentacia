@@ -11,25 +11,29 @@ import (
 
 func confirmDoc(writer http.ResponseWriter, request *http.Request) {
 	tx := con.Db.Begin()
-	defer h.IfRecoverRollBack(tx, writer)
+	defer tx.Rollback()
 	if con.SetHeadersReturnIsContunue(writer, request) {
 		id, err := strconv.ParseUint(mux.Vars(request)["id"],10,64)
 		if err != nil {
-			http.Error(writer, "must give number > 0", http.StatusInternalServerError)
+			h.WriteErrWriteHaders(err, writer)
 			return
 		}
-		doConfirm(id, tx, writer)
+		err = doConfirm(id, tx)
+		if err != nil {
+			h.WriteErrWriteHaders(err, writer)
+			return
+		}
+		tx.Commit()
 		con.SendAccept(id, writer)
 	}
 }
 
-func doConfirm(id uint64, tx *gorm.DB, writer http.ResponseWriter) {
+func doConfirm(id uint64, tx *gorm.DB) (err error) {
 	var respon h.StringsBool
-	err := tx.Raw(confirm, id).Find(&respon)
+	re := tx.Raw(confirm, id).Find(&respon)
+	err = re.Error
 	if err != nil {
-		http.Error(writer, "error at give sign to doc", http.StatusInternalServerError)
-		panic("error at give sign to doc")
+		return
 	}
-	AddSignature(respon, id, tx)
-	tx.Commit()
+	return AddSignature(respon, id, tx)
 }

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"os/exec"
@@ -15,35 +16,38 @@ import (
 )
 
 func export(writer http.ResponseWriter, request *http.Request) {
-	name, err := exportSkillMatrixReturnName(request)
+	name,format, err := exportSkillMatrixReturnName(request)
 	if err != nil {
-		http.Error(writer, "must give number > 0", http.StatusInternalServerError)
+		h.WriteErrWriteHaders(fmt.Errorf("must give number > 0"), writer)
 		return
 	}
-	fpath := "./"+exports+"/" + name
-	if err := copyFile(writer, fpath); nil != err {
-		http.Error(writer, "must give me file with key \"file\"", http.StatusInternalServerError)
+	nameFormat := h.MyStrings{
+		First:  name,
+		Second: format,
+	}
+	if err := copyFile(writer, nameFormat); nil != err {
+		h.WriteErrWriteHaders(err, writer)
 		return
 	}
 }
 
-func exportSkillMatrixReturnName(request *http.Request) (string,error) {
+func exportSkillMatrixReturnName(request *http.Request) (string,string,error) {
 	map0 := mux.Vars(request)
 	id, okId:= map0["id"]
 	format, okFormat := map0["format"]
 	if !okId || !okFormat {
-		return "", fmt.Errorf("do not contains id or format, it must contains both")
+		return "","", fmt.Errorf("do not contains id or format, it must contains both")
 	}
 	e := saveJson(id)
 	if e != nil {
-		return "",e
+		return "","",e
 	}
 	name, err := runScript(id, format, "export.py")
 	if err != nil {
-		return "",err
+		return "","",err
 	}
 	h.MkDirIfNotExist(exports)
-	return fmt.Sprint(name), nil
+	return fmt.Sprint(name), format, nil
 }
 
 func saveJson(s string) error {
@@ -122,11 +126,19 @@ func writePipe(cmd *exec.Cmd,first string, second string) error{
 	return nil
 }
 
-func copyFile(writer http.ResponseWriter, fpath string) (err error) {
+func copyFile(writer http.ResponseWriter, nameFormat h.MyStrings) (err error) {
+	fpath := "./"+exports+"/" + nameFormat.First
+	writer.Header().Set("Content-Disposition", "attachment; filename="+nameFormat.First)
 	outfile, err := os.OpenFile(fpath, os.O_RDONLY, 0x0444)
-	if nil != err {
+	writer.Header().Set("Content-Type", "application/octet-stream")
+	if err !=nil  {
 		return
 	}
+	fi, err := outfile.Stat()
+	if err != nil {
+		log.Fatal(err)
+	}
+	writer.Header().Set("Content-Length", fmt.Sprint(fi.Size()))
 	_, err = io.Copy(writer, outfile)
 	return
 }

@@ -16,7 +16,7 @@ type DocumentSignature struct {
 	Cancel   bool      `gorm:"column:cancel" json:"cancel"`
 }
 
-func AddHandle() {
+func AddHandleInitVars() {
 	init0()
 	con.AddHeaderGetID(path.UnsignedSigns, getUnsignedSignatures)
 	con.AddHeaderGetID(path.SignedSigns, getSignedSignatures)

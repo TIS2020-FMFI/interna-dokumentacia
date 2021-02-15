@@ -32,7 +32,7 @@ type IdName struct {
 
 }
 
-func AddHandle() {
+func AddHandleInitVars() {
 	init0()
 	con.AddHeaderGet(paths.Comninations, sendAll)
 	con.AddHeaderGet(paths.Branches, sendAllBranches)

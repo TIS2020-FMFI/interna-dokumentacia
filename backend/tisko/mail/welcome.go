@@ -10,5 +10,12 @@ func SendWelcome(mails []string)  {
 		h.WriteErr(fmt.Errorf("empty new employees mail"))
 		return
 	}
+	ee := emailNameLinkMessange{
+		emails:   mails,
+		name:     "welcome",
+		link:     "gefko",
+		massange: "welcome to our company yuo will need our website:",
+	}
+	sendEmail(ee)
 
 }

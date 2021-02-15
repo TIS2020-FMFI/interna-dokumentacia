@@ -34,7 +34,7 @@ func (DocumentCompleteness) TableName() string {
 	return "documents"
 }
 
-func AddHandle() {
+func AddHandleInitVars() {
 	init0()
 	con.AddHeaderPost(path.DocumentAdd, createDoc)
 	con.AddHeaderPost(path.DocumentUpdate, updateDoc)

@@ -1,19 +1,18 @@
 package main
 
 import (
-
-comb "awesomeProject1/combination"
-"fmt"
-"time"
-conn "tisko/connection_database"
-"tisko/document"
-"tisko/employee"
-"tisko/helper"
-"tisko/languages"
-"tisko/mail"
-"tisko/signature"
-"tisko/training"
-files "tisko/upload_export_files"
+	"fmt"
+	"time"
+	comb "tisko/combination"
+	conn "tisko/connection_database"
+	"tisko/document"
+	"tisko/employee"
+	"tisko/helper"
+	"tisko/languages"
+	"tisko/mail"
+	"tisko/signature"
+	"tisko/training"
+	files "tisko/upload_export_files"
 )
 
 func main() {
@@ -24,15 +23,16 @@ func main() {
 			time.Sleep(time.Second*5)
 		}
 	}()
-	conn.Init0()
-	comb.AddHandle()
-	employee.AddHandle()
-	document.AddHandle()
-	signature.AddHandle()
-	files.AddHandle()
-	languages.AddHandle()
-	training.AddHandle()
-	mail.RunMailSenders()
+	conn.InitVars()
+	comb.AddHandleInitVars()
+	employee.AddHandleInitVars()
+	document.AddHandleInitVars()
+	signature.AddHandleInitVars()
+	files.AddHandleInitVars()
+	languages.AddHandleInitVars()
+	training.AddHandleInitVars()
+	mail.InitVars()
+	//mail.RunMailSenders()
 	conn.Start()
 }
 

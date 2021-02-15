@@ -2,7 +2,6 @@ package employee
 
 import (
 	"encoding/json"
-	"net/http"
 	con "tisko/connection_database"
 	h "tisko/helper"
 )
@@ -15,7 +14,7 @@ func loginBy(rw h.DataWR) {
 	var e Employee
 	re := con.Db.Where(rw.S.Query).First(&e)
 	if re.Error!=nil {
-		http.Error(rw.RW.W, re.Error.Error(), http.StatusInternalServerError)
+		h.WriteErrWriteHaders(re.Error, rw.RW.W)
 		return
 	}
 	con.HeaderSendOk(rw.RW.W)

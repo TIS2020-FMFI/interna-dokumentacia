@@ -7,11 +7,12 @@ import (
 	"net/http"
 	"strconv"
 	con "tisko/connection_database"
+	h "tisko/helper"
 )
 
 func updateDoc(writer http.ResponseWriter, request *http.Request) {
 	if con.SetHeadersReturnIsContunue(writer, request) {
-		ok, id := doUpdate(writer, request, nil)
+		ok, id := doUpdate(writer, request, con.Db)
 		if !ok {
 			return
 		}
@@ -24,12 +25,12 @@ func doUpdate(writer http.ResponseWriter, request *http.Request, tx *gorm.DB) (b
 	err := json.NewDecoder(request.Body).Decode(&doc)
 	id, err2 := getIdMap(doc)
 	if err != nil || err2!=nil{
-		http.Error(writer, "eror at find doc id", http.StatusInternalServerError)
+		h.WriteErrWriteHaders(err, writer)
 		return false, 0
 	}
 	result := tx.Model(&Document{Id: id}).Updates(&doc)
 	if result.Error != nil {
-		http.Error(writer, result.Error.Error(), http.StatusInternalServerError)
+		h.WriteErrWriteHaders(result.Error, writer)
 		return false, 0
 	}
 	return true, id

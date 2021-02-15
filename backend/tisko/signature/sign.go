@@ -4,12 +4,12 @@ import (
 	"net/http"
 	"strconv"
 	con "tisko/connection_database"
-	"tisko/helper"
+	h"tisko/helper"
 )
 
 func signSuperior(writer http.ResponseWriter, request *http.Request) {
 	if con.SetHeadersReturnIsContunue(writer, request) {
-		rw :=helper.RquestWriter{
+		rw :=h.RquestWriter{
 			W: writer,
 			R: request,
 		}
@@ -19,7 +19,7 @@ func signSuperior(writer http.ResponseWriter, request *http.Request) {
 
 func sign(writer http.ResponseWriter, request *http.Request) {
 	if con.SetHeadersReturnIsContunue(writer, request) {
-		rw :=helper.RquestWriter{
+		rw :=h.RquestWriter{
 			W: writer,
 			R: request,
 		}
@@ -28,7 +28,7 @@ func sign(writer http.ResponseWriter, request *http.Request) {
 }
 func signTraining(writer http.ResponseWriter, request *http.Request) {
 	if con.SetHeadersReturnIsContunue(writer, request) {
-		rw :=helper.RquestWriter{
+		rw :=h.RquestWriter{
 			W: writer,
 			R: request,
 		}
@@ -36,17 +36,17 @@ func signTraining(writer http.ResponseWriter, request *http.Request) {
 	}
 }
 
-func signCommon(rw helper.RquestWriter, q string) {
+func signCommon(rw h.RquestWriter, q string) {
 	x := rw.R.FormValue("id")
 	id, err := strconv.ParseUint(x+"",10,64)
 	if err != nil {
-		http.Error(rw.W, "must give number > 0", http.StatusInternalServerError)
+		h.WriteErrWriteHaders(err, rw.W)
 		return
 	}
 	var messange string
-	t :=con.Db.Raw(q, id).Find(&messange)
-	if t.Error != nil {
-		http.Error(rw.W, "error at sign", http.StatusInternalServerError)
+	result :=con.Db.Raw(q, id).Find(&messange)
+	if result.Error != nil {
+		h.WriteErrWriteHaders(result.Error, rw.W)
 		return
 	}
 	con.SendAccept(id, rw.W)

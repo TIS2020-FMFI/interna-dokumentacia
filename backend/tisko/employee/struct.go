@@ -24,7 +24,7 @@ type Employee struct {
 	ImportId     uint64    `gorm:"column:import_id" json:"import_id"`
 }
 
-func AddHandle() {
+func AddHandleInitVars() {
 	init0()
 	con.AddHeaderPost(path.Login, login)
 	con.AddHeaderPost(path.Kiosk, kiosk)

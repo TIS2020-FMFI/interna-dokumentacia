@@ -18,7 +18,7 @@ func upload(writer http.ResponseWriter, request *http.Request) {
 		_ = request.ParseMultipartForm(10 << 30)
 		file, fileHeader, err := request.FormFile("file")
 		if err != nil {
-			http.Error(writer, "must give me file with key \"file\"", http.StatusInternalServerError)
+			h.WriteErrWriteHaders(err, writer)
 			return
 		}
     	division :=request.FormValue("division")
@@ -26,6 +26,9 @@ func upload(writer http.ResponseWriter, request *http.Request) {
 		success := saveFile(file, pathName)
 	if success {
 		con.SendAccept(0,writer)
+	}else {
+		h.WriteErrWriteHaders(fmt.Errorf("not sussces save"), writer)
+
 	}
 		_ = file.Close()
 }
@@ -69,10 +72,10 @@ func parseUpload(pathName string) {
 		h.WriteErr(err)
 		return
 	}
-	var emails,err0 = signature.AddSignsNewEmployees(newEmployees)
+	var emailsEmployees,err0 = signature.AddSignsNewEmployeesReturnsEmails(newEmployees)
 	if err0 != nil {
 		h.WriteErr(err0)
 		return
 	}
-	mail.SendWelcome(emails)
+	mail.SendWelcome(emailsEmployees)
 }

@@ -18,7 +18,7 @@ const (
 	dir = "./languages/"
 )
 
-func AddHandle() {
+func AddHandleInitVars() {
 	con.AddHeaderGet(path.AllLanguages, listAll)
 	con.AddHeaderGet(fmt.Sprint(path.Language, "{name}"), readOne)
 }

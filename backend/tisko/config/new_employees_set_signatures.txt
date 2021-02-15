@@ -1,5 +1,5 @@
 
 SELECT * from set_sign_new_employees_return_emails(ArrayId,
-                                                    ArrayIdSuperior,
+                                                    ArraySuperiorId,
                                                      ArrayAssignedTo,
                                                      Length );

@@ -8,14 +8,19 @@ import (
 
 func updateConfirmDoc(writer http.ResponseWriter, request *http.Request) {
 	tx := con.Db.Begin()
-	defer h.IfRecoverRollBack(tx, writer)
+	defer tx.Rollback()
 	if con.SetHeadersReturnIsContunue(writer, request) {
 		doUpdate(writer, request, nil)
 		ok, id := doUpdate(writer, request, nil)
 		if !ok {
 			return
 		}
-		doConfirm(id, tx, writer)
+		err := doConfirm(id, tx)
+		if err != nil {
+			h.WriteErrWriteHaders(err, writer)
+			return
+		}
+		tx.Commit()
 		con.SendAccept(id, writer)
 	}
 }

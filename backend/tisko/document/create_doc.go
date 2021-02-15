@@ -5,11 +5,14 @@ import (
 	"gorm.io/gorm"
 	"net/http"
 	con "tisko/connection_database"
+	h "tisko/helper"
 )
 
 func createDoc(writer http.ResponseWriter, request *http.Request) {
 	if con.SetHeadersReturnIsContunue(writer, request) {
-		id, ok := doCreate(writer, request, nil)
+		tx := con.Db.Begin()
+		defer tx.Rollback()
+		id, ok := doCreate(writer, request, tx)
 		if !ok {
 			return
 		}
@@ -21,20 +24,18 @@ func doCreate(writer http.ResponseWriter, request *http.Request, tx *gorm.DB) (u
 	var doc Document
 	e := json.NewDecoder(request.Body).Decode(&doc)
 	if e != nil {
-		http.Error(writer, e.Error(), http.StatusInternalServerError)
+		h.WriteErrWriteHaders(e, writer)
 		return 0,false
 	}
-	tx = con.Db.Begin()
-	defer tx.Rollback()
 	e = controlIdIfExistSetPrewVersionUpdateOld(&doc, tx)
 	if e != nil {
-		http.Error(writer, e.Error(), http.StatusInternalServerError)
+		h.WriteErrWriteHaders(e, writer)
 		return 0,false
 	}
 
 	result := tx.Create(&doc)
 	if result.Error != nil {
-		http.Error(writer, result.Error.Error(), http.StatusInternalServerError)
+		h.WriteErrWriteHaders(result.Error, writer)
 		return 0,false
 	}
 	tx.Commit()

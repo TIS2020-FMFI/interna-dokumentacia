@@ -23,7 +23,7 @@ func getSignatures(writer http.ResponseWriter, request *http.Request, signs h.Qu
 	if con.SetHeadersReturnIsContunue(writer, request) {
 		id, err := strconv.Atoi(mux.Vars(request)["id"])
 		if err != nil || id < 0 {
-			http.Error(writer, "must give number > 0", http.StatusInternalServerError)
+			h.WriteErrWriteHaders(err, writer)
 			return
 		}
 		modifySignature := getSignaturesByscript(signs, id)
@@ -46,7 +46,7 @@ func getSkillMatrix(writer http.ResponseWriter, request *http.Request) {
 	if con.SetHeadersReturnIsContunue(writer, request) {
 		id, err := strconv.ParseUint(mux.Vars(request)["id"],10,64)
 		if err != nil || id == 0 {
-			http.Error(writer, "must give number > 0", http.StatusInternalServerError)
+			h.WriteErrWriteHaders(err, writer)
 			return
 		}
 		modify := FetchMatrix(id)

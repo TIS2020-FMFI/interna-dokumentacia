@@ -7,19 +7,20 @@ import (
 	"net/http"
 	"strings"
 	con "tisko/connection_database"
+	h "tisko/helper"
 )
 
 func getFilterDoc(writer http.ResponseWriter, request *http.Request) {
 	if con.SetHeadersReturnIsContunue(writer, request) {
 		query, err := getQueryFilterDoc(request)
 		if err != nil {
-			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			h.WriteErrWriteHaders(err, writer)
 			return
 		}
 		var docs []DocumentCompleteness
-		con.Db.Raw(query).Find(&docs)
-		if docs == nil {
-			http.Error(writer, "", http.StatusInternalServerError)
+		re := con.Db.Raw(query).Find(&docs)
+		if re.Error!= nil {
+			h.WriteErrWriteHaders(re.Error, writer)
 			return
 		}
 		con.HeaderSendOk(writer)

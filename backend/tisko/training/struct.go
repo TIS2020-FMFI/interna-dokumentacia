@@ -28,7 +28,7 @@ type OnlineTraining struct {
 	Edited          bool         `gorm:"column:edited" json:"-"`
 	IdEmployees string `json:"employees"`
 }
-func AddHandle() {
+func AddHandleInitVars() {
 	con.AddHeaderGet(path.EditedTraining, getEditedTrainings)
 	con.AddHeaderGet(path.TrainingSave, createEditedTraining)
 	con.AddHeaderGet(path.TrainingUpdate, updateEditedTraining)
