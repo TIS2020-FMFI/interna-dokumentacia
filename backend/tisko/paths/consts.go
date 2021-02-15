@@ -27,7 +27,7 @@ const (
 	AllLanguages          = "/languages/all"
 	Language              = "/languages/"
 	TrainingConfirm       = "/training/confirm"
-	TrainingSave        = "/training/save"
+	TrainingSave        = "/training/create"
 	TrainingUpdate        = "/training/update"
 	CancelsResigns        = "/cancels_resigns"
 	EditedTraining        = "/training/edited"

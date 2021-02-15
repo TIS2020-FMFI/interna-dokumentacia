@@ -30,6 +30,6 @@ type OnlineTraining struct {
 }
 func AddHandleInitVars() {
 	con.AddHeaderGet(path.EditedTraining, getEditedTrainings)
-	con.AddHeaderGet(path.TrainingSave, createEditedTraining)
-	con.AddHeaderGet(path.TrainingUpdate, updateEditedTraining)
+	con.AddHeaderPost(path.TrainingSave, createEditedTraining)
+	con.AddHeaderPost(path.TrainingUpdate, updateEditedTraining)
 }

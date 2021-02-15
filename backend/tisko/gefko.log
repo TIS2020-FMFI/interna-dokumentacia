@@ -1,0 +1,1 @@
+2021/02/15 17:44:01 json: cannot unmarshal string into Go struct field Document.release_date of type sql.NullTime
