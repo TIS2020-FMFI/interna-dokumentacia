@@ -1,7 +1,7 @@
 with employees_managers as (
     select e.id  as employee_id, null as  e_date,
            case when ? then e.manager_id else null end  as superior_id,
-           null as  s_date, ?  as document_id,
+           null as  s_date, ?::integer as document_id,
            e.email as e_email, manager.email as m_email
     from "employees" as e  inner join "employees" as manager
                                       on e.manager_id=manager.id and not e.deleted

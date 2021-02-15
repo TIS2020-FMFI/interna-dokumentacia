@@ -15,7 +15,7 @@ func createEditedTraining(writer http.ResponseWriter, request *http.Request) {
 			h.WriteErrWriteHaders(e, writer)
 			return
 		}
-		result := con.Db.Create(&newTraining)
+		result := con.Db.Omit("edited").Create(&newTraining)
 		if result.Error != nil {
 			h.WriteErrWriteHaders(result.Error, writer)
 			return

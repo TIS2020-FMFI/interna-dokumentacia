@@ -1,2 +1,4 @@
 2021/02/15 17:44:01 json: cannot unmarshal string into Go struct field Document.release_date of type sql.NullTime
 2021/02/15 19:15:58 json: cannot unmarshal string into Go struct field OnlineTraining.date of type sql.NullTime
+2021/02/15 20:28:45 cannot convert 10 to Text
+2021/02/15 20:54:34 ERROR: cannot cast type interval to integer (SQLSTATE 42846)

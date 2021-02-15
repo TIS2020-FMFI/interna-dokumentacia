@@ -33,7 +33,7 @@ func doCreate(writer http.ResponseWriter, request *http.Request, tx *gorm.DB) (u
 		return 0,false
 	}
 
-	result := tx.Create(&doc)
+	result := tx.Omit("edited").Create(&doc)
 	if result.Error != nil {
 		h.WriteErrWriteHaders(result.Error, writer)
 		return 0,false

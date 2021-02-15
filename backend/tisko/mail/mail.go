@@ -37,7 +37,9 @@ type emailNameLinkMessange struct {
 }
 
 func sendEmail(ee emailNameLinkMessange) {
-
+	if len(ee.emails)==0 {
+		return
+	}
 	m := gomail.NewMessage()
 	addresses := make([]string,0, len(ee.emails))
 	for i := 0; i < len(ee.emails); i++ {

@@ -1,10 +1,12 @@
 package document
 
 import (
+	"fmt"
 	"github.com/gorilla/mux"
 	"gorm.io/gorm"
 	"net/http"
 	"strconv"
+	"strings"
 	con "tisko/connection_database"
 	h "tisko/helper"
 )
@@ -30,7 +32,8 @@ func confirmDoc(writer http.ResponseWriter, request *http.Request) {
 
 func doConfirm(id uint64, tx *gorm.DB) (err error) {
 	var respon h.StringsBool
-	re := tx.Raw(confirm, id).Find(&respon)
+	tmp := strings.ReplaceAll(confirm, "?", fmt.Sprint(id))
+	re := tx.Raw(tmp).Find(&respon)
 	err = re.Error
 	if err != nil {
 		return
