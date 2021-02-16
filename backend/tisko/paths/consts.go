@@ -3,6 +3,7 @@ package paths
 const (
 	Login                 = "/login"
 	Kiosk                 = "/kiosk"
+	AllEmployees          = "/all_employees"
 	Upload                = "/file/upload"
 	Export                = "/file/export"
 	Comninations          = "/combination"

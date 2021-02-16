@@ -7,9 +7,7 @@ import (
 
 
 type Employee struct {
-	Id           uint64    `gorm:"primaryKey" json:"id"`
-	FirstName    string `gorm:"column:first_name" json:"first_name"`
-	LastName     string `gorm:"column:last_name" json:"last_name"`
+	BasicEmployee
 	Login        string `gorm:"column:login" json:"login"`
 	Password     string `gorm:"column:password_allow.txt" json:"-"`
 	Role         string `gorm:"column:role" json:"role"`
@@ -24,8 +22,17 @@ type Employee struct {
 	ImportId     uint64    `gorm:"column:import_id" json:"import_id"`
 }
 
+type BasicEmployee struct {
+	Id           uint64    `gorm:"primaryKey" json:"id"`
+	FirstName    string `gorm:"column:first_name" json:"first_name"`
+	LastName     string `gorm:"column:last_name" json:"last_name"`
+}
+func (BasicEmployee) TableName() string {
+	return "employees"
+}
 func AddHandleInitVars() {
 	init0()
 	con.AddHeaderPost(path.Login, login)
 	con.AddHeaderPost(path.Kiosk, kiosk)
+	con.AddHeaderGet(path.AllEmployees, getAll)
 }

@@ -7,6 +7,7 @@ import (
 )
 var (
 	 passwd *h.PasswordConfig
+	 queryAllEmployees string
 )
 
 func loginBy(rw h.DataWR) {
@@ -26,4 +27,5 @@ func init0() {
 	stringConfig := h.ReturnTrimFile("./config/password_allow.txt")
 	err := json.Unmarshal([]byte(stringConfig), &passwd)
 	h.Check(err)
+	queryAllEmployees = h.ReturnTrimFile("./config/all_employees.txt")
 }

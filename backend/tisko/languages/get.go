@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -28,7 +29,7 @@ func listAll(writer http.ResponseWriter, request *http.Request) {
 		files := make([]string, 0, 10)
 		err := filepath.Walk(dir, visit(&files))
 		if err != nil || len(files) == 0 {
-			http.Error(writer, "error at find languages", http.StatusInternalServerError)
+			h.WriteErr(fmt.Errorf(fmt.Sprint("error at find languages", err)))
 			return
 		}
 		con.HeaderSendOk(writer)
@@ -42,7 +43,7 @@ func visit(files *[]string) filepath.WalkFunc {
 			log.Fatal(err)
 		}
 		x := strings.Split(info.Name(), ".")
-		if len(x) == 2 && strings.EqualFold(x[1], "txt") {
+		if len(x) == 2 && strings.EqualFold(x[1], "json") {
 			*files = append(*files, x[0])
 		}
 		return nil
@@ -52,20 +53,25 @@ func visit(files *[]string) filepath.WalkFunc {
 func readOne(writer http.ResponseWriter, request *http.Request) {
 	if con.SetHeadersReturnIsContunue(writer, request) {
 		map0 := mux.Vars(request)
-		defer func() {
-			if r := recover(); r != nil {
-				http.Error(writer, "error at find language", http.StatusInternalServerError)
-			}
-		}()
-		file := h.ReturnTrimFile(fmt.Sprint(dir, map0["name"], ".txt"))
-
-		var data map[string]string
-		if err := json.Unmarshal([]byte(file), &data); err != nil {
-			http.Error(writer, "error at parse language", http.StatusInternalServerError)
+		language, ok := map0["name"]
+		if !ok {
+			h.WriteErr(fmt.Errorf("unrecognized language in label 'name'"))
 			return
 		}
+		file, e := ioutil.ReadFile(fmt.Sprint(dir, language, ".json"))
+		if e != nil {
+			h.WriteErr(e)
+			return
+		}
+		//
+		//var data map[string]string
+		//if err := json.Unmarshal([]byte(file), &data); err != nil {
+		//	h.WriteErr(err)
+		//	return
+		//}
+		jsonResult := string(file)
 		con.HeaderSendOk(writer)
-		_ = json.NewEncoder(writer).Encode(data)
+		_ = json.NewEncoder(writer).Encode(jsonResult)
 
 	}
 }

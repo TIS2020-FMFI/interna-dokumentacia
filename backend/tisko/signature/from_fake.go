@@ -38,9 +38,11 @@ func convertToNormalDoc(d fake_structs.Document) document.Document {
 
 func convertToNormalEmployee(e fake_structs.Employee) employee.Employee {
 	return employee.Employee{
-		Id:           e.Id,
-		FirstName:    e.FirstName,
-		LastName:     e.LastName,
+		BasicEmployee:employee.BasicEmployee{
+			Id:        e.Id,
+			FirstName: e.FirstName,
+			LastName:  e.LastName,
+		},
 		Login:        e.Login,
 		Password:     e.Password,
 		Role:         e.Role,

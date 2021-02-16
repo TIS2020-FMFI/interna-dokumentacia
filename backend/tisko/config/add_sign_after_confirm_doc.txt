@@ -5,9 +5,11 @@ with employees_managers as (
            e.email as e_email, manager.email as m_email
     from "employees" as e  inner join "employees" as manager
                                       on e.manager_id=manager.id and not e.deleted
-    where ?::varchar similar to '%'|| e.branch_id || '; '
-                                    || e.city_id|| '; '|| e.department_id || '; '
-                                    || e.division_id || '%'
+where ?::varchar similar to
+      '%(' || e.branch_id || '|x); ' ||
+       '(' || e.city_id   || '|x); ' ||
+       '(' || e.department_id   || '|x); ' ||
+       '(' || e.division_id   || '|x)%'
 ),
      insert as ( insert into  "document_signatures"(
                                    employee_id,    e_date,
