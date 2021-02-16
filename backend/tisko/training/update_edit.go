@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	con "tisko/connection_database"
+	h "tisko/helper"
 )
 
 func updateEditedTraining(writer http.ResponseWriter, request *http.Request) {
@@ -13,15 +14,19 @@ func updateEditedTraining(writer http.ResponseWriter, request *http.Request) {
 			map0  map[string]interface{}
 		)
 		e := json.NewDecoder(request.Body).Decode(&map0)
+		if e != nil {
+			h.WriteErrWriteHaders(e, writer)
+			return
+		}
 		e = json.NewDecoder(request.Body).Decode(&newTraining)
 		if e != nil {
-			http.Error(writer, e.Error(), http.StatusInternalServerError)
+			h.WriteErrWriteHaders(e, writer)
 			return
 		}
 		delete(map0,"id")
 		result := con.Db.Model(&newTraining).Updates(&map0)
 		if result.Error != nil {
-			http.Error(writer, result.Error.Error(), http.StatusInternalServerError)
+			h.WriteErrWriteHaders(result.Error, writer)
 			return
 		}
 		con.SendAccept(newTraining.Id, writer)

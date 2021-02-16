@@ -54,7 +54,7 @@ func sendAllStructs(nameTable string, rw h.RquestWriter) {
 	var result []IdName
 	if con.SetHeadersReturnIsContunue(rw.W, rw.R) {
 		re := con.Db.Table(nameTable).Find(&result)
-		if re != nil {
+		if re.Error != nil {
 			h.WriteErrWriteHaders(re.Error, rw.W)
 			return
 		}

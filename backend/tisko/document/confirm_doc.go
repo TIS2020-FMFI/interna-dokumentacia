@@ -15,7 +15,11 @@ func confirmDoc(writer http.ResponseWriter, request *http.Request) {
 	tx := con.Db.Begin()
 	defer tx.Rollback()
 	if con.SetHeadersReturnIsContunue(writer, request) {
-		id, err := strconv.ParseUint(mux.Vars(request)["id"],10,64)
+		idString, ok := mux.Vars(request)["id"]
+		if !ok {
+			h.WriteErrWriteHaders(fmt.Errorf("not found 'id'"), writer)
+		}
+		id, err := strconv.ParseUint(idString,10,64)
 		if err != nil {
 			h.WriteErrWriteHaders(err, writer)
 			return

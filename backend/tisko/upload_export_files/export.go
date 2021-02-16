@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"io"
-	"log"
 	"net/http"
 	"os"
 	"os/exec"
@@ -18,7 +17,7 @@ import (
 func export(writer http.ResponseWriter, request *http.Request) {
 	name,format, err := exportSkillMatrixReturnName(request)
 	if err != nil {
-		h.WriteErrWriteHaders(fmt.Errorf("must give number > 0"), writer)
+		h.WriteErrWriteHaders(err, writer)
 		return
 	}
 	nameFormat := h.MyStrings{
@@ -128,16 +127,17 @@ func writePipe(cmd *exec.Cmd,first string, second string) error{
 
 func copyFile(writer http.ResponseWriter, nameFormat h.MyStrings) (err error) {
 	fpath := "./"+exports+"/" + nameFormat.First
-	writer.Header().Set("Content-Disposition", "attachment; filename="+nameFormat.First)
 	outfile, err := os.OpenFile(fpath, os.O_RDONLY, 0x0444)
-	writer.Header().Set("Content-Type", "application/octet-stream")
 	if err !=nil  {
 		return
 	}
 	fi, err := outfile.Stat()
 	if err != nil {
-		log.Fatal(err)
+		h.WriteErr(err)
 	}
+	writer.Header().Set("Content-Disposition",
+		"attachment; filename="+nameFormat.First)
+	writer.Header().Set("Content-Type", "application/octet-stream")
 	writer.Header().Set("Content-Length", fmt.Sprint(fi.Size()))
 	_, err = io.Copy(writer, outfile)
 	return
