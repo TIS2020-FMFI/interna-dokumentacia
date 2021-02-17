@@ -25,7 +25,7 @@ func doUpdate(writer http.ResponseWriter, request *http.Request, tx *gorm.DB) (b
 		h.WriteErrWriteHaders(err, writer)
 		return false, 0
 	}
-	result := tx.Omit("edited").Updates(&doc)
+	result := tx.Omit("edited", "old").Updates(&doc)
 	if result.Error != nil {
 		h.WriteErrWriteHaders(result.Error, writer)
 		return false, 0

@@ -43,10 +43,10 @@ func executeIfNotErr(query string, err error) int {
 	return 0
 }
 
-func formatQuery(array []uint64, query string) (string, error) {
-	if h.IsemptyUint64(array) {
+func formatQuery(array string, query string) (string, error) {
+	if len(array)==0 {
 		return "", fmt.Errorf("empty")
 	}
 	return strings.ReplaceAll(query, "?",
-		fmt.Sprint("array[ ", h.ArrayUint64ToString(array, ",")," ]")), nil
+		fmt.Sprint("array[ ", array," ]")), nil
 }

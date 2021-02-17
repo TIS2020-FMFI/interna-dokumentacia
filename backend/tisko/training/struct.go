@@ -26,7 +26,7 @@ type OnlineTraining struct {
 	Agenda   string       `gorm:"column:agenda" json:"agenda"`
 	Deadline sql.NullTime `gorm:"column:deadline" json:"deadline"`
 	Edited          bool         `gorm:"column:edited" json:"-"`
-	IdEmployees string `json:"employees"`
+	IdEmployees string `gorm:"column:unreleased_id_employees" json:"unreleased_id_employees"`
 }
 func AddHandleInitVars() {
 	con.AddHeaderGet(path.EditedTraining, getEditedTrainings)

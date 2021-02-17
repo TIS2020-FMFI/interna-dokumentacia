@@ -27,10 +27,10 @@ const (
 	SignedSigns           = "/signed/signatures"
 	AllLanguages          = "/languages/all"
 	Language              = "/languages/"
+	TrainingUpdateConfirm = "/training/update/confirm"
 	TrainingConfirm       = "/training/confirm"
-	TrainingSave        = "/training/create"
+	TrainingSave          = "/training/create"
 	TrainingUpdate        = "/training/update"
 	CancelsResigns        = "/cancels_resigns"
 	EditedTraining        = "/training/edited"
-
 )

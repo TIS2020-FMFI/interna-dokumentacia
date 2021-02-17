@@ -27,8 +27,8 @@ type DataWR struct {
 }
 
 type SignsSkillMatrix struct {
-	Cancel []uint64 `json:"cancel"`
-	Resign []uint64 `json:"resign"`
+	Cancel string `json:"cancel"`
+	Resign string `json:"resign"`
 }
 
 type PasswordConfig struct {
