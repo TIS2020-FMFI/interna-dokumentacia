@@ -10,8 +10,7 @@ func updateConfirmDoc(writer http.ResponseWriter, request *http.Request) {
 	tx := con.Db.Begin()
 	defer tx.Rollback()
 	if con.SetHeadersReturnIsContunue(writer, request) {
-		doUpdate(writer, request, nil)
-		ok, id := doUpdate(writer, request, nil)
+		ok, id := doUpdate(writer, request, tx)
 		if !ok {
 			return
 		}

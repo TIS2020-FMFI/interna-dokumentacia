@@ -12,24 +12,17 @@ import (
 
 func updateConfirm(writer http.ResponseWriter, request *http.Request) {
 	tx := con.Db.Begin()
-	defer h.IfRecoverRollBack(tx, writer)
+	defer tx.Rollback()
 	if con.SetHeadersReturnIsContunue(writer, request) {
 		var (
 			newTraining  training.OnlineTraining
-			map0  map[string]interface{}
 		)
-		e := json.NewDecoder(request.Body).Decode(&map0)
+		e := json.NewDecoder(request.Body).Decode(&newTraining)
 		if e != nil {
 			h.WriteErrWriteHaders(e, writer)
 			return
 		}
-		e = json.NewDecoder(request.Body).Decode(&newTraining)
-		if e != nil {
-			h.WriteErrWriteHaders(e, writer)
-			return
-		}
-		delete(map0,"id")
-		result := tx.Model(&newTraining).Updates(&map0)
+		result := tx.Omit("edited").Updates(&newTraining)
 		if result.Error != nil {
 			h.WriteErrWriteHaders(result.Error, writer)
 			return
@@ -40,7 +33,6 @@ func updateConfirm(writer http.ResponseWriter, request *http.Request) {
 			h.WriteErrWriteHaders(result.Error, writer)
 			return
 		}
-
 		con.SendAccept(newTraining.Id, writer)
 	}
 }

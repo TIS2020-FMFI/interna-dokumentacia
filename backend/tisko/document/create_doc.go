@@ -12,34 +12,31 @@ func createDoc(writer http.ResponseWriter, request *http.Request) {
 	if con.SetHeadersReturnIsContunue(writer, request) {
 		tx := con.Db.Begin()
 		defer tx.Rollback()
-		id, ok := doCreate(writer, request, tx)
-		if !ok {
+		id, err := doCreate( request, tx)
+		if err!= nil {
+			h.WriteErrWriteHaders(err,writer)
 			return
 		}
+		tx.Commit()
 		con.SendAccept(id, writer)
 	}
 }
 
-func doCreate(writer http.ResponseWriter, request *http.Request, tx *gorm.DB) (uint64, bool) {
+func doCreate( request *http.Request, tx *gorm.DB) (uint64, error) {
 	var doc Document
 	e := json.NewDecoder(request.Body).Decode(&doc)
 	if e != nil {
-		h.WriteErrWriteHaders(e, writer)
-		return 0,false
+		return 0,e
 	}
 	e = controlIdIfExistSetPrewVersionUpdateOld(&doc, tx)
 	if e != nil {
-		h.WriteErrWriteHaders(e, writer)
-		return 0,false
+		return 0,e
 	}
-
 	result := tx.Omit("edited").Create(&doc)
 	if result.Error != nil {
-		h.WriteErrWriteHaders(result.Error, writer)
-		return 0,false
+		return 0,result.Error
 	}
-	tx.Commit()
-	return doc.Id, true
+	return doc.Id, nil
 }
 
 func controlIdIfExistSetPrewVersionUpdateOld(d *Document,

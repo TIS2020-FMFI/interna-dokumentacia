@@ -29,3 +29,6 @@
 2021/02/16 10:02:58 <nil>
 2021/02/16 14:09:38 <nil>
 2021/02/16 14:10:34 <nil>
+2021/02/16 14:48:43 <nil>
+2021/02/16 18:55:25 sql: transaction has already been committed or rolled back
+2021/02/16 19:47:46 cannot convert map[Time:2021-02-24T00:00:00Z Valid:true] to Date
