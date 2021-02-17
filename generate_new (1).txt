@@ -174,7 +174,7 @@ SELECT id,
        random_timestamp(),
        id,
        'agenda_' || id,
-       random_timestamp(),
+       random_timestamp(), 'null',
        case random(2) when 1 then true else false end          -- edited 50%
 FROM generate_series(1, tr()) AS seq(id);
 
@@ -198,7 +198,41 @@ FROM generate_series(1, 100) AS seq(id)
 ON CONFLICT DO NOTHING;;
 
 
-SELECT setval('document_signatures_id_seq', (SELECT coalesce(max(id), 1) FROM document_signatures));
+SELECT setval('backlog_id_seq',
+    (SELECT coalesce(max(id), 1) FROM backlog));
+
+SELECT setval('branches_id_seq',
+    (SELECT coalesce(max(id), 1) FROM branches));
+
+SELECT setval('cities_id_seq',
+    (SELECT coalesce(max(id), 1) FROM cities));
+
+SELECT setval('departments_id_seq',
+    (SELECT coalesce(max(id), 1) FROM departments));
+
+SELECT setval('divisions_id_seq',
+    (SELECT coalesce(max(id), 1) FROM divisions));
+
+SELECT setval('document_signatures_id_seq',
+    (SELECT coalesce(max(id), 1) FROM document_signatures));
+
+SELECT setval('documents_id_seq',
+    (SELECT coalesce(max(id), 1) FROM documents));
+
+SELECT setval('employees_id_seq',
+    (SELECT coalesce(max(id), 1) FROM employees));
+
+SELECT setval('document_signatures_id_seq',
+    (SELECT coalesce(max(id), 1) FROM document_signatures));
+
+SELECT setval('imports_id_seq',
+    (SELECT coalesce(max(id), 1) FROM imports));
+
+SELECT setval('online_training_signatures_id_seq',
+              (SELECT coalesce(max(id), 1) FROM online_training_signatures));
+
+SELECT setval('online_trainings_id_seq',
+              (SELECT coalesce(max(id), 1) FROM online_trainings));
 
 COMMIT;
 -- rollback
