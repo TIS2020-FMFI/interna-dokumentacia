@@ -63,15 +63,8 @@ func readOne(writer http.ResponseWriter, request *http.Request) {
 			h.WriteErr(e)
 			return
 		}
-		//
-		//var data map[string]string
-		//if err := json.Unmarshal([]byte(file), &data); err != nil {
-		//	h.WriteErr(err)
-		//	return
-		//}
 		jsonResult := string(file)
 		con.HeaderSendOk(writer)
 		_ = json.NewEncoder(writer).Encode(jsonResult)
-
 	}
 }

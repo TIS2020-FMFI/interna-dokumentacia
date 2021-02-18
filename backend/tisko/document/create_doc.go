@@ -44,8 +44,7 @@ func controlIdIfExistSetPrewVersionUpdateOld(d *Document,
 	if d.Id==0 {
 		return nil
 	}
-	re := tx.Model("documents").Where("id = ?",
-		d.Id).Update("old", true)
+	re := tx.Model(&Document{Id: d.Id}).Updates(map[string]interface{}{"old": true})
 	d.PrevVersionId=d.Id
 	d.Id=0
 	return re.Error

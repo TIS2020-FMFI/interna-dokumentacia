@@ -3,11 +3,14 @@ package document
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/mux"
 	"net/http"
 	"strings"
 	con "tisko/connection_database"
 	h "tisko/helper"
+)
+
+const (
+	allThingsRegex = "([0-9]+|x)"
 )
 
 func getFilterDoc(writer http.ResponseWriter, request *http.Request) {
@@ -17,14 +20,7 @@ func getFilterDoc(writer http.ResponseWriter, request *http.Request) {
 			h.WriteErrWriteHaders(err, writer)
 			return
 		}
-		var docs []DocumentCompleteness
-		re := con.Db.Raw(query).Find(&docs)
-		if re.Error!= nil {
-			h.WriteErrWriteHaders(re.Error, writer)
-			return
-		}
-		con.HeaderSendOk(writer)
-		_ = json.NewEncoder(writer).Encode(docs)
+		getCompletnessByQuery(query, writer)
 	}
 }
 
@@ -33,9 +29,15 @@ type Filter struct {
 }
 
 func getQueryFilterDoc(request *http.Request) (string, error) {
-	var doc Filter
-	m := mux.Vars(request)
-	doc.p=m
+	var (
+		doc Filter
+		myMap map[string]string
+	)
+	e := json.NewDecoder(request.Body).Decode(&myMap)
+	if e != nil {
+		return "",e
+	}
+	doc.p=myMap
 	return doc.buildQuery(),nil
 }
 
@@ -47,14 +49,18 @@ func (f *Filter) buildQuery() string {
 }
 
 func (f *Filter) buildQueryType() string {
-	t , ok := f.p["type"]
+	type0 , ok := f.p["type"]
 	if !ok {
 		return ""
 	}
-	if len(t)==0 {
+	if len(type0)==0 {
 		return ""
 	}
-	return fmt.Sprint(" and type in ('",t,
+	t := strings.Split(type0,",")
+	if len(t)==1 {
+		return fmt.Sprint(" and type=", t[0], " ")
+	}
+	return fmt.Sprint(" and type in ('",strings.Join(t,"|"),
 		"') ")
 }
 
@@ -76,31 +82,31 @@ func (f *Filter) assignedEmpty() bool {
 func (f *Filter) branches() string {
 	s, ok := f.p["branch"]
 	if ok {
-		return s
+		return h.ArrayInStringToRegularExpression(s, allThingsRegex)
 	}
-	return "[0-9]+"
+	return allThingsRegex
 }
 
 func (f *Filter) cities() string {
 	s, ok := f.p["city"]
 	if ok {
-		return s
+		return h.ArrayInStringToRegularExpression(s, allThingsRegex)
 	}
-	return "[0-9]+"
+	return allThingsRegex
 }
 
 func (f *Filter) departments() string {
 	s, ok := f.p["department"]
 	if ok {
-		return s
+		return h.ArrayInStringToRegularExpression(s, allThingsRegex)
 	}
-	return "[0-9]+"
+	return allThingsRegex
 }
 
 func (f *Filter) divisions()string{
 	s, ok := f.p["division"]
 	if ok {
-		return s
+		return h.ArrayInStringToRegularExpression(s, allThingsRegex)
 	}
-	return "[0-9]+"
+	return allThingsRegex
 }

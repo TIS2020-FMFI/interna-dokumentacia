@@ -2,7 +2,6 @@ package document
 
 import (
 	"database/sql"
-	"fmt"
 	con "tisko/connection_database"
 	path "tisko/paths"
 )
@@ -43,8 +42,5 @@ func AddHandleInitVars() {
 	con.AddHeaderPost(path.DocumentCreateConfirm, createConfirmDoc)
 	con.AddHeaderGet(path.AktualDokument, aktualDoc)
 	con.AddHeaderGet(path.EditedDokument, getEditedDoc)
-	con.AddHeaderGet(fmt.Sprint(path.FilterDokument,
-		"/{type}", "/{branch}",
-		"/{city}","/{department}",
-		"/{division}"), getFilterDoc)
+	con.AddHeaderPost(path.FilterDokument, getFilterDoc)
 }

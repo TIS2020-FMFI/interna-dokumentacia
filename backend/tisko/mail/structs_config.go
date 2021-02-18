@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 	"time"
-
+	"tisko/employee"
 )
 
 type config struct {
@@ -29,14 +29,12 @@ type DateNumber struct {
 }
 type superiorSignEmail struct {
 	normSignEmail
-	EmployeeId uint64 `gorm:"column:employee_id"`
-	FirstName  string `gorm:"column:first_name"`
-	LastName   string `gorm:"column:last_name"`
+	employee.BasicEmployee
 }
 
 func (e *superiorSignEmail) getFormat() string {
 	return fmt.Sprint(" doc: ", e.Name, "link: ", e.Link,
-		" who: ", e.EmployeeId,"-",e.FirstName,"-",e.LastName)
+		" who: ", e.Id,"-",e.FirstName,"-",e.LastName)
 }
 type normSignEmail struct {
 	NameLinkDocument

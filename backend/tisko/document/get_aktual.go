@@ -2,12 +2,11 @@ package document
 
 import (
 	"net/http"
-	h "tisko/helper"
+	con "tisko/connection_database"
 )
 
 func aktualDoc(writer http.ResponseWriter, request *http.Request) {
-	sendDocByQuery(actualDoc, h.RquestWriter{
-		W: writer,
-		R: request,
-	})
+	if con.SetHeadersReturnIsContunue(writer, request) {
+		getCompletnessByQuery(actualDoc, writer)
+	}
 }

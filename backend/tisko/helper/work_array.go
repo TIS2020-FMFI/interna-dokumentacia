@@ -28,3 +28,13 @@ func FromStringToArrayUint64(idsString string) []uint64 {
 	}
 	return result
 }
+func ArrayInStringToRegularExpression(arrayString, allThingsInsteadX string ) string {
+	if arrayString=="x" || len(arrayString)==0{
+		return allThingsInsteadX
+	}
+	array := strings.Split(arrayString, ",")
+	if len(array)==1 {
+		return array[0]
+	}
+	return fmt.Sprint("(", strings.Join(array, "|"), ")")
+}

@@ -33,8 +33,8 @@ func HeaderSendOk(writer http.ResponseWriter) {
 
 func SendAccept(id uint64, writer http.ResponseWriter) {
 	responseStruct := struct {
-		Status string `json:"message"`
-		Id     uint64 `json:"id"`
+		Message string `json:"message"`
+		Id      uint64 `json:"id"`
 	}{"accept", id}
 	HeaderSendOk(writer)
 	_ = json.NewEncoder(writer).Encode(responseStruct)
