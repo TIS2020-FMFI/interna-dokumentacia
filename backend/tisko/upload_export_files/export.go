@@ -37,6 +37,7 @@ func exportSkillMatrixReturnName(request *http.Request) (string,string,error) {
 	if !okId || !okFormat {
 		return "","", fmt.Errorf("do not contains id or format, it must contains both")
 	}
+	h.MkDirIfNotExist(exports)
 	e := saveJson(id)
 	if e != nil {
 		return "","",e
@@ -45,7 +46,6 @@ func exportSkillMatrixReturnName(request *http.Request) (string,string,error) {
 	if err != nil {
 		return "","",err
 	}
-	h.MkDirIfNotExist(exports)
 	return fmt.Sprint(name), format, nil
 }
 

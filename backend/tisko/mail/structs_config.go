@@ -23,10 +23,11 @@ type adminEmails struct {
 	Emails []string `json:"emails"`
 }
 
-type DateNumber struct {
-	date time.Time
-	number uint8
+type TwoTimes struct {
+	DateEmails time.Time `json:"date_emails"`
+	DateNotify time.Time `json:"date_notify"`
 }
+
 type superiorSignEmail struct {
 	normSignEmail
 	employee.BasicEmployee

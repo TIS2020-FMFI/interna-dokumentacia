@@ -11,6 +11,7 @@ import (
 	"tisko/languages"
 	"tisko/mail"
 	"tisko/signature"
+	"tisko/tiker"
 	"tisko/training"
 	files "tisko/upload_export_files"
 )
@@ -32,7 +33,8 @@ func main() {
 	languages.AddHandleInitVars()
 	training.AddHandleInitVars()
 	mail.InitVars()
-	//mail.RunMailSenders()
+	mail.InitMailSenders()
+	tiker.StartAll()
 	conn.Start()
 }
 

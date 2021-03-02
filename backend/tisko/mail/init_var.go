@@ -15,7 +15,7 @@ const (
 var (
 	configuration *config
 	adminMails *adminEmails
-	numTime *DateNumber
+	twoTimes *TwoTimes
 	querySuperiorEmails, queryEmployeeEmails, oldDoc string
 )
 
@@ -32,18 +32,33 @@ func loadQuery() {
 
 
 func loadConfig() {
+	loadMailTime()
+	loadOtherConfig()
+}
+
+func loadOtherConfig() {
 	stringConfig := h.ReturnTrimFile("./config/mail_config.txt")
 	err := json.Unmarshal([]byte(stringConfig), &configuration)
 	h.Check(err)
 	stringConfig = h.ReturnTrimFile("./config/emails_of_admins.txt")
 	err = json.Unmarshal([]byte(stringConfig), &adminMails)
 	h.Check(err)
-	stringConfig = h.ReturnTrimFile("./config/mail.lock")
-	err = json.Unmarshal([]byte(stringConfig), &numTime)
-	if err != nil {
-		numTime=&DateNumber{
-			date:   time.Now(),
-			number: 0,
+}
+
+func loadMailTime() {
+	defer func() {
+		r := recover()
+		if r != nil {
+			h.WriteErr(r)
+			twoTimes=&TwoTimes{
+				DateEmails: time.Now(),
+				DateNotify: time.Now(),
+			}
 		}
+	}()
+	stringConfig := h.ReturnTrimFile("./config/mail.lock")
+	err := json.Unmarshal([]byte(stringConfig), &twoTimes)
+	if err != nil {
+		panic(err)
 	}
 }

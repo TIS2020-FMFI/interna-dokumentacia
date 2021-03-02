@@ -4,6 +4,7 @@ const (
 	Login                 = "/login"
 	Kiosk                 = "/kiosk"
 	AllEmployees          = "/all_employees"
+	FilterEmployees       = "/filter_employees"
 	Upload                = "/file/upload"
 	Export                = "/file/export"
 	Comninations          = "/combination"

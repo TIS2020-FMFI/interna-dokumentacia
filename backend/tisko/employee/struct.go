@@ -35,4 +35,5 @@ func AddHandleInitVars() {
 	con.AddHeaderPost(path.Login, login)
 	con.AddHeaderPost(path.Kiosk, kiosk)
 	con.AddHeaderGet(path.AllEmployees, getAll)
+	con.AddHeaderPost(path.FilterEmployees, getFiltered)
 }

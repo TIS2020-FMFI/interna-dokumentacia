@@ -4,10 +4,12 @@ import (
 	"encoding/json"
 	"os"
 	"time"
+	h"tisko/helper"
+	"tisko/tiker"
 )
 
-func RunMailSenders() {
-	go clockControl()
+func InitMailSenders() {
+	clockControl()
 }
 
 func InitVars()  {
@@ -15,34 +17,35 @@ func InitVars()  {
 }
 
 func clockControl() {
-	lastDate :=numTime.date
+	dayHour := 24
+	go initJob()
+	tiker.AddNewJob(upgradeEmails, dayHour, h.DurationToTomorow())
+	tiker.AddNewJob(updatenotify, dayHour, h.DurationToTomorow())
+}
+
+func initJob() {
 	now := time.Now()
-	if now.Sub(lastDate)> day || debug{
-		upgrade()
-	}
-	tomorovAt01Hour := time.Date(now.Year(), now.Month(),
-		now.Day()+1,01,0,0,0,time.UTC)
-	time.Sleep(tomorovAt01Hour.Sub(now))
-	for  {
-		upgrade()
-		time.Sleep(day)
+	if now.Sub(twoTimes.DateEmails)> day || debug{
+		upgradeEmails()
+		sendNotifications()
 	}
 }
 
-func upgrade() {
-	sendEmails()
-	sendNotifications()
-	writeTime()
+func updatenotify() {
+	//	sendNotifications()
 }
 
-func writeTime() {
-	numTime.number++
-	numTime.date=time.Now()
+func upgradeEmails() {
+//	sendEmails()
+	writeTimeEmails()
+}
+
+func writeTimeEmails() {
 	file,err := os.Create(path)
 	if  err!= nil {
 		return
 	}
-	b, err := json.Marshal(numTime)
-	_, _ = file.Write(b)
+	b, err := json.Marshal(twoTimes)
+	_, err = file.Write(b)
 	file.Close()
 }

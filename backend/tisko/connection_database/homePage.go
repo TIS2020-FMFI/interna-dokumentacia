@@ -46,4 +46,5 @@ func inithomePageString() {
 		})
 		return nil
 	})
+	h.SortAlphabeticallyByFirst(homePageStringsMethod)
 }
