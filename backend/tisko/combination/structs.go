@@ -34,7 +34,7 @@ type IdName struct {
 
 func AddHandleInitVars() {
 	init0()
-	con.AddHeaderGet(paths.Comninations, sendAll)
+	con.AddHeaderGet(paths.Combinations, sendAll)
 	con.AddHeaderGet(paths.Branches, sendAllBranches)
 	con.AddHeaderGet(paths.Cities, sendAllCities)
 	con.AddHeaderGet(paths.Departments, sendAllDepartments)

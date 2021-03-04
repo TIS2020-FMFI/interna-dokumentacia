@@ -21,7 +21,7 @@ func AddHandleInitVars() {
 	con.AddHeaderGetID(path.UnsignedSigns, getUnsignedSignatures)
 	con.AddHeaderGetID(path.SignedSigns, getSignedSignatures)
 	con.AddHeaderGetID(path.SkillMatrix, getSkillMatrix)
-	con.AddHeaderPost(path.Sign, sign)
+	con.AddHeaderPost(path.SignDocument, sign)
 	con.AddHeaderPost(path.SignSuperior, signSuperior)
 	con.AddHeaderPost(path.SignTraining, signTraining)
 	con.AddHeaderPost(path.TrainingUpdateConfirm, updateConfirm)
