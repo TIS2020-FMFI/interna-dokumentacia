@@ -50,7 +50,6 @@ func saveFile(file multipart.File, pathName string) bool {
 	if err == nil {
 		_,err = io.Copy(f, file)
 		if err == nil {
-			go parseUpload(pathName)
 			return true
 		}
 		f.Close()

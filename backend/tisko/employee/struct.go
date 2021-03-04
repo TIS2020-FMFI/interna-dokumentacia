@@ -1,6 +1,7 @@
 package employee
 
 import (
+	"fmt"
 	con "tisko/connection_database"
 	path "tisko/paths"
 )
@@ -35,5 +36,5 @@ func AddHandleInitVars() {
 	con.AddHeaderPost(path.Login, login)
 	con.AddHeaderPost(path.Kiosk, kiosk)
 	con.AddHeaderGet(path.AllEmployees, getAll)
-	con.AddHeaderPost(path.FilterEmployees, getFiltered)
+	con.AddHeaderGet(fmt.Sprint(path.FilterEmployees, "/{filter}"), getFiltered)
 }
