@@ -120,7 +120,8 @@ CREATE TABLE Employees (
                            department_id integer,
                            city_id integer,
                            deleted boolean,
-                           import_id integer
+                           import_id integer,
+                           anet_id varchar
 );
 
 create index document_signature_idx

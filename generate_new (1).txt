@@ -123,7 +123,8 @@ SELECT id,
        random(de()),
        random(ci()),
        case random(20) when 1 then true else false end, -- deleted 5%
-       random(5)                                        -- import_id
+       random(5),                                        -- import_id
+        'anet_id'||id
 FROM generate_series(1, em()) AS seq(id);
 
 UPDATE employees
@@ -199,34 +200,34 @@ ON CONFLICT DO NOTHING;;
 
 
 SELECT setval('backlog_id_seq',
-    (SELECT coalesce(max(id), 1) FROM backlog));
+              (SELECT coalesce(max(id), 1) FROM backlog));
 
 SELECT setval('branches_id_seq',
-    (SELECT coalesce(max(id), 1) FROM branches));
+              (SELECT coalesce(max(id), 1) FROM branches));
 
 SELECT setval('cities_id_seq',
-    (SELECT coalesce(max(id), 1) FROM cities));
+              (SELECT coalesce(max(id), 1) FROM cities));
 
 SELECT setval('departments_id_seq',
-    (SELECT coalesce(max(id), 1) FROM departments));
+              (SELECT coalesce(max(id), 1) FROM departments));
 
 SELECT setval('divisions_id_seq',
-    (SELECT coalesce(max(id), 1) FROM divisions));
+              (SELECT coalesce(max(id), 1) FROM divisions));
 
 SELECT setval('document_signatures_id_seq',
-    (SELECT coalesce(max(id), 1) FROM document_signatures));
+              (SELECT coalesce(max(id), 1) FROM document_signatures));
 
 SELECT setval('documents_id_seq',
-    (SELECT coalesce(max(id), 1) FROM documents));
+              (SELECT coalesce(max(id), 1) FROM documents));
 
 SELECT setval('employees_id_seq',
-    (SELECT coalesce(max(id), 1) FROM employees));
+              (SELECT coalesce(max(id), 1) FROM employees));
 
 SELECT setval('document_signatures_id_seq',
-    (SELECT coalesce(max(id), 1) FROM document_signatures));
+              (SELECT coalesce(max(id), 1) FROM document_signatures));
 
 SELECT setval('imports_id_seq',
-    (SELECT coalesce(max(id), 1) FROM imports));
+              (SELECT coalesce(max(id), 1) FROM imports));
 
 SELECT setval('online_training_signatures_id_seq',
               (SELECT coalesce(max(id), 1) FROM online_training_signatures));
