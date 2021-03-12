@@ -85,7 +85,8 @@ CREATE TABLE Documents (
                            assigned_to varchar,
                            require_superior boolean,
                            edited boolean default true,
-                           old boolean default false
+                           old boolean default false,
+                           removeEmployees varchar
 );
 
 DROP TABLE IF EXISTS Document_signatures CASCADE;
