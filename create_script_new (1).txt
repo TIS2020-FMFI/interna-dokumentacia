@@ -122,7 +122,7 @@ CREATE TABLE Employees (
                            city_id integer,
                            deleted boolean,
                            import_id integer,
-                           anet_id varchar,
+                           anet_id varchar unique,
                            card varchar
 );
 
