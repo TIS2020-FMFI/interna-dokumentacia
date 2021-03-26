@@ -108,7 +108,9 @@ INSERT INTO imports
 SELECT id, 'import_' || id
 FROM generate_series(1, 5) AS seq(id);
 
-INSERT INTO employees
+INSERT INTO employees(id,first_name, last_name, login, password, role, email, 
+                      job_title, manager_id,branch_id, division_id, department_id,
+                      city_id, deleted, import_id, anet_id, card)
 SELECT id,
        'first_name_' || id,
        'last_name_' || id,
@@ -124,7 +126,8 @@ SELECT id,
        random(ci()),
        case random(20) when 1 then true else false end, -- deleted 5%
        random(5),                                        -- import_id
-        'anet_id'||id
+       'anet_id'||id,
+       'card_'||id
 FROM generate_series(1, em()) AS seq(id);
 
 UPDATE employees
