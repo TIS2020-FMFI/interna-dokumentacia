@@ -1,0 +1,22 @@
+{
+  "loginPage":{
+    "header":"ihlasovanie",
+    "login":"Login",
+    "password":"Heslo",
+    "submit":"Prihlásiť sa",
+    "notification":{
+      "wrongLogin":"Zlé prihlasovacie údaje",
+      "wrongCard":"Nepodarilo sa prihlásenie kartou"
+    }
+  },
+  "navigation":{
+    "login":"Prihlasit sa",
+    "recordsToSign":"Na podpísanie",
+    "signedRecords":"Podpísané",
+    "addRecord":"Pridať",
+    "savedRecords":"Uložené",
+    "finder":"Vyhľadávanie",
+    "settings":"Nastavenia",
+    "logout":"Odhlásiť sa"
+  }
+}
