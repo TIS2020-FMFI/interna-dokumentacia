@@ -1,19 +1,13 @@
-import {Button} from "react-bootstrap";
 import React from "react";
-import {recordType} from "../../functions";
+import Button from "react-bootstrap/Button";
 
-const EditBtn = (cell, row, rowIndex, {setFormData, setFormType}) => {
-
-  const handleClick = () => {
-    setFormData(row);
-    // FIXME do not redirect after click on document
-    console.log("edit")
-    console.log(row)
-    recordType(row) === "document" ? setFormType("new_document") : setFormType("new_training");
-  }
+const EditBtn = (cell, row, index, { setFormData }) => {
+  const handleClick = () => setFormData(row);
 
   return (
-    <Button onClick={handleClick} size="sm" id="editBtn">Edit</Button>
+    <Button variant="outline-primary" onClick={handleClick} size="sm">
+      Edit
+    </Button>
   );
 };
 

@@ -1,50 +1,56 @@
-import React from "react";
-import {Form, Col, Row} from "react-bootstrap";
-import {branches, divisions, departments, cities} from "../../data";
-import {getSelectOptions} from "../../functions";
+import React, { useContext, useEffect, useState } from "react";
+import Col from "react-bootstrap/Col";
+import Select from "react-select";
+import { CustomAlert } from "../CustomAlert";
+import { PairContext } from "../../App";
+import { getOptionsForSelect } from "../../utils/functions";
 
-const CombinationForm = ({register}) => {
+const CombinationForm = ({
+  prefill,
+  disabled,
+  employees,
+  combinations: cs,
+  combination,
+  setCombination,
+  notification,
+}) => {
+  console.log(cs);
 
-  // TODO JOZO implement dynamic generated options
-  // note: ...according to requirements catalog
+  const pairs = useContext(PairContext);
+  const options = getOptionsForSelect(pairs);
+
+  const handleSelect = (data, { name: field }) => {
+    setCombination({ ...combination, [field]: data });
+  };
+
+  const selector = (name, label, opt = options[name]) => (
+    <>
+      {label}
+      <Select
+        isMulti={true}
+        placeholder=""
+        name={name}
+        options={opt}
+        defaultValue={prefill ? prefill[name] : []}
+        isDisabled={
+          (prefill && name !== "removedEmployees") || disabled.includes(name)
+        }
+        onChange={(data, e) => handleSelect(data, e)}
+      />
+      <br />
+    </>
+  );
 
   return (
-    <Col>
-
-      {/* BRANCH */}
-      <Form.Group as={Row}>
-        <Form.Label>Branch</Form.Label>
-        <Form.Control as="select" name="branch" ref={register}>
-          { getSelectOptions(branches) }
-        </Form.Control>
-      </Form.Group>
-
-      {/* DIVISION */}
-      <Form.Group as={Row}>
-        <Form.Label>Division</Form.Label>
-        <Form.Control as="select" name="division" ref={register}>
-          { getSelectOptions(divisions) }
-        </Form.Control>
-      </Form.Group>
-
-      {/* DEPARTMENT */}
-      <Form.Group as={Row}>
-        <Form.Label>Department</Form.Label>
-        <Form.Control as="select" name="department" ref={register}>
-          { getSelectOptions(departments) }
-        </Form.Control>
-      </Form.Group>
-
-      {/* CITY */}
-      <Form.Group as={Row}>
-        <Form.Label>City</Form.Label>
-        <Form.Control as="select" name="city" ref={register}>
-          { getSelectOptions(cities) }
-        </Form.Control>
-      </Form.Group>
-
+    <Col className="p-0">
+      {selector("branches", "Branches")}
+      {selector("divisions", "Divisions")}
+      {selector("departments", "Departments")}
+      {selector("cities", "Cities")}
+      {employees && selector("removedEmployees", "Remove employees", employees)}
+      {notification && <CustomAlert notification={notification} />}
     </Col>
-  )
-}
+  );
+};
 
 export default CombinationForm;

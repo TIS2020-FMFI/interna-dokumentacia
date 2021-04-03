@@ -1,0 +1,42 @@
+MATO
+done #24 -> filter podla zamestnanca
+done #24 -> skill-matrix len po dvojkobinacii
+done #24 -> skill-matrix podla nadriadeneho
+done #25 -> report
+done #00 -> removedEmployees
+done #00 -> complete field
+done #00 -> viem zmenit veci na prazdny string
+done #29 -> import zamestnancov
+done #30 -> import kariet
+done #35 -> preklad
+
+JANCI
+done #12 -> combinations
+done #16 -> zobrazit aj jeho ANET, oddelenie a divízia
+done #24 -> filter podla zamestnanca
+done #24 -> filter podla kombinacie
+done #24 -> skill-matrix podla nadriadeneho
+done #00 -> po odhlaseni redirect to login
+done #00 => filter by branch | city
+done #25 -> report
+done #00 => saved dokument nejde priamo odoslat (cez modal, ano)
+done #00 => pri Vyhladavani podla employee hodi chybu
+done #00 => chyba pri odosielani online trainingu
+done #00 -> zo skill-matrix sa viem vratit naspat na table
+
+TODO #12 -> removedEmplyees #1,2#
+TODO #00 -> documentForm modal mam rozkuskovane assigned_to
+
+TODO #24 -> skillmatrix dvojkobinacia
+TODO #24 -> skillmatrix manipulacia
+
+
+TODO IN FUTURE
+#14 -> všetkým nadriadeným sa pošle informačný mail o tom, že ich podriadení majú nieco podpisat
+#21 -> opakovane preskolenie zobrazit v skillmatrix
+#28 -> export skillmatrix, found records, report
+#00 -> v settings viem nastavit aby to zobrazovalo aj deleted employees
+#00 -> pridanie assigned_to pre sent document nevyrobi nove podpisy
+#00 -> vo filtri ukazat state of superior signs
+#00 -> default language zisti z browser-a
+#00 -> sticky table header (and title)

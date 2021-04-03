@@ -10,13 +10,18 @@ const ConfirmModal = ({showModal, setShowModal, modalInfo, handleAccept}) => {
     closeModal();
   };
 
+  const employeeName =()=> `${modalInfo.employee.first_name} ${modalInfo.employee.last_name}`
+
   return (
     <Modal show={showModal} onHide={closeModal} centered>
       <Modal.Header closeButton>
-        <Modal.Title>{modalInfo.name}</Modal.Title>
+        <Modal.Title>Confirm</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>Are you sure?</p>
+        {modalInfo.asSuperior
+          ? <p>{`Do you really want do sign for ${employeeName()}`}</p>
+          : <p>{`Do you really want do sign the document named ${modalInfo.name}`}</p>
+        }
       </Modal.Body>
       <Modal.Footer>
         <Button variant="danger" onClick={onAccept}>Accept</Button>

@@ -1,16 +1,36 @@
-import {Button} from "react-bootstrap";
 import React from "react";
+import Button from "react-bootstrap/Button";
+import {
+  badMsg,
+  goodMsg,
+  recordType,
+  successResponse,
+} from "../../utils/functions";
+import { proxy_url } from "../../utils/data";
 
-const SendBtn = (cell, row, index, {data, setMsg}) => {
-
+const SendBtn = (cell, row, index, { setSavedRec, setNotification }) => {
+  /** Send record to relevant employees */
   const handleClick = () => {
-    // TODO MATO send the record to employees
-    console.log("send", data[index]);
-    setMsg(`Record ${data[index].name} was successfully sent`)
-  }
+    fetch(proxy_url + `${recordType(row)}/confirm/${row.id}`, {
+      method: "GET",
+    })
+      .then((res) => {
+        if (successResponse(res)) {
+          updateSavedRec();
+          setNotification(goodMsg(`Record ${row.name} was successfully sent`));
+        } else {
+          setNotification(badMsg(`Sending the ${row.name} failed`));
+        }
+      })
+      .catch((e) => console.log(e));
+  };
 
-  return(
-    <Button id="save" variant="danger" size="sm" onClick={handleClick}>
+  const updateSavedRec = () => {
+    setSavedRec((prev) => prev.filter((rec) => rec.id !== row.id));
+  };
+
+  return (
+    <Button id="save" size="sm" onClick={handleClick}>
       Send
     </Button>
   );
