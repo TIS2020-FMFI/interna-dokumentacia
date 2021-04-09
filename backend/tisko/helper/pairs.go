@@ -56,7 +56,7 @@ func (rw *DataWR) BuildQuery(Config *PasswordConfig) {
 		query=fmt.Sprint(rw.S.First,"='", name,"'")
 	}else {
 		query=fmt.Sprint(rw.S.First,"='", name, "' and ",
-			rw.S.Second,"=", passwd,"::varchar")
+			rw.S.Second,"='", passwd,"'::varchar")
 	}
 	rw.S.Query=query
 }
