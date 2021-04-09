@@ -1,9 +1,0 @@
-
-
-</nav>
-<footer>
-<p > Vytvoril Matej Magát, 2020-2021 </p>
-</footer>
-
-</body>
-</html>

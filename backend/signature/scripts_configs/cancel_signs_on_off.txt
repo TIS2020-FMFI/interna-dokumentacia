@@ -1,2 +1,0 @@
-
-SELECT insert_delete_cancel_signs( ? );
