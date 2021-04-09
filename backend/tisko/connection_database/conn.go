@@ -25,6 +25,13 @@ func registerFrontend() {
 	}
 	myRouter.HandleFunc("/", anonimFunc)
 	myRouter.HandleFunc("/login", anonimFunc)
+	myRouter.HandleFunc("/records-to-sign", anonimFunc)
+	myRouter.HandleFunc("/signed-records", anonimFunc)
+	myRouter.HandleFunc("/add-record", anonimFunc)
+	myRouter.HandleFunc("/saved-record", anonimFunc)
+	myRouter.HandleFunc("/finder", anonimFunc)
+	myRouter.HandleFunc("/settings", anonimFunc)
+	myRouter.HandleFunc("/logout", anonimFunc)
 	staticDir := "/build_front_end/static/"
 	myRouter.
 		PathPrefix("/static/").
