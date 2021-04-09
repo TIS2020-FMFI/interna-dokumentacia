@@ -2,7 +2,6 @@ package connection_database
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	h "tisko/helper"
 )
@@ -43,6 +42,7 @@ func startServer() {
 	portBackend := h.ReturnTrimFile("./connection_database/port.txt")
 	fmt.Println("Listen on "+ portBackend)
 	for  {
-		log.Fatal(http.ListenAndServe(portBackend, myRouter))
+		e := http.ListenAndServe(portBackend, myRouter)
+		h.WriteErr(e)
 	}
 }
