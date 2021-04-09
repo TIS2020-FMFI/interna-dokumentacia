@@ -16,6 +16,11 @@ type IntBool struct {
 	Bool0 bool
 }
 
+type NameId struct {
+	Id uint64 `gorm:"column:id"`
+	Name string `gorm:"column:name"`
+}
+
 type RquestWriter struct {
 	W http.ResponseWriter
 	R *http.Request
@@ -36,13 +41,13 @@ type PasswordConfig struct {
 	InternetPasswordFree bool `json:"internet_password_free"`
 }
 const (
-	NameColumn     = "login"
+	Card           = "card"
 	PasswordColumn = "password"
-	Email          = "email"
+	Login          = "login"
 )
 func (rw *DataWR) BuildQuery(Config *PasswordConfig) {
 	b := Config.KioskPasswordFree
-	if rw.S.First == Email {
+	if rw.S.First == Login {
 		b=Config.InternetPasswordFree
 	}
 	name,passwd := rw.getNamePassword()

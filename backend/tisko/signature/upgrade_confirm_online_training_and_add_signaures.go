@@ -17,7 +17,7 @@ import (
 func updateConfirm(writer http.ResponseWriter, request *http.Request) {
 	tx := con.Db.Begin()
 	defer tx.Rollback()
-	if con.SetHeadersReturnIsContunue(writer, request) {
+	if con.SetHeadersReturnIsContinue(writer, request) {
 		var (
 			newTraining training.OnlineTraining
 		)
@@ -40,7 +40,32 @@ func updateConfirm(writer http.ResponseWriter, request *http.Request) {
 		carrySignToTraining(newTraining, tx, writer)
 	}
 }
-
+func createConfirm(writer http.ResponseWriter, request *http.Request) {
+	tx := con.Db.Begin()
+	defer tx.Rollback()
+	if con.SetHeadersReturnIsContinue(writer, request) {
+		var (
+			newTraining training.OnlineTraining
+		)
+		e := json.NewDecoder(request.Body).Decode(&newTraining)
+		if e != nil {
+			h.WriteErrWriteHaders(e, writer)
+			return
+		}
+		newTraining.Edited = false
+		result := tx.Create(&newTraining)
+		if result.Error != nil {
+			h.WriteErrWriteHaders(result.Error, writer)
+			return
+		}
+		err := confirmInDb(newTraining, tx)
+		if err != nil {
+			h.WriteErrWriteHaders(err, writer)
+			return
+		}
+		carrySignToTraining(newTraining, tx, writer)
+	}
+}
 func confirmInDb(newTraining training.OnlineTraining, tx *gorm.DB) error {
 	result := tx.Model(&newTraining).Updates(map[string]interface{}{"edited": false})
 	return result.Error
@@ -65,7 +90,7 @@ func saveSignToTraining(newTraining training.OnlineTraining, tx *gorm.DB) error 
 func confirm(writer http.ResponseWriter, request *http.Request) {
 	tx := con.Db.Begin()
 	defer tx.Rollback()
-	if con.SetHeadersReturnIsContunue(writer, request) {
+	if con.SetHeadersReturnIsContinue(writer, request) {
 		idString, ok := mux.Vars(request)["id"]
 		if !ok {
 			h.WriteErrWriteHaders(fmt.Errorf("not found 'id'"), writer)

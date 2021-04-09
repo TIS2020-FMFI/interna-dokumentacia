@@ -23,7 +23,7 @@ type ModifyTraining struct {
 
 type ModifySignatures struct {
 	DocumentSignature []ModifyDocument       `json:"documents"`
-	OnlineSignature []ModifyTraining `json:"online_trainings"`
+	OnlineSignature []ModifyTraining `json:"trainings"`
 }
 
 func createEmptyModifySignaturesWithCapacity(s *Signatures) *ModifySignatures {

@@ -8,7 +8,6 @@ import (
 	"tisko/document"
 	"tisko/employee"
 	"tisko/helper"
-	"tisko/languages"
 	"tisko/mail"
 	"tisko/signature"
 	"tisko/tiker"
@@ -30,7 +29,6 @@ func main() {
 	document.AddHandleInitVars()
 	signature.AddHandleInitVars()
 	files.AddHandleInitVars()
-	languages.AddHandleInitVars()
 	training.AddHandleInitVars()
 	mail.InitVars()
 	mail.InitMailSenders()

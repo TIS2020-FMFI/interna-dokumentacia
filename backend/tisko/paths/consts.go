@@ -31,7 +31,9 @@ const (
 	TrainingUpdateConfirm = "/training/update/confirm"
 	TrainingConfirm       = "/training/confirm"
 	TrainingSave          = "/training/create"
+	TrainingSaveConfirm   = "/training/create/confirm"
 	TrainingUpdate        = "/training/update"
-	CancelsResigns        = "/cancels_resigns"
+	Resigns        = "/resigns"
+	Cancels       = "/cancels"
 	EditedTraining        = "/training/edited"
 )

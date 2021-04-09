@@ -9,7 +9,7 @@ import (
 )
 
 func updateDoc(writer http.ResponseWriter, request *http.Request) {
-	if con.SetHeadersReturnIsContunue(writer, request) {
+	if con.SetHeadersReturnIsContinue(writer, request) {
 		ok, id := doUpdate(writer, request, con.Db)
 		if !ok {
 			return
@@ -25,7 +25,7 @@ func doUpdate(writer http.ResponseWriter, request *http.Request, tx *gorm.DB) (b
 		h.WriteErrWriteHaders(err, writer)
 		return false, 0
 	}
-	result := tx.Omit("edited", "old").Updates(&doc)
+	result := tx.Model(&doc).Select("*").Omit("edited", "old").Updates(&doc)
 	if result.Error != nil {
 		h.WriteErrWriteHaders(result.Error, writer)
 		return false, 0

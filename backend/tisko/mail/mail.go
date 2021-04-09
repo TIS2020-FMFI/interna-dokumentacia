@@ -2,7 +2,7 @@ package mail
 
 import (
 	"fmt"
-	"github.com/gomail"
+	"gopkg.in/gomail.v2"
 	con "tisko/connection_database"
 	h "tisko/helper"
 )
@@ -16,7 +16,7 @@ func sendEmployee() {
 	var emails []normSignEmail
 	con.Db.Raw(queryEmployeeEmails).Find(&emails)
 	for i := 0; i < len(emails); i++ {
-		if emails[i].Email == "" {
+		if emails[i].Email == "" || emails[i].Email == " " {
 			continue
 		}
 		email := emailNameLinkMessange{
@@ -37,7 +37,7 @@ type emailNameLinkMessange struct {
 }
 
 func sendEmail(ee emailNameLinkMessange) {
-	if len(ee.emails)==0 || debug {
+	if len(ee.emails)==0 {
 		return
 	}
 	m := gomail.NewMessage()
@@ -53,7 +53,7 @@ func sendEmail(ee emailNameLinkMessange) {
 	m.SetHeader("Subject", "mail")
 	m.SetBody("text/plain", msg)
 
-	d := gomail.NewPlainDialer(configuration.SmtpHost, configuration.SmtpPort, configuration.From, configuration.Password)
+	d := gomail.NewDialer(configuration.SmtpHost, configuration.SmtpPort, configuration.From, configuration.Password)
 	err := d.DialAndSend(m)
 	if  err != nil {
 		fmt.Println(err)
@@ -93,7 +93,7 @@ func sendSuperior() {
 	var emails []superiorSignEmail
 	con.Db.Raw(querySuperiorEmails).Find(&emails)
 	for i := 0; i < len(emails); i++ {
-		if emails[i].Email == "" {
+		if emails[i].Email == "" || emails[i].Email == " " {
 			continue
 		}
 		email := emailNameLinkMessange{

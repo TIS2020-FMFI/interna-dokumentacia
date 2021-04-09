@@ -15,9 +15,11 @@ var (
 	startPart, endPart string
 )
 
+const dir = "./connection_database/"
+
 func InitVars() {
 	myRouter = mux.NewRouter().StrictSlash(true)
-	dsn := h.ReturnTrimFile("./config/postgres_config.txt")
+	dsn := h.ReturnTrimFile(dir+"postgres_config.txt")
 	Db, _ = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if Db == nil {
 		panic("nepripojene")
@@ -26,6 +28,6 @@ func InitVars() {
 	sqlDB.SetMaxIdleConns(100)
 	sqlDB.SetMaxOpenConns(100)
 	sqlDB.SetConnMaxLifetime(time.Hour)
-	startPart= h.ReturnTrimFile("./config/begin_homepage.txt")
-	endPart= h.ReturnTrimFile("./config/end_homepage.txt")
+	startPart= h.ReturnTrimFile(dir+"begin_homepage.txt")
+	endPart= h.ReturnTrimFile(dir+"end_homepage.txt")
 }

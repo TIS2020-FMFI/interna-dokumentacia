@@ -8,10 +8,10 @@ import (
 
 
 func login(writer http.ResponseWriter, request *http.Request) {
-	if con.SetHeadersReturnIsContunue(writer,request)  {
+	if con.SetHeadersReturnIsContinue(writer,request)  {
 		rw := h.DataWR{
 			S:  &h.MyStrings{
-				First:  h.Email,
+				First:  h.Login,
 				Second: h.PasswordColumn,
 			},
 			RW: &h.RquestWriter{

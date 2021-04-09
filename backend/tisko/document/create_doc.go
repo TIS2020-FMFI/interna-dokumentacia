@@ -9,7 +9,7 @@ import (
 )
 
 func createDoc(writer http.ResponseWriter, request *http.Request) {
-	if con.SetHeadersReturnIsContunue(writer, request) {
+	if con.SetHeadersReturnIsContinue(writer, request) {
 		tx := con.Db.Begin()
 		defer tx.Rollback()
 		id, err := doCreate( request, tx)

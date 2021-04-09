@@ -9,7 +9,7 @@ import (
 func createConfirmDoc(writer http.ResponseWriter, request *http.Request) {
 	tx := con.Db.Begin()
 	defer tx.Rollback()
-	if con.SetHeadersReturnIsContunue(writer, request) {
+	if con.SetHeadersReturnIsContinue(writer, request) {
 		id,err := doCreate( request, tx)
 		if err!=nil {
 			h.WriteErrWriteHaders(err, writer)

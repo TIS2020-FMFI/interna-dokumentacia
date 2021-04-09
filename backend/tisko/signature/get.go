@@ -2,6 +2,7 @@ package signature
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
@@ -20,8 +21,13 @@ func getSignedSignatures(writer http.ResponseWriter, request *http.Request) {
 }
 
 func getSignatures(writer http.ResponseWriter, request *http.Request, signs h.QueryThreeStrings) {
-	if con.SetHeadersReturnIsContunue(writer, request) {
-		id, err := strconv.Atoi(mux.Vars(request)["id"])
+	if con.SetHeadersReturnIsContinue(writer, request) {
+		idString, ok := mux.Vars(request)["id"]
+		if !ok {
+			h.WriteErrWriteHaders(fmt.Errorf("do not find id"), writer)
+			return
+		}
+		id, err := strconv.Atoi(idString)
 		if err != nil || id < 0 {
 			h.WriteErrWriteHaders(err, writer)
 			return
@@ -33,6 +39,11 @@ func getSignatures(writer http.ResponseWriter, request *http.Request, signs h.Qu
 	}
 }
 
+func FetchMatrix(id uint64) *ModifySignatures {
+	signatures := &fake_structs.Signatures{}
+	con.Db.Raw(skillMatrixSuperiorId, id).Find(&signatures.EmployeeSignature)
+	return convertSignatureFromFake(signatures).convertToModifySignature()
+}
 func getSignaturesByscript(Q h.QueryThreeStrings, id int) *ModifySignatures {
 	signatures := &fake_structs.Signatures{}
 	con.Db.Raw(Q.DocumentSignEmployee, id).Find(&signatures.EmployeeSignature)
@@ -40,23 +51,4 @@ func getSignaturesByscript(Q h.QueryThreeStrings, id int) *ModifySignatures {
 	con.Db.Raw(Q.DocumentSign, id).Find(&signatures.DocumentSignature)
 	nonFake := convertSignatureFromFake(signatures)
 	return nonFake.convertToModifySignature()
-}
-
-func getSkillMatrix(writer http.ResponseWriter, request *http.Request) {
-	if con.SetHeadersReturnIsContunue(writer, request) {
-		id, err := strconv.ParseUint(mux.Vars(request)["id"],10,64)
-		if err != nil || id == 0 {
-			h.WriteErrWriteHaders(err, writer)
-			return
-		}
-		modify := FetchMatrix(id)
-		con.HeaderSendOk(writer)
-		_ = json.NewEncoder(writer).Encode(modify)
-	}
-}
-
-func FetchMatrix(id uint64) *ModifySignatures {
-	signatures := &fake_structs.Signatures{}
-	con.Db.Raw(skillMatrix, id).Find(&signatures.EmployeeSignature)
-	return convertSignatureFromFake(signatures).convertToModifySignature()
 }

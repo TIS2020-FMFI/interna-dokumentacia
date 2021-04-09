@@ -8,7 +8,7 @@ import (
 )
 
 func getEditedTrainings(writer http.ResponseWriter, request *http.Request) {
-	if con.SetHeadersReturnIsContunue(writer,request) {
+	if con.SetHeadersReturnIsContinue(writer,request) {
 		var docs []OnlineTraining
 		re := con.Db.Raw(editedTraining).Find(&docs)
 		if re.Error!= nil {

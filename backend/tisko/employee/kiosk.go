@@ -6,12 +6,11 @@ import (
 	h "tisko/helper"
 )
 
-
 func kiosk(writer http.ResponseWriter, request *http.Request) {
-	if con.SetHeadersReturnIsContunue(writer,request)  {
+	if con.SetHeadersReturnIsContinue(writer,request)  {
 		rw := h.DataWR{
 			S:  &h.MyStrings{
-				First:  h.NameColumn,
+				First:  h.Card,
 				Second: h.PasswordColumn,
 			},
 			RW: &h.RquestWriter{

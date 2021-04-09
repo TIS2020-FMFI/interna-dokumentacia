@@ -1,7 +1,0 @@
-select id, first_name, last_name
-from employees e
-where Query1::varchar similar to
-      '%(' || e.branch_id || '|x); ' ||
-      '(' || e.city_id   || '|x); ' ||
-      '(' || e.department_id   || '|x); ' ||
-      '(' || e.division_id   || '|x)%'

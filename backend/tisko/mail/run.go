@@ -19,29 +19,41 @@ func InitVars()  {
 func clockControl() {
 	dayHour := 24
 	go initJob()
+	go waitToWrite()
 	tiker.AddNewJob(upgradeEmails, dayHour, h.DurationToTomorow())
 	tiker.AddNewJob(updatenotify, dayHour, h.DurationToTomorow())
 }
 
 func initJob() {
 	now := time.Now()
-	if now.Sub(twoTimes.DateEmails)> day || debug{
+	if now.Sub(twoTimes.DateEmails)> day{
 		upgradeEmails()
-		sendNotifications()
+		updatenotify()
 	}
 }
+var ch = make(chan bool)
 
 func updatenotify() {
-	//	sendNotifications()
+	sendNotifications()
+	twoTimes.DateNotify=time.Now()
+	ch <-true
 }
 
 func upgradeEmails() {
-//	sendEmails()
-	writeTimeEmails()
+	sendEmails()
+	twoTimes.DateEmails=time.Now()
+	ch<-true
+}
+
+func waitToWrite(){
+	for  {
+		<-ch; <-ch
+		writeTimeEmails()
+	}
 }
 
 func writeTimeEmails() {
-	file,err := os.Create(path)
+	file,err := os.Create(dir+"mail.lock")
 	if  err!= nil {
 		return
 	}

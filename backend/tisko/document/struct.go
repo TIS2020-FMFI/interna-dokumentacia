@@ -26,7 +26,7 @@ type Document struct {
 
 type DocumentCompleteness struct {
 	Document
-	Complete float64
+	Complete float64 `gorm:"column:percentage" json:"complete"`
 }
 
 func (DocumentCompleteness) TableName() string {

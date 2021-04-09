@@ -14,7 +14,7 @@ import (
 func confirmDoc(writer http.ResponseWriter, request *http.Request) {
 	tx := con.Db.Begin()
 	defer tx.Rollback()
-	if con.SetHeadersReturnIsContunue(writer, request) {
+	if con.SetHeadersReturnIsContinue(writer, request) {
 		idString, ok := mux.Vars(request)["id"]
 		if !ok {
 			h.WriteErrWriteHaders(fmt.Errorf("not found 'id'"), writer)

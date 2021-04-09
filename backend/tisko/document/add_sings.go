@@ -3,6 +3,7 @@ package document
 import (
 	"gorm.io/gorm"
 	h "tisko/helper"
+	"tisko/mail"
 )
 
 var (
@@ -13,10 +14,11 @@ func AddSignature(combinations h.StringsBool, DocId uint64, tx *gorm.DB) error {
 	re := tx.Raw(addSignAfterConfirmDoc,
 		combinations.RequireSuperior,
 		DocId,
+		combinations.AssignedTo,
 		combinations.AssignedTo).Find(&mails)
 	if re.Error != nil {
 		return re.Error
 	}
-	//go mail.SendFistMail(mails, combinations)
+	go mail.SendFistMail(mails, combinations)
 	return nil
 }

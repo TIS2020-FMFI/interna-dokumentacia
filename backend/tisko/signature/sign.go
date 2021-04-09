@@ -8,31 +8,31 @@ import (
 )
 
 func signSuperior(writer http.ResponseWriter, request *http.Request) {
-	if con.SetHeadersReturnIsContunue(writer, request) {
+	if con.SetHeadersReturnIsContinue(writer, request) {
 		rw :=h.RquestWriter{
 			W: writer,
 			R: request,
 		}
-		signCommon(rw, querysignSuperior)
+		signCommon(rw, querySignSuperior)
 	}
 }
 
 func sign(writer http.ResponseWriter, request *http.Request) {
-	if con.SetHeadersReturnIsContunue(writer, request) {
+	if con.SetHeadersReturnIsContinue(writer, request) {
 		rw :=h.RquestWriter{
 			W: writer,
 			R: request,
 		}
-		signCommon(rw, querysign)
+		signCommon(rw, querySign)
 	}
 }
 func signTraining(writer http.ResponseWriter, request *http.Request) {
-	if con.SetHeadersReturnIsContunue(writer, request) {
+	if con.SetHeadersReturnIsContinue(writer, request) {
 		rw :=h.RquestWriter{
 			W: writer,
 			R: request,
 		}
-		signCommon(rw, querysignTraining)
+		signCommon(rw, querySignTraining)
 	}
 }
 

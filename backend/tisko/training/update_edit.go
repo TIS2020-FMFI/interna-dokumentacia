@@ -8,7 +8,7 @@ import (
 )
 
 func updateEditedTraining(writer http.ResponseWriter, request *http.Request) {
-	if con.SetHeadersReturnIsContunue(writer, request) {
+	if con.SetHeadersReturnIsContinue(writer, request) {
 		var (
 			newTraining  OnlineTraining
 		)
@@ -17,7 +17,7 @@ func updateEditedTraining(writer http.ResponseWriter, request *http.Request) {
 			h.WriteErrWriteHaders(e, writer)
 			return
 		}
-		result := con.Db.Omit("edited").Updates(&newTraining)
+		result := con.Db.Model(&newTraining).Select("*").Omit("edited").Updates(&newTraining)
 		if result.Error != nil {
 			h.WriteErrWriteHaders(result.Error, writer)
 			return

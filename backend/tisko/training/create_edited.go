@@ -8,7 +8,7 @@ import (
 )
 
 func createEditedTraining(writer http.ResponseWriter, request *http.Request) {
-	if con.SetHeadersReturnIsContunue(writer, request) {
+	if con.SetHeadersReturnIsContinue(writer, request) {
 		var newTraining OnlineTraining
 		e := json.NewDecoder(request.Body).Decode(&newTraining)
 		if e != nil {

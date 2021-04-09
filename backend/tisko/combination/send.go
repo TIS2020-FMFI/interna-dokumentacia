@@ -9,13 +9,13 @@ import (
 
 var queryCombinationAll string
 
+const dir = "./combination/"
 func init0() {
-	queryCombinationAll = h.ReturnTrimFile(
-		"./config/combinations.txt")
+	queryCombinationAll = h.ReturnTrimFile(dir+"combinations.txt")
 }
 
 func sendAll(writer http.ResponseWriter, request *http.Request) {
-	if con.SetHeadersReturnIsContunue(writer, request) {
+	if con.SetHeadersReturnIsContinue(writer, request) {
 		var combi []CombinationFull
 		re := con.Db.Raw(queryCombinationAll).Find(&combi)
 		if re.Error!=nil {
@@ -52,7 +52,7 @@ func sendAllDivisions(writer http.ResponseWriter, request *http.Request) {
 
 func sendAllStructs(nameTable string, rw h.RquestWriter) {
 	var result []IdName
-	if con.SetHeadersReturnIsContunue(rw.W, rw.R) {
+	if con.SetHeadersReturnIsContinue(rw.W, rw.R) {
 		re := con.Db.Table(nameTable).Find(&result)
 		if re.Error != nil {
 			h.WriteErrWriteHaders(re.Error, rw.W)

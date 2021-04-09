@@ -8,7 +8,7 @@ import (
 	h "tisko/helper"
 )
 func homePage(writer http.ResponseWriter, request *http.Request) {
-	if SetHeadersReturnIsContunue(writer, request) {
+	if SetHeadersReturnIsContinue(writer, request) {
 		nav := buildNav(request)
 		writer.Header().Set("Content-Type", "text/html; charset=UTF-8")
 		writer.WriteHeader(http.StatusOK)
@@ -20,12 +20,13 @@ func buildNav(request *http.Request) string {
 	var result strings.Builder
 	for i := 0; i < len(homePageStringsMethod); i++ {
 		method := homePageStringsMethod[i].Second
-		wholeUrl:= fmt.Sprint(strings.TrimSpace(request.Host), homePageStringsMethod[i].First)
+		wholeUrl:= fmt.Sprint("http://",
+		strings.TrimSpace(request.Host), homePageStringsMethod[i].First)
 		result.WriteString(fmt.Sprintln(
 			"<a class=\"active\" href=\"",
 			wholeUrl,
 			"\" style=\"display: block;\">",
-			"link: ",wholeUrl,
+			i+1, "link: ",wholeUrl,
 			" method:",method,
 			"</a>"))
 	}

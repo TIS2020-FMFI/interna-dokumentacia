@@ -1,0 +1,15 @@
+
+
+
+
+{
+"from": " gefcosk.documentation@outlook.cz",
+"password": "DM630ub",
+"smtpHost": "smtp.office365.com",
+"smtpPort": 587,
+"message_doc": "podpíš dokument:",
+"message_new_doc": "podpíš dokument:",
+"message_old_doc": "treba riešiť:",
+"message_new_doc_manager": "podpíš svojim zamestnancom dokument:",
+"message_training": "podpíš online meeting čísel:"
+}

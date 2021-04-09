@@ -29,7 +29,8 @@ type TwoTimes struct {
 }
 
 type superiorSignEmail struct {
-	normSignEmail
+	NameLinkDocument
+	Email      string `gorm:"column:email"`
 	employee.BasicEmployee
 }
 

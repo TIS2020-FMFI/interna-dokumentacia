@@ -9,7 +9,7 @@ import (
 func updateConfirmDoc(writer http.ResponseWriter, request *http.Request) {
 	tx := con.Db.Begin()
 	defer tx.Rollback()
-	if con.SetHeadersReturnIsContunue(writer, request) {
+	if con.SetHeadersReturnIsContinue(writer, request) {
 		ok, id := doUpdate(writer, request, tx)
 		if !ok {
 			return

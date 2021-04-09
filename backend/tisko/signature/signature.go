@@ -22,14 +22,14 @@ func (signatures *Signatures) convertToModifySignatureDoc(containsMap map[uint64
 }
 
 func convertOneSigniture(containsMap map[uint64]*ModifyDocument, signature SignatureAndDocument) {
-	var ModifyDocument *ModifyDocument
+	var modifyDocument *ModifyDocument
 	m, ok:= containsMap[signature.Document.Id]
-	ModifyDocument = m
+	modifyDocument = m
 	if !ok {
-		ModifyDocument = convertDocumentToModify(signature.Document)
-		containsMap[signature.Document.Id]=ModifyDocument
+		modifyDocument = convertDocumentToModify(signature.Document)
+		containsMap[signature.Document.Id]= modifyDocument
 	}
-	careSign(ModifyDocument, signature)
+	careSign(modifyDocument, signature)
 }
 
 func careSign(modifyDocument *ModifyDocument, signature SignatureAndDocument) {

@@ -8,14 +8,19 @@ import (
 
 func sendByScript(rw h.RquestWriter, query string) {
 	writer,request:= rw.W, rw.R
-	if con.SetHeadersReturnIsContunue(writer,request)  {
-		var e []BasicEmployee
-		re := con.Db.Raw(query).Find(&e)
-		if re.Error!=nil {
-			h.WriteErrWriteHaders(re.Error, writer)
+	if con.SetHeadersReturnIsContinue(writer,request)  {
+		e,err := GetBasicEmployeesByQuery(query)
+		if err!=nil {
+			h.WriteErrWriteHaders(err, writer)
 			return
 		}
 		con.HeaderSendOk(writer)
 		_ = json.NewEncoder(writer).Encode(e)
 	}
+}
+
+func GetBasicEmployeesByQuery(query string) ([]Employee,error) {
+	var e []Employee
+	re := con.Db.Raw(query).Find(&e)
+	return e, re.Error
 }
