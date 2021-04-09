@@ -14,7 +14,8 @@ func Start() {
 }
 
 func finishBackend() {
-	myRouter.HandleFunc("/homePageBackend", homePage).Methods("GET")
+	myRouter.HandleFunc("/homePageBackend",
+		homePage).Methods("GET")
 	inithomePageString()
 }
 
@@ -22,9 +23,13 @@ func registerFrontend() {
 	anonimFunc :=  func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "build_front_end/index.html")
 	}
-	myRouter.HandleFunc("/",anonimFunc)
-	fs := http.FileServer(http.Dir("build_front_end/static/"))
-	myRouter.Handle("/static/", http.StripPrefix("/static", fs))
+	myRouter.HandleFunc("/", anonimFunc)
+	myRouter.HandleFunc("/login", anonimFunc)
+	staticDir := "/build_front_end/static/"
+	myRouter.
+		PathPrefix("/static/").
+		Handler(http.StripPrefix("/static/",
+			http.FileServer(http.Dir("."+staticDir))))
 }
 
 func startServer() {
