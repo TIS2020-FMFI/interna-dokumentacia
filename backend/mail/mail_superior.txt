@@ -1,0 +1,13 @@
+SELECT s.email as email,
+       name, link, employee_id,
+       e.first_name as first_name, e.last_name as last_name
+
+FROM "employees" e JOIN document_signatures on
+        document_signatures.employee_id = e.id JOIN documents on
+        document_signatures.document_id = documents.id
+                   join employees s  on e.manager_id=s.id
+
+WHERE  not edited and
+    not exists(select * from cancel_signs where document_signature_id=document_signatures.id)
+  and deadline <= now()- ('1 day'::interval)*3
+  and not old
