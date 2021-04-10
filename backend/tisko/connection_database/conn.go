@@ -72,8 +72,8 @@ func startServer() {
 func NewServer(port string) *http.Server {
 	s := & http.Server{
 		Addr: port,
-		ReadTimeout:  10 * time.Second,
-		WriteTimeout: 10 * time.Second,
+		ReadTimeout:  time.Second/2,
+		WriteTimeout:  time.Second*2,
 	}
 	cloneRouter :=mux.NewRouter().StrictSlash(true)
 	temp := myRouter
@@ -98,6 +98,7 @@ func NewServer(port string) *http.Server {
 }
 
 func tryIsAliveElseStop(s *http.Server, myUrl string) {
+	//time.Sleep(time.Second*7)
 	client := http.Client{Timeout: timeout}
 	for  {
 		time.Sleep(time.Second*7)
