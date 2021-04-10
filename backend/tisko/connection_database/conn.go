@@ -19,6 +19,7 @@ const (
 
 var (
 	myForm = url.Values{}
+	staticDir = "/build_front_end/static/"
 )
 
 func Start() {
@@ -29,7 +30,7 @@ func Start() {
 
 func finishBackend() {
 	myRouter.HandleFunc("/homePageBackend",
-		homePage).Methods("GET")
+		homePage)
 	inithomePageString()
 }
 
@@ -46,11 +47,6 @@ func registerFrontend() {
 	myRouter.HandleFunc("/finder", anonimFunc)
 	myRouter.HandleFunc("/settings", anonimFunc)
 	myRouter.HandleFunc("/logout", anonimFunc)
-	staticDir := "/build_front_end/static/"
-	myRouter.
-		PathPrefix("/static/").
-		Handler(http.StripPrefix("/static/",
-			http.FileServer(http.Dir("."+staticDir))))
 }
 
 func startServer() {
@@ -63,7 +59,13 @@ func startServer() {
 		s := NewServer(portBackend)
 		go tryIsAliveElseStop(s, myUrl)
 		e := s.ListenAndServe()
-		h.WriteErr(e)
+		if e != nil {
+			if e.Error() == "http: Server closed" {
+				fmt.Println("reset")
+			}else {
+				h.WriteErr(e)
+			}
+		}
 	}
 }
 
@@ -74,17 +76,23 @@ func NewServer(port string) *http.Server {
 		WriteTimeout: 10 * time.Second,
 	}
 	cloneRouter :=mux.NewRouter().StrictSlash(true)
-	_ = myRouter.Walk(func(route *mux.Route, router *mux.Router, ancestors []*mux.Route) error {
+	temp := myRouter
+	_ = temp.Walk(func(route *mux.Route, router *mux.Router, ancestors []*mux.Route) error {
 		link, err := route.GetPathTemplate()
-		methods, err2 := route.GetMethods()
-		funcM := route.GetHandler()
-		if err != nil || err2 != nil {
+		if err != nil {
 			return err
 		}
-		method := methods[0]
-		cloneRouter.Methods(method).Path(link).Handler(funcM)
+		methods, err2 := route.GetMethods()
+		funcHandler := route.GetHandler()
+		if err2 != nil {
+			cloneRouter.Path(link).Handler(funcHandler)
+			return nil
+		}
+		cloneRouter.Methods(methods...).Path(link).Handler(funcHandler)
 		return nil
 	})
+	cloneRouter.PathPrefix("/static/").Handler(http.StripPrefix("/static/",
+			http.FileServer(http.Dir("."+staticDir))))
 	s.Handler = cloneRouter
 	return s
 }
@@ -92,7 +100,7 @@ func NewServer(port string) *http.Server {
 func tryIsAliveElseStop(s *http.Server, myUrl string) {
 	client := http.Client{Timeout: timeout}
 	for  {
-		time.Sleep(time.Second*3)
+		time.Sleep(time.Second*7)
 		req, err := http.NewRequest("POST", myUrl, strings.NewReader(myForm.Encode()))
 		if err != nil {	goto end }
 		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
