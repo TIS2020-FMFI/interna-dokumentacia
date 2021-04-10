@@ -64,6 +64,5 @@ func (rw *DataWR) BuildQuery(Config *PasswordConfig) {
 func (rw *DataWR) getNamePassword() (string, string) {
 	name := rw.RW.R.FormValue(rw.S.First)
 	passwd := rw.RW.R.FormValue(rw.S.Second)
-	fmt.Println(name, passwd)
 	return name, passwd
 }
