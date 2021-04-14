@@ -73,7 +73,7 @@ func NewServer(port string) *http.Server {
 	s := & http.Server{
 		Addr: port,
 		ReadTimeout:  time.Second/2,
-		WriteTimeout:  time.Second*2,
+		WriteTimeout:  time.Second*7,
 	}
 	cloneRouter :=mux.NewRouter().StrictSlash(true)
 	temp := myRouter

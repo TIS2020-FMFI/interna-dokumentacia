@@ -45,6 +45,9 @@ func getAnetIdsMapAnetIdToCard(array [][]string) (string, map[string]string) {
 	for i := 0; i < len(array); i++ {
 		row := array[i]
 		anet := strings.TrimSpace(row[config.AnetIdCard-1])
+		if anet=="" {
+			continue
+		}
 		anetIdArray = append(anetIdArray, anet)
 		myMap[anet]= strings.TrimSpace(row[config.NumberCard-1])
 	}

@@ -16,22 +16,25 @@ import (
 
 func parseSaveEmployeesAddSign(dir string, name string) error {
 	tx := con.Db.Begin()
+	defer tx.Rollback()
 	newEmployees, err := parseReadFileCareImportInDBSaveEmployeesReturnNew(dir, name, tx)
 	if err != nil {
-		tx.Rollback()
 		h.WriteErr(err)
 		return err
 	}
 	if len(newEmployees)==0 {
 		return nil
 	}
-	var emailsEmployees, err0 = signature.AddSignsNewEmployeesReturnsEmails(newEmployees)
+	var emailsEmployees, err0 = signature.AddSignsNewEmployeesReturnsEmails(newEmployees, tx)
 	if err0 != nil {
 		h.WriteErr(err0)
 		return err
 	}
-	_=emailsEmployees
-	mail.SendWelcome(emailsEmployees)
+	err = tx.Commit().Error
+	if err != nil {
+		return err
+	}
+	go mail.SendWelcome(emailsEmployees)
 	return nil
 }
 
@@ -44,7 +47,18 @@ func parseReadFileCareImportInDBSaveEmployeesReturnNew(path string, name string,
 	if err != nil {
 		return nil, err
 	}
-	return parseArraySaveAllEmployeesReturnNew(fileArray, id, tx)
+	return parseArraySaveAllEmployeesReturnNew(filterEmptyName(fileArray), id, tx)
+}
+
+func filterEmptyName(array [][]string) [][]string {
+	result := make([][]string, 0, len(array))
+	for i := 0; i < len(array); i++ {
+		if len(array[i][config.FirstName-1])==0{
+			continue
+		}
+		result = append(result, array[i])
+	}
+	return result
 }
 
 func parseArraySaveAllEmployeesReturnNew(fileArray [][]string, id uint64, tx *gorm.DB) ([]h.NewEmployee, error) {
@@ -128,10 +142,6 @@ func prepareCreateOrUpdate(create []employee.Employee, update []employee.Employe
 			if err != nil {
 				return nil, fmt.Errorf("%v", err)
 			}
-		}
-		err = tx.Commit().Error
-		if err != nil {
-			return nil, err
 		}
 		return employee.ConvertToNewEmployees(create), nil
 	}

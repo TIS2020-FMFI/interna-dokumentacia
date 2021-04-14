@@ -44,10 +44,10 @@ func (e *Employee) ConvertToNewEmployee() h.NewEmployee {
 	return h.NewEmployee{
 		Id:         e.Id,
 		SuperiorId: e.ManagerId,
-		Assigned:   fmt.Sprint("%'",
+		Assigned:   fmt.Sprint("%",
 			"(",h.ArrayInStringToRegularExpression(fmt.Sprint(e.BranchId)),"|x); ",
 			"(",h.ArrayInStringToRegularExpression(fmt.Sprint(e.CityId)),"|x); ",
 			"(",h.ArrayInStringToRegularExpression(fmt.Sprint(e.DepartmentId)),"|x); ",
-			"(",h.ArrayInStringToRegularExpression(fmt.Sprint(e.DivisionId)),"|x)%'"),
+			"(",h.ArrayInStringToRegularExpression(fmt.Sprint(e.DivisionId)),"|x)%"),
 	}
 }

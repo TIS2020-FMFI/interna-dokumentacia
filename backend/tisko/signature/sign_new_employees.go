@@ -2,18 +2,18 @@ package signature
 
 import (
 	"fmt"
+	"gorm.io/gorm"
 	"strings"
-	con "tisko/connection_database"
 	"tisko/helper"
 	h "tisko/helper"
 )
 
-func AddSignsNewEmployeesReturnsEmails(newEmployees []h.NewEmployee) ([]string, error ){
+func AddSignsNewEmployeesReturnsEmails(newEmployees []h.NewEmployee, tx *gorm.DB) ([]string, error) {
 	var (
 		result []h.Mail
 		sql = prepareSqlNewEmployeesSigns(newEmployees)
 	)
-	re := con.Db.Raw(sql).Find(&result)
+	re := tx.Raw(sql).Find(&result)
 	if re.Error != nil {
 		h.WriteErr(re.Error)
 		return nil, fmt.Errorf(re.Error.Error())

@@ -12,6 +12,7 @@ import (
 )
 
 func upload(writer http.ResponseWriter, request *http.Request) {
+	if con.SetHeadersReturnIsContinue(writer, request) {
 		_ = request.ParseMultipartForm(10 << 30)
 		file, fileHeader, err := request.FormFile("file")
 		if err != nil {
@@ -28,7 +29,7 @@ func upload(writer http.ResponseWriter, request *http.Request) {
 	}
 		_ = file.Close()
 }
-
+}
 func carryPathName(fileHeader *multipart.FileHeader, division string) string {
 	if len(division)!=0 {
 		return fmt.Sprint(emploeyess,division, ".csv")

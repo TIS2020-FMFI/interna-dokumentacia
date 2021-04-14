@@ -17,5 +17,4 @@ func SendWelcome(mails []string)  {
 		massange: "welcome to our company yuo will need our website:",
 	}
 	sendEmail(ee)
-
 }
