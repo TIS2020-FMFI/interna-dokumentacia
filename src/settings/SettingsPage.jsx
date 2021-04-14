@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form, Row, Alert, Col } from "react-bootstrap";
 import { ExclamationTriangle } from "react-bootstrap-icons";
-import { getSelectOptions } from "../utils/functions";
+import {badMsg, getSelectOptions} from "../utils/functions";
 import { proxy_url } from "../utils/data";
 
 const SettingsPage = ({ submitError }) => {
@@ -57,23 +57,19 @@ const SettingsPage = ({ submitError }) => {
     console.log(cardsFile);
 
     if (cardsFile != null) {
-      fetch(proxy_url + "http://localhost:7777/file/upload", {
-        mode: "no-cors",
+      fetch(proxy_url + "/file/upload", {
         method: "POST",
         body: data,
-      }).then(
-        function (res) {
-          setCardsError(OK);
-          if (res.ok) {
-            alert("Perfect! ");
-          } else if (res.status === 401) {
-            alert("Oops! ");
-          }
-        },
-        function (e) {
-          alert("Error submitting form!");
-        }
-      );
+      }).then((response) => {
+            console.log(response)
+            if (response.ok) {
+              alert("Perfect! ");
+            } else {
+              let msg = "File not set";
+              setCardsError(msg);
+            }
+          })
+          .catch((e) =>  alert("Error submitting form!"+e));
     } else {
       let msg = "File not set";
       setCardsError(msg);
@@ -93,27 +89,21 @@ const SettingsPage = ({ submitError }) => {
       data.append("name", name);
       data.append("import", selectedType);
 
-      fetch(proxy_url + "http://localhost:7777/file/upload", {
-        mode: "no-cors",
+      fetch(proxy_url + "/file/upload", {
         method: "POST",
         body: data,
-      }).then(
-        function (res) {
-          setEmployeesError(OK);
-          if (res.ok) {
+      }).then((response) =>  {
+            console.log(response)
+            if (response.ok) {
             alert("Perfect! ");
-          } else if (res.status === 401) {
-            alert("Oops! ");
-          }
-        },
-        function (e) {
-          alert("Error submitting form!");
-        }
-      );
-    } else {
-      let msg = "";
-      if (!selectedType) msg = "Import is not set";
-      else msg = "File is not set";
+          }else {
+              let msg = "File not set";
+              setEmployeesError(msg);
+            }
+          })
+          .catch((e) =>  alert("Error submitting form!"+e));
+        }else {
+      let msg = "File not set";
       setEmployeesError(msg);
     }
   };
