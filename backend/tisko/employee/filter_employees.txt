@@ -1,0 +1,7 @@
+select id, first_name, last_name, department_id
+from employees e
+where Query1::varchar similar to
+      '%(' || '[0-9,]*' || e.branch_id || '[0-9,]*' || '|x); ' ||
+             '(' || '[0-9,]*' || e.city_id   || '[0-9,]*' || '|x); ' ||
+             '(' || '[0-9,]*' || e.department_id   || '[0-9,]*' || '|x); ' ||
+             '(' || '[0-9,]*' || e.division_id   || '[0-9,]*' || '|x)%'

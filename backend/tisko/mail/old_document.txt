@@ -1,0 +1,10 @@
+SELECT  name, link
+
+FROM  documents
+
+WHERE   not edited   and (release_date + ('1 day'::interval)*365
+                             <= now()- ('1 day'::interval)*3 and
+            release_date + ('1 day'::interval)*365
+        > now()- ('1 day'::interval)*2 or
+                          release_date + ('1 day'::interval)*365
+    < now())
