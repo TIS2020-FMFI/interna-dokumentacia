@@ -7,6 +7,8 @@ import (
 	"strings"
 	h "tisko/helper"
 )
+
+// homePage send to writer home page contains all sub-domen
 func homePage(writer http.ResponseWriter, request *http.Request) {
 	if SetHeadersReturnIsContinue(writer, request) {
 		nav := buildNav(request)
@@ -16,6 +18,7 @@ func homePage(writer http.ResponseWriter, request *http.Request) {
 	}
 }
 
+// buildNav build html text home page
 func buildNav(request *http.Request) string {
 	var result strings.Builder
 	for i := 0; i < len(homePageStringsMethod); i++ {
@@ -30,10 +33,10 @@ func buildNav(request *http.Request) string {
 			" method:",method,
 			"</a>"))
 	}
-
 	return result.String()
 }
 
+// inithomePageString init package's variable homePageStringsMethod from actual package's variable myRouter
 func inithomePageString() {
 	_ = myRouter.Walk(func(route *mux.Route, router *mux.Router, ancestors []*mux.Route) error {
 		link, err := route.GetPathTemplate()

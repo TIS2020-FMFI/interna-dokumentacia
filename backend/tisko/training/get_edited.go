@@ -12,7 +12,7 @@ func getEditedTrainings(writer http.ResponseWriter, request *http.Request) {
 		var docs []OnlineTraining
 		re := con.Db.Raw(editedTraining).Find(&docs)
 		if re.Error!= nil {
-			h.WriteErrWriteHaders(re.Error, writer)
+			h.WriteErrWriteHandlers(re.Error, writer)
 			return
 		}
 		con.HeaderSendOk(writer)

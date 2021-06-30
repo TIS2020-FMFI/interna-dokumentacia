@@ -19,7 +19,7 @@ func sendDocByQuery(query string, rw h.RquestWriter) {
 		var docs []Document
 		re := con.Db.Raw(query).Find(&docs)
 		if docs == nil {
-			h.WriteErrWriteHaders(re.Error, rw.W)
+			h.WriteErrWriteHandlers(re.Error, rw.W)
 			return
 		}
 		con.HeaderSendOk(rw.W)

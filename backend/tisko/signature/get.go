@@ -24,12 +24,12 @@ func getSignatures(writer http.ResponseWriter, request *http.Request, signs h.Qu
 	if con.SetHeadersReturnIsContinue(writer, request) {
 		idString, ok := mux.Vars(request)["id"]
 		if !ok {
-			h.WriteErrWriteHaders(fmt.Errorf("do not find id"), writer)
+			h.WriteErrWriteHandlers(fmt.Errorf("do not find id"), writer)
 			return
 		}
 		id, err := strconv.Atoi(idString)
 		if err != nil || id < 0 {
-			h.WriteErrWriteHaders(err, writer)
+			h.WriteErrWriteHandlers(err, writer)
 			return
 		}
 		modifySignature := getSignaturesByscript(signs, id)

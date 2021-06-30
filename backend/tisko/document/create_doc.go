@@ -8,13 +8,14 @@ import (
 	h "tisko/helper"
 )
 
+//createDoc handle for create create new document
 func createDoc(writer http.ResponseWriter, request *http.Request) {
 	if con.SetHeadersReturnIsContinue(writer, request) {
 		tx := con.Db.Begin()
 		defer tx.Rollback()
 		id, err := doCreate( request, tx)
 		if err!= nil {
-			h.WriteErrWriteHaders(err,writer)
+			h.WriteErrWriteHandlers(err,writer)
 			return
 		}
 		tx.Commit()
@@ -22,6 +23,7 @@ func createDoc(writer http.ResponseWriter, request *http.Request) {
 	}
 }
 
+//doCreate fetch document from request *http.Request and write to db by transaction tx *gorm.DB with edited = true
 func doCreate( request *http.Request, tx *gorm.DB) (uint64, error) {
 	var doc Document
 	e := json.NewDecoder(request.Body).Decode(&doc)
@@ -32,15 +34,16 @@ func doCreate( request *http.Request, tx *gorm.DB) (uint64, error) {
 	if e != nil {
 		return 0,e
 	}
-	result := tx.Omit("edited").Create(&doc)
+	doc.Edited=true
+	result := tx.Create(&doc)
 	if result.Error != nil {
 		return 0,result.Error
 	}
 	return doc.Id, nil
 }
 
-func controlIdIfExistSetPrewVersionUpdateOld(d *Document,
-	tx *gorm.DB) error{
+//controlIdIfExistSetPrewVersionUpdateOld set  Document "old" = true by id then set predVersionId = id and then id = 0
+func controlIdIfExistSetPrewVersionUpdateOld(d *Document,tx *gorm.DB) error{
 	if d.Id==0 {
 		return nil
 	}

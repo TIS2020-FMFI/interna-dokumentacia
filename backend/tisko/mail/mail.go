@@ -57,6 +57,7 @@ func sendEmail(ee emailNameLinkMessange) {
 	err := d.DialAndSend(m)
 	if  err != nil {
 		fmt.Println(err)
+		h.WriteErr(err)
 	}
 }
 

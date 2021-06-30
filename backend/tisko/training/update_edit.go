@@ -14,12 +14,12 @@ func updateEditedTraining(writer http.ResponseWriter, request *http.Request) {
 		)
 		e :=json.NewDecoder(request.Body).Decode(&newTraining)
 		if e != nil {
-			h.WriteErrWriteHaders(e, writer)
+			h.WriteErrWriteHandlers(e, writer)
 			return
 		}
 		result := con.Db.Model(&newTraining).Select("*").Omit("edited").Updates(&newTraining)
 		if result.Error != nil {
-			h.WriteErrWriteHaders(result.Error, writer)
+			h.WriteErrWriteHandlers(result.Error, writer)
 			return
 		}
 		con.SendAccept(newTraining.Id, writer)

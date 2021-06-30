@@ -8,6 +8,8 @@ import (
 	h "tisko/helper"
 )
 
+// AddSignsNewEmployeesReturnsEmails create records about signatures in database according  newEmployees []h.NewEmployee
+//  - return strings-mails
 func AddSignsNewEmployeesReturnsEmails(newEmployees []h.NewEmployee, tx *gorm.DB) ([]string, error) {
 	var (
 		result []h.Mail
@@ -21,7 +23,8 @@ func AddSignsNewEmployeesReturnsEmails(newEmployees []h.NewEmployee, tx *gorm.DB
 	return convert(result), nil
 }
 
-func convert(result []h.Mail) []string{
+//convert extract strings from my structure
+func convert(result []h.Mail) []string {
 	email := make([]string,0,len(result))
 	for i := 0; i < len(result); i++ {
 		temp := result[i].Mail
@@ -33,6 +36,7 @@ func convert(result []h.Mail) []string{
 	return email
 }
 
+//prepareSqlNewEmployeesSigns run SQL function with arguments from newEmployees []h.NewEmployee
 func prepareSqlNewEmployeesSigns(newEmployees []h.NewEmployee) string {
 	sql := newEmployeesQuery
 	sql= strings.ReplaceAll(sql, "ArrayId", GetIdsNewEmployeesSQLStringArray(newEmployees))
@@ -42,6 +46,7 @@ func prepareSqlNewEmployeesSigns(newEmployees []h.NewEmployee) string {
 	return sql
 }
 
+// GetIdsNewEmployeesSQLStringArray extract Ids and format to "array[" + join(ids, ",") + "]"
 func GetIdsNewEmployeesSQLStringArray(newEmployees []h.NewEmployee) string {
 	ids := make([]uint64,0,len(newEmployees))
 	for i := 0; i < len(newEmployees); i++ {
@@ -49,6 +54,8 @@ func GetIdsNewEmployeesSQLStringArray(newEmployees []h.NewEmployee) string {
 	}
 	return fmt.Sprint("array[", helper.ArrayUint64ToString(ids,","),"]")
 }
+
+// GetIdsSuperiorNewEmployeesSQLStringArray extract SuperiorIds and format to "array[" + join(SuperiorIds, ",") + "]"
 func GetIdsSuperiorNewEmployeesSQLStringArray(newEmployees []h.NewEmployee) string {
 	idsSuperior := make([]uint64,0,len(newEmployees))
 	for i := 0; i < len(newEmployees); i++ {
@@ -57,6 +64,8 @@ func GetIdsSuperiorNewEmployeesSQLStringArray(newEmployees []h.NewEmployee) stri
 	return fmt.Sprint("array[", helper.ArrayUint64ToString(idsSuperior,","),"]")
 
 }
+
+// GetNewAssignedToEmployeesSQLStringArray extract Assigneds and format to "array[" + join(Assigneds, ",") + "]"
 func GetNewAssignedToEmployeesSQLStringArray(newEmployees []h.NewEmployee) string {
 	assigneds := make([]string,0,len(newEmployees))
 	for i := 0; i < len(newEmployees); i++ {

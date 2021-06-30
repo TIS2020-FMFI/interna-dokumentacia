@@ -4,11 +4,11 @@ import (
 	"path/filepath"
 )
 
+//parse according pathName to file run parseCards to save cards to database or parseSaveEmployeesAddSign to save employees to database
 func parse(pathName string) error{
-	dir, name := filepath.Split(pathName)
-	if dir==cards {
+	path, name := filepath.Split(pathName)
+	if path == cardsPath {
 		return parseCards(pathName)
-	}else {
-		return parseSaveEmployeesAddSign(dir, name)
 	}
+	return parseSaveEmployeesAddSign(path, name)
 }

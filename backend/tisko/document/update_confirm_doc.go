@@ -16,7 +16,7 @@ func updateConfirmDoc(writer http.ResponseWriter, request *http.Request) {
 		}
 		err := doConfirm(id, tx)
 		if err != nil {
-			h.WriteErrWriteHaders(err, writer)
+			h.WriteErrWriteHandlers(err, writer)
 			return
 		}
 		tx.Commit()

@@ -9,6 +9,7 @@ import (
 	"strings"
 )
 
+// ReturnTrimFile read whole file and return trim string, WARNING: if apear error, this func will stop program with panic
 func ReturnTrimFile(nameFile string) string {
 	defer func() {fmt.Println("load: ",nameFile )}()
 	dat, err := ioutil.ReadFile(nameFile)
@@ -17,6 +18,7 @@ func ReturnTrimFile(nameFile string) string {
 	return strings.TrimSpace(string(dat))
 }
 
+// ReadCsvFile read csv return error or data as [][]string
 func ReadCsvFile(filePath string) (fileArrayStrings [][]string,e error)  {
 	f, err := os.Open(filePath)
 	if err != nil {

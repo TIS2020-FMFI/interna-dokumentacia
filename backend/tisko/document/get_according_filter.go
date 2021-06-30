@@ -9,11 +9,12 @@ import (
 )
 
 
+// getFilterDoc handle for get documents with completness by filter
 func getFilterDoc(writer http.ResponseWriter, request *http.Request) {
 	if con.SetHeadersReturnIsContinue(writer, request) {
 		query, err := getQueryFilterDoc(request)
 		if err != nil {
-			h.WriteErrWriteHaders(err, writer)
+			h.WriteErrWriteHandlers(err, writer)
 			return
 		}
 		docs := getCompletnessByQuery(query, writer)
@@ -21,11 +22,12 @@ func getFilterDoc(writer http.ResponseWriter, request *http.Request) {
 			con.HeaderSendOk(writer)
 			_ = json.NewEncoder(writer).Encode(docs)
 		}else {
-			h.WriteErrWriteHaders(fmt.Errorf("docs is nul"), writer)
+			h.WriteErrWriteHandlers(fmt.Errorf("docs is nul"), writer)
 		}
 	}
 }
 
+//getQueryFilterDoc prepare filter
 func getQueryFilterDoc(request *http.Request) (string, error) {
 	var (
 		doc h.Filter

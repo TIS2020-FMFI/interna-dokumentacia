@@ -11,7 +11,7 @@ func sendByScript(rw h.RquestWriter, query string) {
 	if con.SetHeadersReturnIsContinue(writer,request)  {
 		e,err := GetBasicEmployeesByQuery(query)
 		if err!=nil {
-			h.WriteErrWriteHaders(err, writer)
+			h.WriteErrWriteHandlers(err, writer)
 			return
 		}
 		con.HeaderSendOk(writer)

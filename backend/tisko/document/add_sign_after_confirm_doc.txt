@@ -1,5 +1,4 @@
 with
-
     employees_managers as (
         select e.id  as employee_id,
                null as  e_date,
@@ -8,7 +7,7 @@ with
                ?::integer as document_id,
                e.email as e_email,
                manager.email as m_email
-        from "employees" as e  inner join "employees" as manager
+        from "employees" as e  left join "employees" as manager
                                           on e.manager_id=manager.id and not e.deleted
         where ?::varchar similar to
               '%(' || '[0-9,]*' || e.branch_id || '[0-9,]*' || '|x); ' ||

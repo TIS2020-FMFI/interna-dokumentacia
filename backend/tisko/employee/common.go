@@ -17,7 +17,7 @@ func loginBy(rw h.DataWR) {
 	var e Employee
 	re := con.Db.Where(rw.S.Query).First(&e)
 	if re.Error!=nil {
-		h.WriteErrWriteHaders(re.Error, rw.RW.W)
+		h.WriteErrWriteHandlers(re.Error, rw.RW.W)
 		return
 	}
 	con.HeaderSendOk(rw.RW.W)
@@ -33,13 +33,17 @@ func init0() {
 	queryFilterEmployees = h.ReturnTrimFile(dir+"filter_employees.txt")
 }
 
-func ConvertToNewEmployees(employees []Employee) []h.NewEmployee {
+// ConvertToNewEmployees extract from employees only informations, which are needed to signature
+//  - make []h.NewEmployee from []Employee
+func ConvertToNewEmployees(employees []*Employee) []h.NewEmployee {
 	result := make([]h.NewEmployee,0,len(employees))
 	for i := 0; i < len(employees); i++ {
 		result = append(result, employees[i].ConvertToNewEmployee())
 	}
 	return result
 }
+
+// ConvertToNewEmployee extract from one employee only informations, which are needed to signature
 func (e *Employee) ConvertToNewEmployee() h.NewEmployee {
 	return h.NewEmployee{
 		Id:         e.Id,

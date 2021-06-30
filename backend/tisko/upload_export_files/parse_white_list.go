@@ -14,6 +14,7 @@ import (
 	"tisko/signature"
 )
 
+//parseSaveEmployeesAddSign add employees to database and add them signatures
 func parseSaveEmployeesAddSign(dir string, name string) error {
 	tx := con.Db.Begin()
 	defer tx.Rollback()
@@ -22,10 +23,10 @@ func parseSaveEmployeesAddSign(dir string, name string) error {
 		h.WriteErr(err)
 		return err
 	}
-	if len(newEmployees)==0 {
+	if len(newEmployees) == 0 {
 		return nil
 	}
-	var emailsEmployees, err0 = signature.AddSignsNewEmployeesReturnsEmails(newEmployees, tx)
+	emailsEmployees, err0 := signature.AddSignsNewEmployeesReturnsEmails(newEmployees, tx)
 	if err0 != nil {
 		h.WriteErr(err0)
 		return err
@@ -38,6 +39,7 @@ func parseSaveEmployeesAddSign(dir string, name string) error {
 	return nil
 }
 
+//parseReadFileCareImportInDBSaveEmployeesReturnNew read csv, write to database and return []h.NewEmployee or error
 func parseReadFileCareImportInDBSaveEmployeesReturnNew(path string, name string, tx *gorm.DB) ([]h.NewEmployee, error) {
 	fileArray, err := h.ReadCsvFile(filepath.Join(path, name))
 	if err != nil {
@@ -50,10 +52,11 @@ func parseReadFileCareImportInDBSaveEmployeesReturnNew(path string, name string,
 	return parseArraySaveAllEmployeesReturnNew(filterEmptyName(fileArray), id, tx)
 }
 
+//filterEmptyName ignore rows with empty column for first name
 func filterEmptyName(array [][]string) [][]string {
 	result := make([][]string, 0, len(array))
 	for i := 0; i < len(array); i++ {
-		if len(array[i][config.FirstName-1])==0{
+		if len(array[i][config.FirstName-1]) == 0 {
 			continue
 		}
 		result = append(result, array[i])
@@ -61,6 +64,7 @@ func filterEmptyName(array [][]string) [][]string {
 	return result
 }
 
+//parseArraySaveAllEmployeesReturnNew prepare all for saved to database and run it
 func parseArraySaveAllEmployeesReturnNew(fileArray [][]string, id uint64, tx *gorm.DB) ([]h.NewEmployee, error) {
 	ch, mapAllEmployeesFromLastImport := makeChanSendingEmployeesGetLastImport(fileArray, id, tx)
 	createEmployees, updateEmployees := catchEmployees(len(fileArray), ch)
@@ -68,32 +72,40 @@ func parseArraySaveAllEmployeesReturnNew(fileArray [][]string, id uint64, tx *go
 	return createOrUpdateFunc(mapAllEmployeesFromLastImport, tx)
 }
 
-func makeChanSendingEmployeesGetLastImport(fileArray [][]string, id uint64, tx *gorm.DB) (chan employee.Employee, map[string]uint64) {
-	ch, mapAllEmployeesFromLastImport := make(chan employee.Employee),  getMapAllEmployeesFromLastImport(id)
+//makeChanSendingEmployeesGetLastImport check all employees from last import end run parallel creating structs of employee.Employee,
+//return chan for these structs and map of anetId and id
+func makeChanSendingEmployeesGetLastImport(fileArray [][]string, id uint64, tx *gorm.DB) (chan *employee.Employee, map[string]uint64) {
+	ch, mapAllEmployeesFromLastImport := make(chan *employee.Employee), getMapAllEmployeesFromLastImport(id)
 	banchMap, cityMap, departmentMap, divisionMap, superiorMap := getMapsIdFromImportDb(fileArray, tx)
 	for i := 0; i < len(fileArray); i++ {
 		go func(row []string) {
 			tempEmployee, ok := employee.NewEmptyEmployee(), false
 			tempEmployee.ImportId, tempEmployee.Deleted = id, false
-			ok = setGeneralIdFromStringIfExist(&mapAllEmployeesFromLastImport, func(id uint64) { tempEmployee.Id = id },row[config.AnetId-1]) || ok
-			ok = setGeneralIdFromStringIfExist(&banchMap, func(id uint64) { tempEmployee.BranchId = id },row[config.Branch-1]) || ok
-			ok = setGeneralIdFromStringIfExist(&cityMap, func(id uint64) { tempEmployee.CityId = id },row[config.City-1]) || ok
-			ok = setGeneralIdFromStringIfExist(&departmentMap, func(id uint64) { tempEmployee.DepartmentId = id },row[config.Department-1]) || ok
-			ok = setGeneralIdFromStringIfExist(&divisionMap, func(id uint64) { tempEmployee.DivisionId = id },row[config.Division-1]) || ok
-			ok = setGeneralIdFromStringIfExist(&superiorMap, func(id uint64) { tempEmployee.ManagerId = id },row[config.Division-1]) || ok
-			h.IfNotOkWriteErrWithMassage(ok, "at import Ids(branch, city, ............) ")
+			ok = setGeneralIdFromStringIfExist(&mapAllEmployeesFromLastImport, func(id uint64) { tempEmployee.Id = id }, row[config.AnetId-1]) || ok
+			ok = setGeneralIdFromStringIfExist(&banchMap, func(id uint64) { tempEmployee.BranchId = id }, row[config.Branch-1]) || ok
+			ok = setGeneralIdFromStringIfExist(&cityMap, func(id uint64) { tempEmployee.CityId = id }, row[config.City-1]) || ok
+			ok = setGeneralIdFromStringIfExist(&departmentMap, func(id uint64) { tempEmployee.DepartmentId = id }, row[config.Department-1]) || ok
+			ok = setGeneralIdFromStringIfExist(&divisionMap, func(id uint64) { tempEmployee.DivisionId = id }, row[config.Division-1]) || ok
+			ok = setGeneralIdFromStringIfExist(&superiorMap, func(id uint64) { tempEmployee.ManagerId = id }, row[config.Manager-1]) || ok
+			if !ok {
+				h.WriteMassageAsError("at import Ids(branch, city, ............) ")
+			}
 			setStrings(row, &tempEmployee)
-			ch <- tempEmployee
+			ch <- &tempEmployee
 		}(fileArray[i])
 	}
-	return ch, 	mapAllEmployeesFromLastImport
+	return ch, mapAllEmployeesFromLastImport
 }
 
-func catchEmployees(lenght int, ch chan employee.Employee) ([]employee.Employee, []employee.Employee) {
-	updateEmployees := make([]employee.Employee, 0, lenght)
-	createEmployees := make([]employee.Employee, 0, lenght)
+//catchEmployees collect employee.Employee from ch chan (and set attribute "deleted" to false), return:
+//  - createEmployees: employees for create in database
+//  - updateEmployees: employees for update in database
+func catchEmployees(lenght int, ch chan* employee.Employee) ([]*employee.Employee, []*employee.Employee) {
+	updateEmployees := make([]*employee.Employee, 0, lenght)
+	createEmployees := make([]*employee.Employee, 0, lenght)
 	for i := 0; i < lenght; i++ {
 		tempEmployee := <-ch
+		tempEmployee.Deleted = false
 		if tempEmployee.Id == 0 {
 			createEmployees = append(createEmployees, tempEmployee)
 		} else {
@@ -114,39 +126,42 @@ func setStrings(row []string, e *employee.Employee) {
 	e.JobTitle = row[config.JobTitle-1]
 }
 
-func prepareCreateOrUpdate(create []employee.Employee, update []employee.Employee) func(lastImport map[string]uint64, tx *gorm.DB) ([]h.NewEmployee, error) {
+//prepareCreateOrUpdate Middleware for prepare/return func to update old and create new record in database
+func prepareCreateOrUpdate(create []*employee.Employee, update []*employee.Employee) func(lastImport map[string]uint64, tx *gorm.DB) ([]h.NewEmployee, error) {
+	common := append(update, create...)
 	return func(lastImport map[string]uint64, tx *gorm.DB) ([]h.NewEmployee, error) {
 		var err, err2 error
 		if len(lastImport) > 0 {
-			err2= tx.Model(&employee.Employee{}).
+			err2 = tx.Model(&employee.Employee{}).
 				Select("deleted").Where(buildWhere(lastImport)).
 				Update("deleted", true).Error
-		}
-		if len(create)>0 {
-			err = tx.Model(&employee.Employee{}).
-				Omit("card").Create(&create).Error
-			if err != nil || err2 != nil {
-				return nil, fmt.Errorf("%v, %v", err, err2)
+			if err2 != nil {
+				h.WriteErr(err2)
 			}
 		}
-		if len(update)>0 {
-			err = tx.Clauses(clause.OnConflict{
-				Columns:   []clause.Column{{Name: "id"}},
-				DoUpdates: clause.AssignmentColumns(
-					[]string{"first_name", "last_name",
-					"login", "role", "email",
-					"job_title", "manager_id", "branch_id",
-					"division_id", "department_id", "city_id",
-					"import_id", "anet_id"}),
-			}).Create(&update).Error
-			if err != nil {
-				return nil, fmt.Errorf("%v", err)
-			}
+		columns := []string{
+			"deleted", "first_name", "last_name",
+			"login", "role", "email",
+			"job_title", "manager_id", "branch_id",
+			"division_id", "department_id", "city_id",
+			"import_id", "anet_id", "password"}
+		tx.Statement.AddClause(clause.OnConflict{
+			Columns:   []clause.Column{{Name: "id"}},
+			DoUpdates: clause.AssignmentColumns(columns),
+		})
+		tx.Statement.AddClause(clause.OnConflict{
+			Columns:   []clause.Column{{Name: "anet_id"}},
+			DoUpdates: clause.AssignmentColumns(columns),
+		})
+		err = tx.Create(&common).Error
+		if err != nil {
+			return nil, fmt.Errorf("%v", err)
 		}
 		return employee.ConvertToNewEmployees(create), nil
 	}
 }
 
+// buildWhere from map fetch Ids and make string-SQL condition "anet_id in ('"+join(ids,", ")+")"
 func buildWhere(lastImport map[string]uint64) string {
 	array := make([]string, 0, len(lastImport))
 
@@ -156,6 +171,7 @@ func buildWhere(lastImport map[string]uint64) string {
 	return fmt.Sprint("anet_id in ('", strings.Join(array, "', '"), "')")
 }
 
+//setGeneralIdFromStringIfExist if string s is in dataMap run function f
 func setGeneralIdFromStringIfExist(dataMap *map[string]uint64, f func(id uint64), s string) bool {
 	id, ok := (*dataMap)[s]
 	if ok {
@@ -164,6 +180,7 @@ func setGeneralIdFromStringIfExist(dataMap *map[string]uint64, f func(id uint64)
 	return ok
 }
 
+//getMapAllEmployeesFromLastImport crate map with anetId like key and database id like value
 func getMapAllEmployeesFromLastImport(id uint64) map[string]uint64 {
 	query := employeesSelectByImport
 	query = strings.ReplaceAll(query, "MyId", fmt.Sprint(id))
@@ -179,6 +196,7 @@ func getMapAllEmployeesFromLastImport(id uint64) map[string]uint64 {
 	return result
 }
 
+//getMapsIdFromImportDb create 5 map to mapping rows strings to id, it make for "branches", "cities", "departments", "divisions" and managers
 func getMapsIdFromImportDb(array [][]string, tx *gorm.DB) (map[string]uint64, map[string]uint64, map[string]uint64, map[string]uint64, map[string]uint64) {
 	banchMap, cityMap, departmentMap, divisionMap, superiorMap := make(map[string]uint64),
 		make(map[string]uint64), make(map[string]uint64), make(map[string]uint64), make(map[string]uint64)
@@ -202,8 +220,9 @@ func getMapsIdFromImportDb(array [][]string, tx *gorm.DB) (map[string]uint64, ma
 	return banchMap, cityMap, departmentMap, divisionMap, superiorMap
 }
 
+//fetchIdManager fill map with tuples (anetId and id)
 func fetchIdManager(superiorMap map[string]uint64, tx *gorm.DB, mux *sync.Mutex) {
-	array := clearMapReturnValueString(superiorMap)
+	array := getArrayOfKeys(superiorMap)
 	Query := fmt.Sprint(employeesIdAnetId)
 	Query = strings.ReplaceAll(Query, "Query",
 		fmt.Sprint("('", strings.Join(array, "', '"), "')"))
@@ -211,9 +230,10 @@ func fetchIdManager(superiorMap map[string]uint64, tx *gorm.DB, mux *sync.Mutex)
 	fn(superiorMap, Query)
 }
 
+//prepareFethIdForMap Middleware for prepare/return func to fill map according table
 func prepareFethIdForMap(ch chan bool, tx *gorm.DB, mux *sync.Mutex) func(mapId map[string]uint64, table string) {
 	return func(mapId map[string]uint64, table string) {
-		array := clearMapReturnValueString(mapId)
+		array := getArrayOfKeys(mapId)
 		importIdQuery := fmt.Sprint(insertSelectIdByName)
 		importIdQuery = strings.ReplaceAll(importIdQuery, "NameTable",
 			fmt.Sprint("\"", table, "\""))
@@ -227,6 +247,8 @@ func prepareFethIdForMap(ch chan bool, tx *gorm.DB, mux *sync.Mutex) func(mapId 
 		ch <- true
 	}
 }
+
+//prepareFillMapByResultQuery Middleware for prepare/return func to fill map according query
 func prepareFillMapByResultQuery(mux *sync.Mutex, tx *gorm.DB) func(mapId map[string]uint64, query string) {
 	return func(mapId map[string]uint64, query string) {
 		var idName []h.NameId
@@ -245,7 +267,8 @@ func prepareFillMapByResultQuery(mux *sync.Mutex, tx *gorm.DB) func(mapId map[st
 	}
 }
 
-func clearMapReturnValueString(mapId map[string]uint64) []string {
+//getArrayOfKeys get strings array of keys
+func getArrayOfKeys(mapId map[string]uint64) []string {
 	array := make([]string, 0, len(mapId))
 	for key := range mapId {
 		array = append(array, key)
@@ -253,8 +276,9 @@ func clearMapReturnValueString(mapId map[string]uint64) []string {
 	return array
 }
 
-func getImportId(pathName string, tx *gorm.DB) (uint64, error) {
-	array := strings.Split(pathName, ".")
+// getImportId take name X.Y.Z.csv and run fethIdByNameFromDb to search id for X.Y.Z
+func getImportId(name string, tx *gorm.DB) (uint64, error) {
+	array := strings.Split(name, ".")
 	if len(array) < 2 {
 		return 0, fmt.Errorf("untaped - unsiutable name")
 	}
@@ -262,6 +286,7 @@ func getImportId(pathName string, tx *gorm.DB) (uint64, error) {
 	return fethIdByNameFromDb(arrayJoin, tx)
 }
 
+// fethIdByNameFromDb search id by name, if do not exist create(this function provide SQL command in importIdQuery)
 func fethIdByNameFromDb(importName string, tx *gorm.DB) (uint64, error) {
 	importIdQuery := fmt.Sprint(insertSelectIdByName)
 	importIdQuery = strings.ReplaceAll(importIdQuery, "NameTable", "\"imports\"")

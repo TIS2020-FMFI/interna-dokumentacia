@@ -10,11 +10,12 @@ const (
 	allThingsRegex = "([0-9,]+|x)"
 )
 
+// ArrayUint64ToString convert from array to string for SQL
 func ArrayUint64ToString(array []uint64, delim string) string {
 	return strings.Trim(strings.ReplaceAll(fmt.Sprint(array), " ", delim), "[]")
 }
 
-
+// FromStringToArrayUint64 convert from string to array
 func FromStringToArrayUint64(idsString string) []uint64 {
 	fieldIdStrings :=  strings.Split(idsString, ",")
 	result := make([]uint64,0,len(fieldIdStrings))
@@ -28,10 +29,14 @@ func FromStringToArrayUint64(idsString string) []uint64 {
 	}
 	return result
 }
+
+// Filter help stuct to filter doc by location
 type Filter struct {
 	P map[string]string
 }
 
+// BuildQuery replace "Query1" and "Query2" from input by type, branches, cities, departments and division which are
+//value for search document from database
 func (f *Filter) BuildQuery(filterDoc string ) string {
 	result := filterDoc
 	result = strings.ReplaceAll(result, "Query1", f.buildQueryType())
@@ -78,6 +83,8 @@ func (f *Filter) structure(s string) string {
 	return allThingsRegex
 }
 
+// ArrayInStringToRegularExpression from array in string("4,2,8,10,32") to DB alternative search "[0-9,]*4|2|8|10|32[0-9,]*"
+// at empty and "x" string returning "([0-9,]+|x)" for all
 func ArrayInStringToRegularExpression(arrayString string ) string {
 	if arrayString=="x" || len(arrayString)==0{
 		return allThingsRegex

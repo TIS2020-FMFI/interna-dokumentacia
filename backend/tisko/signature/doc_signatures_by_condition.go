@@ -29,7 +29,7 @@ func getSkillMatrix(writer http.ResponseWriter, request *http.Request) {
 	if con.SetHeadersReturnIsContinue(writer, request) {
 		which, err := defineWhich(request)
 		if err != nil{
-			h.WriteErrWriteHaders(err, writer)
+			h.WriteErrWriteHandlers(err, writer)
 			return
 		}
 		doAcordingWhich(writer, request, which)
@@ -58,7 +58,7 @@ func doAcordingWhich(writer http.ResponseWriter, request *http.Request, which ui
 	case filter:
 		function = prepareFilter(skillMatrixFilter)
 	default:
-		h.WriteErrWriteHaders(fmt.Errorf("unimplemented which request"), writer)
+		h.WriteErrWriteHandlers(fmt.Errorf("unimplemented which request"), writer)
 		return
 	}
 	function(writer, request)
@@ -71,7 +71,7 @@ func prepareFilter(query string) func(writer http.ResponseWriter, request *http.
 		jsonMap := make(map[string]string)
 		err := json.Unmarshal([]byte(filterVant), &jsonMap)
 		if err != nil{
-			h.WriteErrWriteHaders(fmt.Errorf("do not find id"), writer)
+			h.WriteErrWriteHandlers(fmt.Errorf("do not find id"), writer)
 			return
 		}
 		filter0 := h.Filter{P: jsonMap}
@@ -86,12 +86,12 @@ func prepareIdQuery(nameId, query string) func(writer http.ResponseWriter, reque
 	return func(writer http.ResponseWriter, request *http.Request) {
 		tempFloat:= request.FormValue(nameId)
 		if tempFloat=="" {
-			h.WriteErrWriteHaders(fmt.Errorf("do not find id"), writer)
+			h.WriteErrWriteHandlers(fmt.Errorf("do not find id"), writer)
 			return
 		}
 		id, err := strconv.ParseUint(tempFloat,10,64)
 		if err != nil || id == 0 {
-			h.WriteErrWriteHaders(err, writer)
+			h.WriteErrWriteHandlers(err, writer)
 			return
 		}
 		modify := FetchMatrixByIdQuery(id, query)

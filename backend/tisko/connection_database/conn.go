@@ -1,3 +1,4 @@
+// Package connection_database manage connection to database and router
 package connection_database
 
 import (
@@ -14,26 +15,27 @@ import (
 )
 
 const (
-	timeout = time.Millisecond*450
+	timeout = time.Second*10
 )
 
 var (
 	myForm = url.Values{}
 	staticDir = "/build_front_end/static/"
 )
-
+//Start prepare frontend and homePageBackend sub-sites and start server
 func Start() {
 	finishBackend()
 	registerFrontend()
 	startServer()
 }
-
+//finishBackend add to sites sub-domen '/homePageBackend', which show all other sub-domen
 func finishBackend() {
 	myRouter.HandleFunc("/homePageBackend",
 		homePage)
 	inithomePageString()
 }
 
+//registerFrontend add all sub-domen needed for frontend
 func registerFrontend() {
 	anonimFunc :=  func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "build_front_end/index.html")
@@ -49,6 +51,7 @@ func registerFrontend() {
 	myRouter.HandleFunc("/logout", anonimFunc)
 }
 
+// startServer served with automatic restart after error with connection
 func startServer() {
 	portBackend := h.ReturnTrimFile("./connection_database/port.txt")
 	fmt.Println("Listen on "+ portBackend)
@@ -69,11 +72,12 @@ func startServer() {
 	}
 }
 
+// NewServer make new server to run from pre-prepared package's variable 'myRouter' on port string
 func NewServer(port string) *http.Server {
 	s := & http.Server{
 		Addr: port,
-		ReadTimeout:  time.Second/2,
-		WriteTimeout:  time.Second*7,
+		ReadTimeout:  time.Minute/2,
+		WriteTimeout:  time.Minute,
 	}
 	cloneRouter :=mux.NewRouter().StrictSlash(true)
 	temp := myRouter
@@ -97,6 +101,8 @@ func NewServer(port string) *http.Server {
 	return s
 }
 
+// tryIsAliveElseStop
+// try in cycle whether myUrl string is lived and if not, stop s *http.Server
 func tryIsAliveElseStop(s *http.Server, myUrl string) {
 	//time.Sleep(time.Second*7)
 	client := http.Client{Timeout: timeout}

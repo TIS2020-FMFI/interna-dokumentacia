@@ -23,18 +23,18 @@ func updateConfirm(writer http.ResponseWriter, request *http.Request) {
 		)
 		e := json.NewDecoder(request.Body).Decode(&newTraining)
 		if e != nil {
-			h.WriteErrWriteHaders(e, writer)
+			h.WriteErrWriteHandlers(e, writer)
 			return
 		}
 		newTraining.Edited = false
 		result := tx.Updates(&newTraining)
 		if result.Error != nil {
-			h.WriteErrWriteHaders(result.Error, writer)
+			h.WriteErrWriteHandlers(result.Error, writer)
 			return
 		}
 		err := confirmInDb(newTraining, tx)
 		if err != nil {
-			h.WriteErrWriteHaders(err, writer)
+			h.WriteErrWriteHandlers(err, writer)
 			return
 		}
 		carrySignToTraining(newTraining, tx, writer)
@@ -49,18 +49,18 @@ func createConfirm(writer http.ResponseWriter, request *http.Request) {
 		)
 		e := json.NewDecoder(request.Body).Decode(&newTraining)
 		if e != nil {
-			h.WriteErrWriteHaders(e, writer)
+			h.WriteErrWriteHandlers(e, writer)
 			return
 		}
 		newTraining.Edited = false
 		result := tx.Create(&newTraining)
 		if result.Error != nil {
-			h.WriteErrWriteHaders(result.Error, writer)
+			h.WriteErrWriteHandlers(result.Error, writer)
 			return
 		}
 		err := confirmInDb(newTraining, tx)
 		if err != nil {
-			h.WriteErrWriteHaders(err, writer)
+			h.WriteErrWriteHandlers(err, writer)
 			return
 		}
 		carrySignToTraining(newTraining, tx, writer)
@@ -74,7 +74,7 @@ func confirmInDb(newTraining training.OnlineTraining, tx *gorm.DB) error {
 func carrySignToTraining(newTraining training.OnlineTraining, tx *gorm.DB, writer http.ResponseWriter) {
 	err := saveSignToTraining(newTraining, tx)
 	if err != nil {
-		h.WriteErrWriteHaders(err, writer)
+		h.WriteErrWriteHandlers(err, writer)
 		return
 	}
 	tx.Commit()
@@ -93,11 +93,11 @@ func confirm(writer http.ResponseWriter, request *http.Request) {
 	if con.SetHeadersReturnIsContinue(writer, request) {
 		idString, ok := mux.Vars(request)["id"]
 		if !ok {
-			h.WriteErrWriteHaders(fmt.Errorf("not found 'id'"), writer)
+			h.WriteErrWriteHandlers(fmt.Errorf("not found 'id'"), writer)
 		}
 		id, err := strconv.ParseUint(idString, 10, 64)
 		if err != nil {
-			h.WriteErrWriteHaders(err, writer)
+			h.WriteErrWriteHandlers(err, writer)
 			return
 		}
 		var (
@@ -105,12 +105,12 @@ func confirm(writer http.ResponseWriter, request *http.Request) {
 		)
 		result := tx.First(&newTraining, id)
 		if result.Error != nil {
-			h.WriteErrWriteHaders(result.Error, writer)
+			h.WriteErrWriteHandlers(result.Error, writer)
 			return
 		}
 		err = confirmInDb(newTraining, tx)
 		if err != nil {
-			h.WriteErrWriteHaders(err, writer)
+			h.WriteErrWriteHandlers(err, writer)
 			return
 		}
 		carrySignToTraining(newTraining, tx, writer)

@@ -221,7 +221,7 @@ const DocumentForm = ({ setRecords, formData, setFormData, actual }) => {
       />
       {/* ORDER NUMBER */}
       <MyFormGroup
-        label="Order number*"
+        label="Document number*"
         name="order_number"
         type="number"
         placeholder="Enter number"

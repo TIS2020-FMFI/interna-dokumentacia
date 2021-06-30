@@ -9,6 +9,7 @@ import (
 	path "tisko/paths"
 )
 
+// csvConfig load and save config to import
 type csvConfig struct {
 	AnetId     uint  `json:"anet"`
 	FirstName  uint `json:"first_name"`
@@ -29,14 +30,13 @@ type csvConfig struct {
 }
 
 const (
-	imports    = "imports"
-	exports    = "exports"
-	card       = "employee_card"
-	divisions  = "divisions"
-	dirJson    = "json"
-	emploeyess = "./" + imports + "/" + divisions + "/"
-	cards      = "./" + imports + "/" + card + "/"
-	dir        = "./upload_export_files/"
+	imports       = "imports"
+	card          = "employee_card"
+	divisions     = "divisions"
+	dirJson       = "json"
+	employeesPath = "./" + imports + "/" + divisions + "/"
+	cardsPath     = "./" + imports + "/" + card + "/"
+	dir           = "./upload_export_files/"
 )
 
 var (
@@ -44,11 +44,14 @@ var (
 	insertSelectIdByName, employeesSelectByImport, employeesIdAnetId string
 )
 
+// AddHandleInitVars registr handler, init variables and dictionaries, WARNING: it can stop program with panic
 func AddHandleInitVars() {
 	init0()
 	con.AddHeaderPost(path.Upload, upload)
-	con.AddHeaderGetID(fmt.Sprint(path.Export, "/{format}"), export)
+	con.AddHeaderGetID(fmt.Sprint(path.Export, "/{format}"), exportFile)
 }
+
+// init0 init variables and dictionaries, WARNING: it can stop program with panic
 func init0() {
 	initQuery()
 	h.MkTree2DirsIfNotExist(imports, card)
@@ -57,12 +60,14 @@ func init0() {
 	initConfigIfNotExistOrLoad()
 }
 
+// initQuery init query scripts, WARNING: it can stop program with panic
 func initQuery() {
 	insertSelectIdByName = h.ReturnTrimFile(dir + "insert_select_id_by_name.txt")
 	employeesSelectByImport = h.ReturnTrimFile(dir + "all_employees_from_imports.txt")
 	employeesIdAnetId = h.ReturnTrimFile(dir + "employees_id_anet_id.txt")
 }
 
+// initConfigIfNotExistOrLoad if do not exist file with csvConfig, if exist load, WARNING: it can stop program with panic
 func initConfigIfNotExistOrLoad() {
 	config = newDefaultConfig()
 	configFile := dir + "csv_config.txt"
@@ -84,6 +89,8 @@ func initConfigIfNotExistOrLoad() {
 		}
 	}
 }
+
+// newDefaultConfig return configuration, which was known at coding process
 func newDefaultConfig() *csvConfig {
 	return &csvConfig{
 		AnetId:     4,

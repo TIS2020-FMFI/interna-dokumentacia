@@ -22,12 +22,12 @@ func doUpdate(writer http.ResponseWriter, request *http.Request, tx *gorm.DB) (b
 	var doc Document
 	err := json.NewDecoder(request.Body).Decode(&doc)
 	if err != nil {
-		h.WriteErrWriteHaders(err, writer)
+		h.WriteErrWriteHandlers(err, writer)
 		return false, 0
 	}
 	result := tx.Model(&doc).Select("*").Omit("edited", "old").Updates(&doc)
 	if result.Error != nil {
-		h.WriteErrWriteHaders(result.Error, writer)
+		h.WriteErrWriteHandlers(result.Error, writer)
 		return false, 0
 	}
 	return true, doc.Id

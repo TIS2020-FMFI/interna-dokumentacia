@@ -40,13 +40,13 @@ func signCommon(rw h.RquestWriter, q string) {
 	x := rw.R.FormValue("id")
 	id, err := strconv.ParseUint(x+"",10,64)
 	if err != nil {
-		h.WriteErrWriteHaders(err, rw.W)
+		h.WriteErrWriteHandlers(err, rw.W)
 		return
 	}
 	var messange string
 	result :=con.Db.Raw(q, id).Find(&messange)
 	if result.Error != nil {
-		h.WriteErrWriteHaders(result.Error, rw.W)
+		h.WriteErrWriteHandlers(result.Error, rw.W)
 		return
 	}
 	con.SendAccept(id, rw.W)
