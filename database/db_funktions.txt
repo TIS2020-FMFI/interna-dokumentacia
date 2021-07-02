@@ -1,0 +1,81 @@
+create or replace function Is_suitable(id1 integer, id2 integer)
+    returns bool
+    language plpgsql as
+$$
+begin
+    return (id1 = id2 or id1 isnull or id2 isnull or id2 = 0);
+end;
+$$;
+
+
+create or replace function Is_suitable(id1 integer, id2 integer)
+    returns bool
+    language plpgsql as
+$$
+begin
+    return (id1 = id2 or id1 isnull or id2 isnull or id2 = 0);
+end;
+$$;
+
+CREATE OR REPLACE FUNCTION insert_delete_cancel_signs( in_array integer[] )
+    RETURNS void AS $$
+DECLARE
+    i integer;
+    row_exists NUMERIC;
+BEGIN
+    FOR i IN 1 .. array_upper(in_array, 1)
+        LOOP
+
+            SELECT count(*)
+            INTO row_exists
+            FROM cancel_signs
+            WHERE document_signature_id = in_array[ i ];
+
+            IF (row_exists > 0) THEN
+                delete FROM cancel_signs
+                WHERE document_signature_id = in_array[ i ];
+            ELSE
+                INSERT INTO cancel_signs(document_signature_id, date)
+                VALUES(in_array[i], now());
+            END IF;
+
+        END LOOP;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION resign( in_array integer[] )
+    RETURNS void AS $$
+DECLARE
+    i integer;
+BEGIN
+    FOR i IN 1 .. array_upper(in_array, 1)
+        LOOP
+
+            insert into document_signatures(employee_id, e_date,
+                                            superior_id, s_date, document_id)
+            SELECT employee_id, null, superior_id, null, document_id
+            from document_signatures
+            where document_signatures.id = in_array[ i ];
+
+        END LOOP;
+END;
+$$ LANGUAGE plpgsql;
+CREATE OR REPLACE FUNCTION
+    set_sign_new_employees_return_emails (ids integer[],ids_superior integer[],
+                                          assigned_to_e varchar[], lenght integer)
+    RETURNS TABLE (mail varchar) AS
+$func$
+DECLARE
+    i integer;
+BEGIN
+    FOR i IN 1..lenght LOOP
+            insert into document_signatures(employee_id, e_date, superior_id, s_date, document_id)
+            SELECT ids[i], null, case when (require_superior) then ids_superior[i] else null end, null, documents.id
+            from documents where not  old and assigned_to similar to assigned_to_e[i];
+        END LOOP;
+
+    RETURN QUERY
+        SELECT email
+        from employees where id = ANY(ids);
+END
+$func$  LANGUAGE plpgsql;
