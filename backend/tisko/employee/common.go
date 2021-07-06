@@ -5,19 +5,20 @@ import (
 	"fmt"
 	con "tisko/connection_database"
 	h "tisko/helper"
+	"tisko/paths"
 )
 var (
 	 passwd *h.PasswordConfig
 	 queryAllEmployees, queryFilterEmployees string
 )
-const dir = "./employee/"
+const dir = paths.GlobalDir +"employee/"
 
 func loginBy(rw h.DataWR) {
 	rw.BuildQuery(passwd)
 	var e Employee
 	re := con.Db.Where(rw.S.Query).First(&e)
 	if re.Error!=nil {
-		h.WriteErrWriteHandlers(re.Error, rw.RW.W)
+		h.WriteErrWriteHandlers(re.Error,  "loginBy", rw.RW.W)
 		return
 	}
 	con.HeaderSendOk(rw.RW.W)

@@ -11,7 +11,7 @@ func getCompletnessByQuery(query string, writer http.ResponseWriter) []DocumentC
 	var docs []DocumentCompleteness
 	re := con.Db.Raw(query).Find(&docs)
 	if re.Error!= nil {
-		h.WriteErrWriteHandlers(re.Error, writer)
+		h.WriteErrWriteHandlers(re.Error, "getCompletnessByQuery", writer)
 		return nil
 	}
 	return docs

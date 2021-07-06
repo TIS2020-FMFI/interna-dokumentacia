@@ -5,13 +5,14 @@ import (
 	"net/http"
 	con "tisko/connection_database"
 	h "tisko/helper"
+	"tisko/paths"
 )
 
 // queryCombinationAll local variable of SQL command for all actual combinations
 var queryCombinationAll string
 
 // dir local constant to load txt files
-const dir = "./combination/"
+const dir = paths.GlobalDir +"combination/"
 
 // init0 init queryCombinationAll from dir+"combinations.txt"
 func init0() {
@@ -24,7 +25,7 @@ func sendAll(writer http.ResponseWriter, request *http.Request) {
 		var combi []CombinationFull
 		re := con.Db.Raw(queryCombinationAll).Find(&combi)
 		if re.Error!=nil {
-			h.WriteErrWriteHandlers(re.Error, writer)
+			h.WriteErrWriteHandlers(re.Error, "sendAll", writer)
 			return
 		}
 		con.HeaderSendOk(writer)
@@ -66,7 +67,7 @@ func sendAllStructs(nameTable string, rw h.RquestWriter) {
 	if con.SetHeadersReturnIsContinue(rw.W, rw.R) {
 		re := con.Db.Table(nameTable).Find(&result)
 		if re.Error != nil {
-			h.WriteErrWriteHandlers(re.Error, rw.W)
+			h.WriteErrWriteHandlers(re.Error, "sendAllStructs",rw.W)
 			return
 		}
 		con.HeaderSendOk(rw.W)

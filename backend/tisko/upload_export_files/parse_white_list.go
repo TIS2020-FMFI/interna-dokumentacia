@@ -19,8 +19,9 @@ func parseSaveEmployeesAddSign(dir string, name string) error {
 	tx := con.Db.Begin()
 	defer tx.Rollback()
 	newEmployees, err := parseReadFileCareImportInDBSaveEmployeesReturnNew(dir, name, tx)
+	const nameFunc = "parseSaveEmployeesAddSign"
 	if err != nil {
-		h.WriteErr(err)
+		h.WriteMassageAsError(err, nameFunc)
 		return err
 	}
 	if len(newEmployees) == 0 {
@@ -28,7 +29,7 @@ func parseSaveEmployeesAddSign(dir string, name string) error {
 	}
 	emailsEmployees, err0 := signature.AddSignsNewEmployeesReturnsEmails(newEmployees, tx)
 	if err0 != nil {
-		h.WriteErr(err0)
+		h.WriteMassageAsError(err0, nameFunc)
 		return err
 	}
 	err = tx.Commit().Error
@@ -88,7 +89,8 @@ func makeChanSendingEmployeesGetLastImport(fileArray [][]string, id uint64, tx *
 			ok = setGeneralIdFromStringIfExist(&divisionMap, func(id uint64) { tempEmployee.DivisionId = id }, row[config.Division-1]) || ok
 			ok = setGeneralIdFromStringIfExist(&superiorMap, func(id uint64) { tempEmployee.ManagerId = id }, row[config.Manager-1]) || ok
 			if !ok {
-				h.WriteMassageAsError("at import Ids(branch, city, ............) ")
+				h.WriteMassageAsError("at import Ids(branch, city, ............) ",
+					"makeChanSendingEmployeesGetLastImport")
 			}
 			setStrings(row, &tempEmployee)
 			ch <- &tempEmployee
@@ -136,7 +138,7 @@ func prepareCreateOrUpdate(create []*employee.Employee, update []*employee.Emplo
 				Select("deleted").Where(buildWhere(lastImport)).
 				Update("deleted", true).Error
 			if err2 != nil {
-				h.WriteErr(err2)
+				h.WriteMassageAsError(err2, "anonim from prepareCreateOrUpdate")
 			}
 		}
 		columns := []string{
@@ -256,7 +258,7 @@ func prepareFillMapByResultQuery(mux *sync.Mutex, tx *gorm.DB) func(mapId map[st
 		err := tx.Raw(query).First(&idName).Error
 		mux.Unlock()
 		if err != nil {
-			h.WriteErr(err)
+			h.WriteMassageAsError(err, "anonim from prepareFillMapByResultQuery")
 		} else {
 			for i := 0; i < len(idName); i++ {
 				one := idName[i]

@@ -14,37 +14,36 @@ import (
 
 func cancel(writer http.ResponseWriter, request *http.Request) {
 	if con.SetHeadersReturnIsContinue(writer, request) {
-		var (
-			sign0                 interface{}
-		)
+		var sign0                 interface{}
+		const name = "cancel"
 		e := json.NewDecoder(request.Body).Decode(&sign0)
 		if e != nil {
-			h.WriteErrWriteHandlers(e, writer)
+			h.WriteErrWriteHandlers(e, name, writer)
 			return
 		}
 		queryCancel, err := formatQuery(sign0, cancelSigns)
 		if executeIfNotErr(queryCancel, err) > 0 {
 			con.SendAccept(0, writer)
 		}else {
-			h.WriteErrWriteHandlers(fmt.Errorf(fmt.Sprint("nothing was execute", err)), writer)
+			h.WriteErrWriteHandlers(fmt.Errorf(fmt.Sprint("nothing was execute", err)), name, writer)
 		}
 	}
 }
 func resign(writer http.ResponseWriter, request *http.Request) {
 	if con.SetHeadersReturnIsContinue(writer, request) {
-		var (
-			sign0                interface{}
-		)
+		var sign0                interface{}
+		const name = "resign"
 		e := json.NewDecoder(request.Body).Decode(&sign0)
 		if e != nil {
-			h.WriteErrWriteHandlers(e, writer)
+			h.WriteErrWriteHandlers(e, name, writer)
 			return
 		}
 		queryResign, err := formatQuery(sign0, resigns)
 		if executeIfNotErr(queryResign, err) > 0 {
 			con.SendAccept(0, writer)
 		}else {
-			h.WriteErrWriteHandlers(fmt.Errorf(fmt.Sprint("nothing was execute", err)), writer)
+			h.WriteErrWriteHandlers(fmt.Errorf(fmt.Sprint("nothing was execute", err)),
+				name, writer)
 		}
 	}
 }

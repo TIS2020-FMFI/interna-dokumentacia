@@ -8,7 +8,7 @@ import (
 // SendWelcome send to mails in strings massange: "welcome to our company you0 will need our website:"
 func SendWelcome(mails []string)  {
 	if mails == nil || len(mails)==0 {
-		h.WriteErr(fmt.Errorf("empty new employees mail"))
+		h.WriteMassageAsError(fmt.Errorf("empty new employees mail"), "SendWelcome")
 		return
 	}
 	ee := emailNameLinkMessange{

@@ -20,14 +20,15 @@ func updateDoc(writer http.ResponseWriter, request *http.Request) {
 
 func doUpdate(writer http.ResponseWriter, request *http.Request, tx *gorm.DB) (bool, uint64) {
 	var doc Document
+	const name = "doUpdate"
 	err := json.NewDecoder(request.Body).Decode(&doc)
 	if err != nil {
-		h.WriteErrWriteHandlers(err, writer)
+		h.WriteErrWriteHandlers(err, name, writer)
 		return false, 0
 	}
 	result := tx.Model(&doc).Select("*").Omit("edited", "old").Updates(&doc)
 	if result.Error != nil {
-		h.WriteErrWriteHandlers(result.Error, writer)
+		h.WriteErrWriteHandlers(result.Error, name, writer)
 		return false, 0
 	}
 	return true, doc.Id

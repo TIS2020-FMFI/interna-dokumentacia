@@ -16,8 +16,9 @@ func upload(writer http.ResponseWriter, request *http.Request) {
 	if con.SetHeadersReturnIsContinue(writer, request) {
 		_ = request.ParseMultipartForm(10 << 30)
 		file, fileHeader, err := request.FormFile("file")
+		const name = "upload"
 		if err != nil {
-			h.WriteErrWriteHandlers(err, writer)
+			h.WriteErrWriteHandlers(err, name, writer)
 			return
 		}
 		importName :=request.FormValue("import")
@@ -26,7 +27,7 @@ func upload(writer http.ResponseWriter, request *http.Request) {
 	if success {
 		con.SendAccept(0,writer)
 	}else {
-		h.WriteErrWriteHandlers(fmt.Errorf("not sussces save"), writer)
+		h.WriteErrWriteHandlers(fmt.Errorf("not sussces save"), name, writer)
 	}
 		_ = file.Close()
 }
@@ -64,7 +65,7 @@ func saveParseDeleteFile(file multipart.File, pathName string) bool {
 func deleteFile(pathName string) {
 	e := os.Remove(pathName)
 	if e != nil {
-		h.WriteErr(e)
+		h.WriteMassageAsError(e, "deleteFile")
 	}
 }
 

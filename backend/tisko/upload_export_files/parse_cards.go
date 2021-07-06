@@ -13,7 +13,7 @@ import (
 func parseCards(pathName string) error{
 	fileArray, err := h.ReadCsvFile(pathName)
 	if err != nil {
-		h.WriteErr(err)
+		h.WriteMassageAsError(err, "parseCards")
 		return err
 	}
 	return parseCardsFileArray(fileArray)
@@ -27,7 +27,7 @@ func parseCardsFileArray(array [][]string) error {
 	query := fmt.Sprint("anet_id in ('",anet, "')")
 	err:= conn.Db.Model(&employees).Where(query).Find(&employees).Error
 	if err != nil {
-		h.WriteErr(err)
+		h.WriteMassageAsError(err, "parseCardsFileArray")
 		return err
 	}
 	doUpages(employees, mapAnetToPassword)

@@ -1,6 +1,9 @@
 package signature
 
-import h "tisko/helper"
+import (
+	h "tisko/helper"
+	"tisko/paths"
+)
 
 var (
 	unsignedSigns, signedSigns                      h.QueryThreeStrings
@@ -10,7 +13,7 @@ var (
 	newEmployeesQuery                               string
 )
 
-const dir = "./signature/scripts_configs/"
+const dir = paths.GlobalDir +"signature/scripts_configs/"
 func init0() {
 	var queryDocumentSign, queryOnlineSign, queryDocumentSignEmployee string
 	queryDocumentSign = h.ReturnTrimFile(dir+"unsigned_document_sign.txt")

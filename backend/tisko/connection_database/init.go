@@ -4,8 +4,8 @@ import (
 	"github.com/gorilla/mux"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"time"
-	h"tisko/helper"
+	h "tisko/helper"
+	"tisko/paths"
 )
 
 var (
@@ -16,24 +16,32 @@ var (
 	// homePageStringsMethod local variable of prepared field to home page
 	homePageStringsMethod = make([]h.MyStrings, 0,20)
 	// startPart, endPart parts of home page
-	startPart, endPart string
+	startPart, endPart, dbConfig string
 )
 
 // dir local constant to load txt files
-const dir = "./connection_database/"
+const dir = paths.GlobalDir +"connection_database/"
 
 // InitVars init of variable myRouter, Db, startPart, endPart , WARNING: in can panic when do not found dir+"postgres_config.txt" or dir+"begin_homepage.txt" or dir+"end_homepage.txt"
 func InitVars() {
 	myRouter = mux.NewRouter().StrictSlash(true)
-	dsn := h.ReturnTrimFile(dir+"postgres_config.txt")
-	Db, _ = gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	if Db == nil {
-		panic("nepripojene")
-	}
-	sqlDB, _ := Db.DB()
-	sqlDB.SetMaxIdleConns(4967295)
-	sqlDB.SetMaxOpenConns(4967295)
-	sqlDB.SetConnMaxLifetime(time.Minute/5)
+	dbConfig = h.ReturnTrimFile(dir+"postgres_config.txt")
 	startPart= h.ReturnTrimFile(dir+"begin_homepage.txt")
 	endPart= h.ReturnTrimFile(dir+"end_homepage.txt")
+	err := createDbConnection()
+	if err != nil {
+		panic("unconnected: "+err.Error())
+	}
+}
+
+func createDbConnection() error {
+	con, err := gorm.Open(postgres.Open(dbConfig), &gorm.Config{})
+	if err != nil {
+		return err
+	}
+	sqlDB, _ := con.DB()
+	sqlDB.SetMaxIdleConns(4967295)
+	sqlDB.SetMaxOpenConns(4967295)
+	Db=con
+	return nil
 }

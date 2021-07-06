@@ -6,7 +6,7 @@ import (
 	"os"
 	con "tisko/connection_database"
 	h "tisko/helper"
-	path "tisko/paths"
+	paths "tisko/paths"
 )
 
 // csvConfig load and save config to import
@@ -34,9 +34,9 @@ const (
 	card          = "employee_card"
 	divisions     = "divisions"
 	dirJson       = "json"
-	employeesPath = "./" + imports + "/" + divisions + "/"
-	cardsPath     = "./" + imports + "/" + card + "/"
-	dir           = "./upload_export_files/"
+	employeesPath = paths.GlobalDir  + imports + "/" + divisions + "/"
+	cardsPath     = paths.GlobalDir + imports + "/" + card + "/"
+	dir           = paths.GlobalDir +"upload_export_files/"
 )
 
 var (
@@ -47,8 +47,8 @@ var (
 // AddHandleInitVars registr handler, init variables and dictionaries, WARNING: it can stop program with panic
 func AddHandleInitVars() {
 	init0()
-	con.AddHeaderPost(path.Upload, upload)
-	con.AddHeaderGetID(fmt.Sprint(path.Export, "/{format}"), exportFile)
+	con.AddHeaderPost(paths.Upload, upload)
+	con.AddHeaderGetID(fmt.Sprint(paths.Export, "/{format}"), exportFile)
 }
 
 // init0 init variables and dictionaries, WARNING: it can stop program with panic

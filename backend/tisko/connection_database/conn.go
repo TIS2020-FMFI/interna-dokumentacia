@@ -64,12 +64,21 @@ func startServer() {
 		e := s.ListenAndServe()
 		if e != nil {
 			if e.Error() == "http: Server closed" {
-				fmt.Println("reset")
+				resetDbConnection()
 			}else {
-				h.WriteErr(e)
+				h.WriteMassageAsError(e, "startServer")
 			}
 		}
 	}
+}
+
+// resetDbConnection reset global connection to database
+func resetDbConnection() {
+	err := createDbConnection()
+	if err != nil {
+		h.WriteMassageAsError("unconnected: "+err.Error(), "resetDbConnection")
+	}
+
 }
 
 // NewServer make new server to run from pre-prepared package's variable 'myRouter' on port string

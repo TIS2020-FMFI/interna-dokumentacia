@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"tisko/paths"
 )
 
 // RunPythonScript
@@ -80,14 +81,14 @@ const (
 
 // CopyFile send file to client by octet-stream
 func CopyFile(writer http.ResponseWriter, nameFormat MyStrings) (err error) {
-	fpath := "./"+ Exports +"/" + nameFormat.First
+	fpath := paths.GlobalDir + Exports +"/" + nameFormat.First
 	outfile, err := os.OpenFile(fpath, os.O_RDONLY, 0x0444)
 	if err !=nil  {
 		return
 	}
 	fi, err := outfile.Stat()
 	if err != nil {
-		WriteErr(err)
+		WriteMassageAsError(err, "CopyFile")
 	}
 	writer.Header().Set("Content-Disposition",
 		"attachment; filename="+nameFormat.First)

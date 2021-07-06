@@ -16,16 +16,17 @@ import (
 //  - format of output
 func exportFile(writer http.ResponseWriter, request *http.Request) {
 	name,format, err := exportSkillMatrixReturnNameFormat(request)
+	const nameFunc = "exportFile"
 	if err != nil {
-		h.WriteErrWriteHandlers(err, writer)
+		h.WriteErrWriteHandlers(err, nameFunc, writer)
 		return
 	}
 	nameFormat := h.MyStrings{
 		First:  name,
 		Second: format,
 	}
-	if err := h.CopyFile(writer, nameFormat); nil != err {
-		h.WriteErrWriteHandlers(err, writer)
+	if err = h.CopyFile(writer, nameFormat); nil != err {
+		h.WriteErrWriteHandlers(err, nameFunc, writer)
 		return
 	}
 }

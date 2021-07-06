@@ -12,13 +12,14 @@ func createConfirmDoc(writer http.ResponseWriter, request *http.Request) {
 	defer tx.Rollback()
 	if con.SetHeadersReturnIsContinue(writer, request) {
 		id,err := doCreate( request, tx)
+		const name = "createConfirmDoc"
 		if err!=nil {
-			h.WriteErrWriteHandlers(err, writer)
+			h.WriteErrWriteHandlers(err, name, writer)
 			return
 		}
 		err = doConfirm(id, tx)
 		if err != nil {
-			h.WriteErrWriteHandlers(err, writer)
+			h.WriteErrWriteHandlers(err, name, writer)
 			return
 		}
 		tx.Commit()

@@ -12,7 +12,7 @@ func getFiltered(writer http.ResponseWriter, request *http.Request) {
 
 	val, ok := mux.Vars(request)["filter"]
 	if !ok {
-		h.WriteErrWriteHandlers(fmt.Errorf("not found 'filter'"), writer)
+		h.WriteErrWriteHandlers(fmt.Errorf("not found 'filter'"), "getFiltered", writer)
 		return
 	}
 	queryFilterEmployeesPrepared := strings.ReplaceAll(queryFilterEmployees, "Query1", fmt.Sprint("'", val, "'"))

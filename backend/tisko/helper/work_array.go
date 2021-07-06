@@ -22,7 +22,7 @@ func FromStringToArrayUint64(idsString string) []uint64 {
 	for i := 0; i < len(fieldIdStrings); i++ {
 		id, err := strconv.ParseUint(fieldIdStrings[i],10,64)
 		if err !=nil {
-			WriteErr(err)
+			WriteMassageAsError(err, "FromStringToArrayUint64")
 			continue
 		}
 		result = append(result, id)

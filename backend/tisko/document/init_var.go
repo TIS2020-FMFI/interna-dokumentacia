@@ -1,12 +1,15 @@
 package document
 
-import h "tisko/helper"
+import (
+	h "tisko/helper"
+	"tisko/paths"
+)
 
 var (
 	confirm, actualDoc, editedDoc, filterDoc string
 )
 
-const dir = "./document/"
+const dir = paths.GlobalDir +"document/"
 func init0() {
 	confirm=h.ReturnTrimFile(dir+"confirm.txt")
 	addSignAfterConfirmDoc = h.ReturnTrimFile(dir+"add_sign_after_confirm_doc.txt")

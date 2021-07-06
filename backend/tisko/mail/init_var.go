@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"time"
 	h "tisko/helper"
+	"tisko/paths"
 )
 
 const (
@@ -18,7 +19,7 @@ var (
 	querySuperiorEmails, queryEmployeeEmails, oldDoc string
 )
 
-const dir = "./mail/"
+const dir = paths.GlobalDir +"mail/"
 func init0() {
 	loadConfig()
 	loadQuery()
@@ -49,7 +50,7 @@ func loadMailTime() {
 	defer func() {
 		r := recover()
 		if r != nil {
-			h.WriteErr(r)
+			h.WriteMassageAsError(r, "loadMailTime")
 			twoTimes=&TwoTimes{
 				DateEmails: time.Now(),
 				DateNotify: time.Now(),

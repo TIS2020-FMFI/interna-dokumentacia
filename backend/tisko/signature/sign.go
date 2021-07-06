@@ -39,14 +39,15 @@ func signTraining(writer http.ResponseWriter, request *http.Request) {
 func signCommon(rw h.RquestWriter, q string) {
 	x := rw.R.FormValue("id")
 	id, err := strconv.ParseUint(x+"",10,64)
+	const name = "signCommon"
 	if err != nil {
-		h.WriteErrWriteHandlers(err, rw.W)
+		h.WriteErrWriteHandlers(err, name, rw.W)
 		return
 	}
 	var messange string
 	result :=con.Db.Raw(q, id).Find(&messange)
 	if result.Error != nil {
-		h.WriteErrWriteHandlers(result.Error, rw.W)
+		h.WriteErrWriteHandlers(result.Error, name, rw.W)
 		return
 	}
 	con.SendAccept(id, rw.W)

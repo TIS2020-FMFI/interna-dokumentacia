@@ -15,7 +15,7 @@ func createDoc(writer http.ResponseWriter, request *http.Request) {
 		defer tx.Rollback()
 		id, err := doCreate( request, tx)
 		if err!= nil {
-			h.WriteErrWriteHandlers(err,writer)
+			h.WriteErrWriteHandlers(err, "createDoc",writer)
 			return
 		}
 		tx.Commit()

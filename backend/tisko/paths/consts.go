@@ -1,6 +1,10 @@
 package paths
 
 const (
+	GlobalDir = "C:/interna-dokumentacia/backend/tisko/"//"./"
+)
+
+const (
 	Login                 = "/auth/login"
 	Kiosk                 = "/auth/kiosk"
 	AllEmployees          = "/employees/all"

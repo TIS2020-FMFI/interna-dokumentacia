@@ -18,9 +18,9 @@ import (
 func main() {
 	defer func() {
 		if r := recover(); r != nil {
-			fmt.Println(r)
-			helper.WriteErr(r)
-			time.Sleep(time.Second*5)
+			fmt.Println("error at: ", r)
+			helper.WriteMassageAsError(r, "main")
+			time.Sleep(time.Minute)
 		}
 	}()
 	conn.InitVars()

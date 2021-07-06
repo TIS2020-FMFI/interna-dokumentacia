@@ -18,23 +18,22 @@ func updateConfirm(writer http.ResponseWriter, request *http.Request) {
 	tx := con.Db.Begin()
 	defer tx.Rollback()
 	if con.SetHeadersReturnIsContinue(writer, request) {
-		var (
-			newTraining training.OnlineTraining
-		)
+		var newTraining training.OnlineTraining
+		const name = "updateConfirm"
 		e := json.NewDecoder(request.Body).Decode(&newTraining)
 		if e != nil {
-			h.WriteErrWriteHandlers(e, writer)
+			h.WriteErrWriteHandlers(e, name, writer)
 			return
 		}
 		newTraining.Edited = false
 		result := tx.Updates(&newTraining)
 		if result.Error != nil {
-			h.WriteErrWriteHandlers(result.Error, writer)
+			h.WriteErrWriteHandlers(result.Error, name, writer)
 			return
 		}
 		err := confirmInDb(newTraining, tx)
 		if err != nil {
-			h.WriteErrWriteHandlers(err, writer)
+			h.WriteErrWriteHandlers(err, name, writer)
 			return
 		}
 		carrySignToTraining(newTraining, tx, writer)
@@ -44,23 +43,22 @@ func createConfirm(writer http.ResponseWriter, request *http.Request) {
 	tx := con.Db.Begin()
 	defer tx.Rollback()
 	if con.SetHeadersReturnIsContinue(writer, request) {
-		var (
-			newTraining training.OnlineTraining
-		)
+		var newTraining training.OnlineTraining
+		const name = "createConfirm"
 		e := json.NewDecoder(request.Body).Decode(&newTraining)
 		if e != nil {
-			h.WriteErrWriteHandlers(e, writer)
+			h.WriteErrWriteHandlers(e, name, writer)
 			return
 		}
 		newTraining.Edited = false
 		result := tx.Create(&newTraining)
 		if result.Error != nil {
-			h.WriteErrWriteHandlers(result.Error, writer)
+			h.WriteErrWriteHandlers(result.Error, name, writer)
 			return
 		}
 		err := confirmInDb(newTraining, tx)
 		if err != nil {
-			h.WriteErrWriteHandlers(err, writer)
+			h.WriteErrWriteHandlers(err, name, writer)
 			return
 		}
 		carrySignToTraining(newTraining, tx, writer)
@@ -74,7 +72,7 @@ func confirmInDb(newTraining training.OnlineTraining, tx *gorm.DB) error {
 func carrySignToTraining(newTraining training.OnlineTraining, tx *gorm.DB, writer http.ResponseWriter) {
 	err := saveSignToTraining(newTraining, tx)
 	if err != nil {
-		h.WriteErrWriteHandlers(err, writer)
+		h.WriteErrWriteHandlers(err, "carrySignToTraining", writer)
 		return
 	}
 	tx.Commit()
@@ -92,12 +90,13 @@ func confirm(writer http.ResponseWriter, request *http.Request) {
 	defer tx.Rollback()
 	if con.SetHeadersReturnIsContinue(writer, request) {
 		idString, ok := mux.Vars(request)["id"]
+		const name = "confirm"
 		if !ok {
-			h.WriteErrWriteHandlers(fmt.Errorf("not found 'id'"), writer)
+			h.WriteErrWriteHandlers(fmt.Errorf("not found 'id'"), name, writer)
 		}
 		id, err := strconv.ParseUint(idString, 10, 64)
 		if err != nil {
-			h.WriteErrWriteHandlers(err, writer)
+			h.WriteErrWriteHandlers(err, name, writer)
 			return
 		}
 		var (
@@ -105,12 +104,12 @@ func confirm(writer http.ResponseWriter, request *http.Request) {
 		)
 		result := tx.First(&newTraining, id)
 		if result.Error != nil {
-			h.WriteErrWriteHandlers(result.Error, writer)
+			h.WriteErrWriteHandlers(result.Error, name, writer)
 			return
 		}
 		err = confirmInDb(newTraining, tx)
 		if err != nil {
-			h.WriteErrWriteHandlers(err, writer)
+			h.WriteErrWriteHandlers(err, name, writer)
 			return
 		}
 		carrySignToTraining(newTraining, tx, writer)

@@ -17,7 +17,7 @@ func AddSignsNewEmployeesReturnsEmails(newEmployees []h.NewEmployee, tx *gorm.DB
 	)
 	re := tx.Raw(sql).Find(&result)
 	if re.Error != nil {
-		h.WriteErr(re.Error)
+		h.WriteMassageAsError(re.Error, "AddSignsNewEmployeesReturnsEmails")
 		return nil, fmt.Errorf(re.Error.Error())
 	}
 	return convert(result), nil

@@ -23,13 +23,14 @@ func getSignedSignatures(writer http.ResponseWriter, request *http.Request) {
 func getSignatures(writer http.ResponseWriter, request *http.Request, signs h.QueryThreeStrings) {
 	if con.SetHeadersReturnIsContinue(writer, request) {
 		idString, ok := mux.Vars(request)["id"]
+		const name = "getSignatures"
 		if !ok {
-			h.WriteErrWriteHandlers(fmt.Errorf("do not find id"), writer)
+			h.WriteErrWriteHandlers(fmt.Errorf("do not find id"), name, writer)
 			return
 		}
 		id, err := strconv.Atoi(idString)
 		if err != nil || id < 0 {
-			h.WriteErrWriteHandlers(err, writer)
+			h.WriteErrWriteHandlers(err, name, writer)
 			return
 		}
 		modifySignature := getSignaturesByscript(signs, id)
