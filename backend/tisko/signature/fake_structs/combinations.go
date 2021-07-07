@@ -1,7 +1,7 @@
 package fake_structs
 
 type SignatureAndEmployee struct {
-	Employee	Employee `gorm:"embedded" json:"employee"`
+	Employee	Employee `gorm:"embedded" sql:"type:VARCHAR(5) CHARACTER SET utf8 COLLATE utf8_general_ci" json:"employee"`
 	Document	Document `gorm:"embedded" json:"document"`
 	DocumentSignature	DocumentSignature `gorm:"embedded" json:"signature"`
 }

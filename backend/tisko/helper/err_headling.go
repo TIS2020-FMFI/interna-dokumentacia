@@ -1,6 +1,7 @@
 package helper
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -21,11 +22,14 @@ func Check(e error) {
 
 // WriteMassageAsError write to gefko.log
 func WriteMassageAsError(massange interface{}, location string) {
-	f, err := os.OpenFile("gefko.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+	file, err := os.OpenFile("gefko.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
 	if err != nil {
 		log.Fatalf("in function %v was occured this error: %v", location, err)
 	}
-	defer f.Close()
-	log.SetOutput(f)
-	log.Printf("in function %v was occured this error: %v\n\n", location, massange)
+	defer file.Close()
+	_, _ = file.WriteString(
+		fmt.Sprintln(
+			fmt.Sprintln(
+				fmt.Sprintf("in function %v was occured this error: %v",
+					location, massange))))
 }

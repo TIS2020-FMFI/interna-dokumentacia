@@ -1,7 +1,8 @@
 package paths
 
 const (
-	GlobalDir = "C:/interna-dokumentacia/backend/tisko/"//"./"
+	GlobalDir = "C:/interna-dokumentacia-backend/backend/tisko/"
+	// "./"
 )
 
 const (

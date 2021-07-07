@@ -66,9 +66,9 @@ func (rw *DataWR) BuildQuery(Config *PasswordConfig) {
 	}
 	name,passwd := rw.getNamePassword()
 	var query strings.Builder
-	query.WriteString(fmt.Sprint(rw.S.First,"='", name, "'"))
+	query.WriteString(fmt.Sprint("LOWER(",rw.S.First,") ='", name, "'"))
 	if !b {
-		query.WriteString(fmt.Sprint(" and ",rw.S.Second,"='", passwd,"'::varchar"))
+		query.WriteString(fmt.Sprint(" and LOWER(",rw.S.Second,") = '", passwd,"'::varchar"))
 	}
 	query.WriteString(" and (deleted is null or deleted = false)")
 	rw.S.Query=query.String()
@@ -78,5 +78,5 @@ func (rw *DataWR) BuildQuery(Config *PasswordConfig) {
 func (rw *DataWR) getNamePassword() (string, string) {
 	name := rw.RW.R.FormValue(rw.S.First)
 	passwd := rw.RW.R.FormValue(rw.S.Second)
-	return name, passwd
+	return strings.ToLower(name), strings.ToLower(passwd)
 }

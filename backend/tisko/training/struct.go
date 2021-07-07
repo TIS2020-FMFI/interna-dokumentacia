@@ -12,7 +12,7 @@ var (
 )
 
 func init() {
-	editedTraining=h.ReturnTrimFile("./training/edited_training.txt")
+	editedTraining=h.ReturnTrimFile(path.GlobalDir+"training/edited_training.txt")
 }
 
 type OnlineTraining struct {

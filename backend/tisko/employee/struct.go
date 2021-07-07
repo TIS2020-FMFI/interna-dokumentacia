@@ -8,7 +8,7 @@ import (
 
 type Employee struct {
 	BasicEmployee
-	ManagerId    uint64 `gorm:"column:manager_id" json:"manager_id,omitempty"`
+	ManagerId    uint64 `gorm:"column:manager_id" sql:"type:VARCHAR(5) CHARACTER SET utf8 COLLATE utf8_general_ci" json:"manager_id,omitempty"`
 	BranchId     uint64 `gorm:"column:branch_id" json:"branch_id,omitempty"`
 	DivisionId   uint64 `gorm:"column:division_id" json:"division_id,omitempty"`
 	CityId       uint64 `gorm:"column:city_id" json:"city_id,omitempty"`
@@ -25,7 +25,7 @@ type Employee struct {
 type BasicEmployee struct {
 	Id        uint64 `gorm:"primaryKey" json:"id"`
 	FirstName string `gorm:"column:first_name" json:"first_name"`
-	LastName  string `gorm:"column:last_name" json:"last_name"`
+	LastName  string `gorm:"column:last_name" sql:"CHARACTER SET win1250 COLLATE " json:"last_name"`
 	AnetId    string `gorm:"column:anet_id" json:"anet_id"`
 	Card      string `gorm:"column:card" json:"-"`
 }

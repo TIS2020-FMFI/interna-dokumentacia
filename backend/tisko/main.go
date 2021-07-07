@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"time"
 	comb "tisko/combination"
 	conn "tisko/connection_database"
@@ -23,6 +24,7 @@ func main() {
 			time.Sleep(time.Minute)
 		}
 	}()
+	helper.WriteMassageAsError( fmt.Sprint(os.Executable()), "main")
 	conn.InitVars()
 	comb.AddHandleInitVars()
 	employee.AddHandleInitVars()

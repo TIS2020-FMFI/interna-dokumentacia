@@ -12,15 +12,16 @@ import (
 	"strings"
 	"time"
 	h "tisko/helper"
+	"tisko/paths"
 )
 
 const (
-	timeout = time.Second*10
+	timeout = time.Second*7
+	staticDir = paths.GlobalDir+"build_front_end/static/"
 )
 
 var (
 	myForm = url.Values{}
-	staticDir = "/build_front_end/static/"
 )
 //Start prepare frontend and homePageBackend sub-sites and start server
 func Start() {
@@ -64,7 +65,7 @@ func startServer() {
 		e := s.ListenAndServe()
 		if e != nil {
 			if e.Error() == "http: Server closed" {
-				resetDbConnection()
+				fmt.Println("reset")
 			}else {
 				h.WriteMassageAsError(e, "startServer")
 			}
@@ -72,14 +73,6 @@ func startServer() {
 	}
 }
 
-// resetDbConnection reset global connection to database
-func resetDbConnection() {
-	err := createDbConnection()
-	if err != nil {
-		h.WriteMassageAsError("unconnected: "+err.Error(), "resetDbConnection")
-	}
-
-}
 
 // NewServer make new server to run from pre-prepared package's variable 'myRouter' on port string
 func NewServer(port string) *http.Server {
@@ -105,7 +98,7 @@ func NewServer(port string) *http.Server {
 		return nil
 	})
 	cloneRouter.PathPrefix("/static/").Handler(http.StripPrefix("/static/",
-			http.FileServer(http.Dir("."+staticDir))))
+			http.FileServer(http.Dir(staticDir))))
 	s.Handler = cloneRouter
 	return s
 }
