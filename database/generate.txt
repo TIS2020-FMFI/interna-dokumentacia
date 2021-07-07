@@ -243,6 +243,5 @@ SELECT setval('online_training_signatures_id_seq',
 
 SELECT setval('online_trainings_id_seq',
               (SELECT coalesce(max(id), 1) FROM online_trainings));
-
 COMMIT;
 -- rollback

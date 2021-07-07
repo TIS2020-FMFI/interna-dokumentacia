@@ -3,7 +3,6 @@ package helper
 import (
 	"encoding/csv"
 	"fmt"
-	"golang.org/x/text/encoding/charmap"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -20,16 +19,40 @@ func ReturnTrimFile(nameFile string) string {
 
 // ReadCsvFile read csv return error or data as [][]string
 func ReadCsvFile(filePath string) (fileArrayStrings [][]string,e error)  {
-	f, err := os.Open(filePath)
+	file, err := os.Open(filePath)
 	if err != nil {
 		return nil, err
 	}
-	defer f.Close()
-	csvReader := csv.NewReader(charmap.Windows1250.NewDecoder().Reader(f))
+	defer file.Close()
+	csvReader := csv.NewReader(file)
 	csvReader.Comma = ';'
-	records, err := csvReader.ReadAll()
-	if err != nil {
-		return nil,err
+	fileArrayStrings, err = csvReader.ReadAll()
+	if err == nil {
+		trimAll(fileArrayStrings)
 	}
-	return records,  nil
+	return
+}
+
+func trimAll(fileArrayStrings [][]string) {
+	if fileArrayStrings==nil            ||
+		len(fileArrayStrings) == 0 {
+		return
+	}
+	removeBOM(fileArrayStrings)
+	for i := 0; i < len(fileArrayStrings); i++ {
+		for j := 0; j < len(fileArrayStrings[i]); j++ {
+			fileArrayStrings[i][j] = strings.TrimSpace(fileArrayStrings[i][j])
+		}
+	}
+}
+
+
+
+func removeBOM(fileArrayStrings [][]string) {
+	if len(fileArrayStrings[0]) == 0   ||
+		len(fileArrayStrings[0][0]) == 0{
+		return
+	}
+	bom := []byte{0xef, 0xbb, 0xbf} // UTF-8
+	fileArrayStrings[0][0] = strings.ReplaceAll(fileArrayStrings[0][0], string(bom), "")
 }

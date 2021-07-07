@@ -24,7 +24,6 @@ func main() {
 			time.Sleep(time.Minute)
 		}
 	}()
-	helper.WriteMassageAsError( fmt.Sprint(os.Executable()), "main")
 	conn.InitVars()
 	comb.AddHandleInitVars()
 	employee.AddHandleInitVars()
@@ -36,5 +35,17 @@ func main() {
 	mail.InitMailSenders()
 	tiker.StartAll()
 	conn.Start()
+	getExe()
+}
+
+func getExe() {
+	e, err := os.Executable()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	p :=fmt.Sprintln(e)
+	fmt.Println(p)
+	helper.WriteMassageAsError(p, "main")
 }
 
