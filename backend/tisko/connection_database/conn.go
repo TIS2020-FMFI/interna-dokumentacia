@@ -16,7 +16,6 @@ import (
 )
 
 const (
-	timeout = time.Second*7
 	staticDir = paths.GlobalDir+"build_front_end/static/"
 )
 
@@ -58,7 +57,7 @@ func startServer() {
 	fmt.Println("Listen on "+ portBackend)
 	myForm.Add("login",  "admin")
 	myForm.Add("password", "DoLi")
-	myUrl := fmt.Sprint("http://localhost", portBackend,"/auth/login")
+	myUrl := fmt.Sprint("http://localhost", portBackend,"/control7777777")
 	for  {
 		s := NewServer(portBackend)
 		go tryIsAliveElseStop(s, myUrl)
@@ -78,8 +77,6 @@ func startServer() {
 func NewServer(port string) *http.Server {
 	s := & http.Server{
 		Addr: port,
-		ReadTimeout:  time.Minute/2,
-		WriteTimeout:  time.Minute,
 	}
 	cloneRouter :=mux.NewRouter().StrictSlash(true)
 	temp := myRouter
@@ -107,17 +104,17 @@ func NewServer(port string) *http.Server {
 // try in cycle whether myUrl string is lived and if not, stop s *http.Server
 func tryIsAliveElseStop(s *http.Server, myUrl string) {
 	//time.Sleep(time.Second*7)
-	client := http.Client{Timeout: timeout}
+	client := http.Client{Timeout: time.Second*77}
 	for  {
-		time.Sleep(time.Second*7)
+		time.Sleep(time.Second*77)
 		req, err := http.NewRequest("POST", myUrl, strings.NewReader(myForm.Encode()))
 		if err != nil {	goto end }
 		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 		conn, err := client.Do(req)
 		if err != nil {	goto end }
-		var employee interface{}
-		err = json.NewDecoder(bufio.NewReader(conn.Body)).Decode(&employee)
-		if employee == nil { goto end }
+		var massage accept
+		err = json.NewDecoder(bufio.NewReader(conn.Body)).Decode(&massage)
+		if massage.Id != 7777 { goto end }
 	}
 	end:
 		_ = s.Shutdown(context.Background())

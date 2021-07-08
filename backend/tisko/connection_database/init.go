@@ -32,7 +32,9 @@ func InitVars() {
 	if err != nil {
 		panic("unconnected: "+err.Error())
 	}
+	AddHeaderPost("/control7777777", controlPage)
 }
+
 
 func createDbConnection(config string) error {
 	con, err := gorm.Open(postgres.Open(config), &gorm.Config{})
@@ -43,7 +45,7 @@ func createDbConnection(config string) error {
 	sqlDB.SetMaxIdleConns(4967295)
 	sqlDB.SetMaxOpenConns(4967295)
 	Db=con
-	Db.Set("gorm:table_options", "DEFAULT CHARSET=WIN1250")
+	Db.Set("gorm:table_options", "DEFAULT CHARSET=utf8")
 
 	return nil
 }

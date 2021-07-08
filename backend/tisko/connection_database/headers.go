@@ -42,10 +42,7 @@ func HeaderSendOk(writer http.ResponseWriter) {
 
 // SendAccept send json {"accept", id} to writer http.ResponseWriter and send 'ok-header'
 func SendAccept(id uint64, writer http.ResponseWriter) {
-	responseStruct := struct {
-		Message string `json:"message"`
-		Id      uint64 `json:"id"`
-	}{"accept", id}
+	responseStruct := accept{"accept", id}
 	HeaderSendOk(writer)
 	_ = json.NewEncoder(writer).Encode(responseStruct)
 }
