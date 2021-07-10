@@ -129,6 +129,11 @@ CREATE TABLE Employees (
 create index document_signature_idx
     on cancel_signs(document_signature_id);
 
+create index employees_deleted
+    on employees(deleted);
+
+create index employees_anet
+    on employees(anet_id);
 
 COMMIT;
 -- rollback

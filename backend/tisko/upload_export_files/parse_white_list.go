@@ -25,6 +25,10 @@ func parseSaveEmployeesAddSign(dir string, name string) error {
 		return err
 	}
 	if len(newEmployees) == 0 {
+		err = tx.Commit().Error
+		if err != nil {
+			return err
+		}
 		return nil
 	}
 	emailsEmployees, err0 := signature.AddSignsNewEmployeesReturnsEmails(newEmployees, tx)
@@ -134,9 +138,7 @@ func prepareCreateOrUpdate(create []*employee.Employee, update []*employee.Emplo
 	return func(lastImport map[string]uint64, tx *gorm.DB) ([]h.NewEmployee, error) {
 		var err, err2 error
 		if len(lastImport) > 0 {
-			err2 = tx.Model(&employee.Employee{}).
-				Select("deleted").Where(buildWhere(lastImport)).
-				Update("deleted", true).Error
+			err2 = tx.Raw(buildDeletedQuery(lastImport)).Error
 			if err2 != nil {
 				h.WriteMassageAsError(err2, "anonim from prepareCreateOrUpdate")
 			}
@@ -155,7 +157,7 @@ func prepareCreateOrUpdate(create []*employee.Employee, update []*employee.Emplo
 			Columns:   []clause.Column{{Name: "anet_id"}},
 			DoUpdates: clause.AssignmentColumns(columns),
 		})
-		err = tx.Create(&common).Error
+		err = tx.Select("*").Omit("card").Create(&common).Error
 		if err != nil {
 			return nil, fmt.Errorf("%v", err)
 		}
@@ -163,14 +165,16 @@ func prepareCreateOrUpdate(create []*employee.Employee, update []*employee.Emplo
 	}
 }
 
-// buildWhere from map fetch Ids and make string-SQL condition "anet_id in ('"+join(ids,", ")+")"
-func buildWhere(lastImport map[string]uint64) string {
+// buildDeletedQuery from map fetch Ids and make string-SQL condition "anet_id in ('"+join(ids,", ")+")"
+func buildDeletedQuery(lastImport map[string]uint64) string {
 	array := make([]string, 0, len(lastImport))
 
 	for k := range lastImport {
 		array = append(array, k)
 	}
-	return fmt.Sprint("anet_id in ('", strings.Join(array, "', '"), "')")
+	return fmt.Sprint( "UPDATE \"employees\"",
+		" SET deleted = true",
+		" WHERE anet_id in ('", strings.Join(array, "', '"), "')")
 }
 
 //setGeneralIdFromStringIfExist if string s is in dataMap run function f
