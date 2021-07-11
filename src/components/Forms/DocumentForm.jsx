@@ -148,7 +148,7 @@ const DocumentForm = ({ setRecords, formData, setFormData, actual }) => {
       onChange={() => setNotification(undefined)}
       onSubmit={handleSubmit(onSubmit)}
     >
-      {/* TYPE */}
+      {/* TYPE* */}
       <Form.Group as={Row}>
         <Form.Label column sm="3">
           Type*
@@ -188,6 +188,23 @@ const DocumentForm = ({ setRecords, formData, setFormData, actual }) => {
         register={register}
         required
       />
+      {/* DOCUMENT NUMBER */}
+      <MyFormGroup
+        label="Document number*"
+        name="order_number"
+        type="number"
+        placeholder="Enter number"
+        register={register({ valueAsNumber: true })}
+        required
+      />
+      {/* VERSION */}
+      <MyFormGroup
+        label="Version*"
+        name="version"
+        placeholder="Enter version"
+        register={register}
+        required
+      />
       {/* LINK */}
       <MyFormGroup
         label="Link to sharepoint"
@@ -209,23 +226,6 @@ const DocumentForm = ({ setRecords, formData, setFormData, actual }) => {
         name="deadline"
         type="date"
         register={register}
-        required
-      />
-      {/* VERSION */}
-      <MyFormGroup
-        label="Version*"
-        name="version"
-        placeholder="Enter version"
-        register={register}
-        required
-      />
-      {/* ORDER NUMBER */}
-      <MyFormGroup
-        label="Document number*"
-        name="order_number"
-        type="number"
-        placeholder="Enter number"
-        register={register({ valueAsNumber: true })}
         required
       />
       {/* NOTE */}
