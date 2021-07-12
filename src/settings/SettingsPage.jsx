@@ -5,7 +5,7 @@ import {badMsg, getSelectOptions} from "../utils/functions";
 import { proxy_url } from "../utils/data";
 
 const SettingsPage = ({ submitError }) => {
-  const import_types = ["import_1", "import_2", "import_3", "import_5"];
+  const import_types = ["import_1", "import_2", "import_3", "import_4", "import_5"];
   const [selectedType, setSelectedType] = useState();
 
   const [cardsFile, setCards] = useState(null);
