@@ -26,10 +26,7 @@ func parseSaveEmployeesAddSign(dir string, name string) error {
 	}
 	if len(newEmployees) == 0 {
 		err = tx.Commit().Error
-		if err != nil {
-			return err
-		}
-		return nil
+		return err
 	}
 	emailsEmployees, err0 := signature.AddSignsNewEmployeesReturnsEmails(newEmployees, tx)
 	if err0 != nil {
@@ -138,9 +135,10 @@ func prepareCreateOrUpdate(create []*employee.Employee, update []*employee.Emplo
 	return func(lastImport map[string]uint64, tx *gorm.DB) ([]h.NewEmployee, error) {
 		var err, err2 error
 		if len(lastImport) > 0 {
-			err2 = tx.Raw(buildDeletedQuery(lastImport)).Error
+			err2 = tx.Exec(buildDeletedQuery(lastImport)).Error
 			if err2 != nil {
 				h.WriteMassageAsError(err2, "anonim from prepareCreateOrUpdate")
+				return nil, err2
 			}
 		}
 		columns := []string{
